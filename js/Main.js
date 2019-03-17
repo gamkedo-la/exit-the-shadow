@@ -28,9 +28,9 @@ function startGame() {
 }
 
 function updateAll() {
-	moveAll();
 	animateAll();
 	drawAll();
+	moveAll();
 }
 
 function moveAll() {
@@ -44,7 +44,7 @@ function drawAll() {
 	drawTiles();
 	
 	// PUT ALL THINGS THAT NEED DEPTH SORTING IN ONE ARRAY 
-	Entities.sort(function(a, b){return a.y-b.y});
+	Entities.sort(function(a, b){return (a.y+a.height)-(b.y+b.height)});
 	for (var i = 0; i < Entities.length ; i++) {
 		Entities[i].draw();
 	}

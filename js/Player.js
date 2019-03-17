@@ -1,6 +1,7 @@
 const DASH_LENGTH = 150;
 const DASH_SPEED = 50;
 const DASH_COOLDOWN = 5;
+const ATTACK_COOLDOWN = 5;
 
 // inherit from EntityClass
 PlayerClass.prototype = new EntityClass();
@@ -10,6 +11,7 @@ function PlayerClass() {
 	// public
 	this.width = 25;
 	this.height = 50;
+	this.hp = 2;
 	
 	this.collisionBoxHeight = this.width;
 	
@@ -28,31 +30,39 @@ function PlayerClass() {
 	this.keyHeld_Left = false;
 	this.keyHeld_Right = false;
 	this.keyHeld_Dash = false;
+	this.keyHeld_Attack = false;
 	
 	this.controlKeyUp;
 	this.controlKeyLeft;
 	this.controlKeyRight;
 	this.controlKeyDown;
 	this.controlKeyDash;
+	this.controlKeyAttack;
 	
 	// private
 	let isDashing = false;
-	let dashIsCoolingDown = false;
 	let dashRemaining = DASH_LENGTH/DASH_SPEED;
-	let dashCooldown = DASH_COOLDOWN;
+	let dashCooldown = 0;
 	let dashDirection = NO_DIRECTION;
 	let diagonalDashSpeed = Math.sqrt((DASH_SPEED*DASH_SPEED) / 2);
 	
-	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey) {
+	let Attack;
+	let attackCooldown = 0;
+	let attackWidth = 40;
+	let attackHeight = 40;
+	
+	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, attackKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyLeft = leftKey;
 		this.controlKeyDown = downKey;
 		this.controlKeyRight = rightKey;
 		this.controlKeyDash = dashKey;
+		this.controlKeyAttack = attackKey;
 	}
 	
 	this.move = function () {
 
+		// MOVEMENT
 		this.movementDirection = [false, false, false, false]; // up, left, down, right
 		if (this.keyHeld_Up && !isDashing) {
 			this.movementDirection[UP] = true;
@@ -70,12 +80,12 @@ function PlayerClass() {
 			this.movementDirection[LEFT] = true;
 		}
 		
-		if (this.keyHeld_Dash && !isDashing && !dashIsCoolingDown
-			&& (this.movementDirection[UP] || this.movementDirection[DOWN] || this.movementDirection[RIGHT] || this.movementDirection[LEFT])) {
+		// DASH
+		if (this.keyHeld_Dash && !isDashing && dashCooldown <= 0 &&
+		   (this.movementDirection[UP] || this.movementDirection[DOWN] || this.movementDirection[RIGHT] || this.movementDirection[LEFT])) {
 			isDashing = true;
 			dashDirection = this.calculateDashDirection(this.movementDirection);
 		}
-		
 		if (isDashing) {
 			dashRemaining--;
 			switch(dashDirection) {
@@ -110,19 +120,74 @@ function PlayerClass() {
 			}
 			if (dashRemaining <= 0) {
 				isDashing = false;
-				dashIsCoolingDown = true;
+				dashCooldown = DASH_COOLDOWN;
 			}
 		}
-		if (dashIsCoolingDown) {
+		if (dashCooldown > 0) {
 			dashCooldown--;
 			if (dashCooldown <= 0 && !this.keyHeld_Dash) {
-				dashIsCoolingDown = false;
-				dashCooldown = DASH_COOLDOWN;
 				dashRemaining = DASH_LENGTH/DASH_SPEED;
+			}
+			else if (dashCooldown <= 0 && this.keyHeld_Dash) {
+				dashCooldown = 1; // prevent repeatedly dashing if keyheld
+			}
+		}
+		
+		// ATTACK
+		if (this.keyHeld_Attack && attackCooldown <= 0) { // not attacking right now
+			if (Attack == null) {
+				// NEED TO CHANGE DIRECTION OF ATTACK BASED ON PLAYER DIRECTION
+				let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+				let attackX, attackY;
+				
+				switch(this.directionFacing) {
+				case UP:
+					centerY -= ((this.height / 2) + (attackHeight / 2));
+					break;
+				case DOWN:
+					centerY += ((this.height / 2) + (attackHeight / 2));
+					break;
+				case LEFT:
+					centerX -= ((this.width / 2) + (attackWidth / 2));
+					break;
+				case RIGHT:
+					centerX += ((this.width / 2) + (attackWidth / 2));
+					break;
+				}
+				
+				let attackOptions = {
+					centerX: centerX,
+					centerY: centerY,
+					width: attackWidth,
+					height: attackHeight,
+					damage: 1,
+					velocityX: 0,
+					velocityY: 0,
+					frameLength: 1
+				}
+				
+				Attack = new ProjectileClass(attackOptions);
+			}
+		}
+		if (Attack != null){ // currently attacking
+			if (!Attack.attackFinished) {
+				Attack.update();
+			}
+			else {
+				Attack = null;
+				attackCooldown = ATTACK_COOLDOWN;
+			}
+		}
+		if (attackCooldown > 0) {
+			attackCooldown--;
+			
+			// prevent being able to just hold down the key
+			if (attackCooldown <= 0 && this.keyHeld_Attack) {
+				attackCooldown = 1;
 			}
 		}
 
-		this.updateState();
+		this.updateState(); // update animation state
 		EntityClass.prototype.move.call(this); // call superclass function
 		
 		cameraFollow();

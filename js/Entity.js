@@ -30,6 +30,9 @@ function EntityClass() {
 	
 	this.states;
 	this.AnimatedSprite;
+	
+	this.hp = 100;
+	this.directionFacing = UP;
 }
 
 // add new functions in here
@@ -52,8 +55,28 @@ EntityClass.prototype = {
 		if (this.movementDirection[LEFT]) {
 			this.nextX -= this.moveSpeed;
 		}
+		
+		if (this.movementDirection[UP]) {
+			this.directionFacing = UP;
+			this.AnimatedSprite.setEntityDirection(UP);
+		}
+		else if (this.movementDirection[DOWN]) {
+			this.directionFacing = DOWN;
+			this.AnimatedSprite.setEntityDirection(DOWN);
+		}
+		if (!(this.movementDirection[RIGHT] && this.movementDirection[LEFT])) {
+			if (this.movementDirection[LEFT]) {
+				this.directionFacing = LEFT;
+				this.AnimatedSprite.setEntityDirection(LEFT);
+			}
+			else if (this.movementDirection[RIGHT]) {
+				this.directionFacing = RIGHT;
+				this.AnimatedSprite.setEntityDirection(RIGHT);
+			}
+		}
 
 		handleWorldCollisions(this);
+		handleEntityCollisions(this);
 		
 		// currently only used to calculate camera position for player
 		// but left in here as it may be useful for any entity
@@ -70,19 +93,19 @@ EntityClass.prototype = {
 		canvasContext.save();
 		canvasContext.translate(this.x, this.y);
 		
-		if (this.movementDirection[UP]) {
+		switch(this.directionFacing) {
+		case UP:
 			this.AnimatedSprite.setEntityDirection(UP);
-		}
-		else if (this.movementDirection[DOWN]) {
+			break;
+		case DOWN:
 			this.AnimatedSprite.setEntityDirection(DOWN);
-		}
-		if (!(this.movementDirection[RIGHT] && this.movementDirection[LEFT])) {
-			if (this.movementDirection[LEFT]) {
-				this.AnimatedSprite.setEntityDirection(LEFT);
-			}
-			else if (this.movementDirection[RIGHT]) {
-				this.AnimatedSprite.setEntityDirection(RIGHT);
-			}
+			break;
+		case LEFT:
+			this.AnimatedSprite.setEntityDirection(LEFT);
+			break;
+		case RIGHT:
+			this.AnimatedSprite.setEntityDirection(RIGHT);
+			break;
 		}
 		
 		this.AnimatedSprite.render();

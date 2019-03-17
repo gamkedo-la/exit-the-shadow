@@ -211,3 +211,49 @@ function lineLineCollider(x1,y1, x2,y2, x3,y3, x4,y4) {
     }
     return false;
 }
+
+function handleEntityCollisions(entity) {
+	for (var i = 0; i < Entities.length; i++) {
+		if (entity == Entities[i]) {
+			continue;
+		}
+		
+		if (AABBCollisionDetection(entity.x,collisionBoxY(entity), entity.width,entity.collisionBoxHeight,
+				 				   Entities[i].x,collisionBoxY(Entities[i]), Entities[i].width,Entities[i].collisionBoxHeight)) {
+			   console.log("entity collision detected");
+			   // handle entity collisions
+		}
+	}
+}
+
+function handleProjectileCollisions(projectile) { 
+	for (var i = 0; i < Entities.length; i++) {
+		var entityIsImmune = false;
+		for (var j = 0; j < projectile.immuneEntities.length; j++) {
+			if (projectile.immuneEntities[j] == Entities[i]) { // THIS MAY NOT ALWAYS WORK IF JAVASCRIPT COPIES OBJECTS INSTEAD OF PASSING POINTERS - MAY NEED TO ADD ENTITITY IDS IF THIS HAPPENS
+				entityIsImmune = true;
+			}
+		}
+		if (entityIsImmune) {
+			continue;
+		}
+		
+		if (AABBCollisionDetection(projectile.centerX - projectile.width / 2,projectile.centerY - projectile.width / 2, projectile.width,projectile.height,
+				 				   Entities[i].x,collisionBoxY(Entities[i]), Entities[i].width,Entities[i].collisionBoxHeight)) {
+			   console.log("attack collision detected");
+			   // handle projectile collisions (cause damage to entity, add to immune list)
+		}
+	}
+}
+
+function AABBCollisionDetection(object1X,object1Y, object1Width,object1Height, object2X,object2Y, object2Width,object2Height) {
+	if (object1X < object2X + object2Width &&
+	   object1X + object1Width > object2X &&
+	   object1Y < object2Y + object2Height &&
+	   object1Y + object1Height > object2Y) {
+	    
+		// collision detected
+		   return true;
+	}
+	return false;
+}
