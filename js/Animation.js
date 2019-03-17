@@ -1,56 +1,60 @@
-function AnimatedSpriteClass(spriteSheet, spriteWidth, spriteHeight, states) {
-	this.spriteSheet = spriteSheet;
-	this.spriteWidth = spriteWidth;
-	this.spriteHeight = spriteHeight;
+function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animationSpriteHeight, animationStates) {
+	let spriteSheet = animationSpriteSheet;
+	let spriteWidth = animationSpriteWidth;
+	let spriteHeight = animationSpriteHeight;
 	
-	this.states = states;
-	this.currentState = states[Object.keys(states)[0]];
+	let states = animationStates;
+	let currentState = states[Object.keys(states)[0]];
 	
-	this.frameRow = this.currentState.startFrame;
-	this.frameCol = 0;
-	this.tickCount = 0;
-	this.ticksPerFrame = Math.round(1 / this.currentState.animationSpeed);
+	let frameRow = currentState.startFrame;
+	let frameCol = 0;
+	let tickCount = 0;
+	let ticksPerFrame = Math.round(1 / currentState.animationSpeed);
 	
 	this.render = function() {
 		canvasContext.drawImage(
-			this.spriteSheet,
-			this.frameRow*this.spriteWidth,
-			this.frameCol*this.spriteHeight,
-			this.spriteWidth,
-			this.spriteHeight,
+			spriteSheet,
+			frameRow*spriteWidth,
+			frameCol*spriteHeight,
+			spriteWidth,
+			spriteHeight,
 			0,
 			0,
-			this.spriteWidth,
-			this.spriteHeight
+			spriteWidth,
+			spriteHeight
 		)
 	}
 	
 	this.update = function() {
-		this.tickCount++;
+		tickCount++;
 		
-		if (this.tickCount > this.ticksPerFrame) {
-			this.tickCount = 0;
+		if (tickCount > ticksPerFrame) {
+			tickCount = 0;
 			
-			if (this.frameRow < this.currentState.startFrame) { // catch being out of bounds
-				this.frameRow = this.currentState.startFrame;
+			if (frameRow < currentState.startFrame) { // catch being out of bounds
+				frameRow = currentState.startFrame;
 			}
-			else if (this.frameRow < this.currentState.endFrame) {
-				this.frameRow++;
+			else if (frameRow < currentState.endFrame) {
+				frameRow++;
 			}
 			else {
-				this.frameRow = this.currentState.startFrame;
+				frameRow = currentState.startFrame;
 			}
 		}
 	}
 	
 	this.changeState = function(stateName) {
-		var newState = this.states[stateName];
+		var newState = states[stateName];
 		
-		if (newState != this.currentState && newState != null) {
-			this.currentState = newState;
+		if (newState != currentState && newState != null) {
+			currentState = newState;
 			
-			this.frameRow = this.currentState.startFrame;
-			this.ticksPerFrame = Math.round(1 / this.currentState.animationSpeed);
+			frameRow = currentState.startFrame;
+			ticksPerFrame = Math.round(1 / currentState.animationSpeed);
 		}
+	}
+	
+	this.setEntityDirection = function(spriteSheetFrameCol) {
+		frameCol = spriteSheetFrameCol;
 	}
 }

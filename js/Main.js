@@ -1,5 +1,13 @@
 var canvas, canvasContext;
 var Player = new PlayerClass();
+var TestEnemy = new TestEnemyClass();
+
+// maybe still keep entities in an object but then have a arrays for things like "moveable" - all have a move card or "sortable" - need depth sorting etc
+
+var Entities = [
+	Player,
+	TestEnemy
+]
 	
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -26,15 +34,24 @@ function updateAll() {
 }
 
 function moveAll() {
-	Player.move();
+	for (var i = 0; i < Entities.length ; i++) {
+		Entities[i].move();
+	}
 }
 
 function drawAll() {
 	colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
 	drawTiles();
-	Player.draw();
+	
+	// PUT ALL THINGS THAT NEED DEPTH SORTING IN ONE ARRAY 
+	Entities.sort(function(a, b){return a.y-b.y});
+	for (var i = 0; i < Entities.length ; i++) {
+		Entities[i].draw();
+	}
 }
 
 function animateAll() {
-	Player.animate();
+	for (var i = 0; i < Entities.length ; i++) {
+		Entities[i].animate();
+	}
 }

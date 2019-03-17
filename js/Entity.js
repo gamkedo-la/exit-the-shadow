@@ -71,17 +71,17 @@ EntityClass.prototype = {
 		canvasContext.translate(this.x, this.y);
 		
 		if (this.movementDirection[UP]) {
-			this.AnimatedSprite.frameCol = UP;
+			this.AnimatedSprite.setEntityDirection(UP);
 		}
 		else if (this.movementDirection[DOWN]) {
-			this.AnimatedSprite.frameCol = DOWN;
+			this.AnimatedSprite.setEntityDirection(DOWN);
 		}
 		if (!(this.movementDirection[RIGHT] && this.movementDirection[LEFT])) {
 			if (this.movementDirection[LEFT]) {
-				this.AnimatedSprite.frameCol = LEFT;
+				this.AnimatedSprite.setEntityDirection(LEFT);
 			}
 			else if (this.movementDirection[RIGHT]) {
-				this.AnimatedSprite.frameCol = RIGHT;
+				this.AnimatedSprite.setEntityDirection(RIGHT);
 			}
 		}
 		

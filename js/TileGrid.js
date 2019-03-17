@@ -26,7 +26,7 @@ var levelOne = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 				1, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 5, 0, 0, 0, 0, 0, 0, 4, 1, 1, 0, 0, 0, 1, 
 				1, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 0, 0, 0, 1, 
 				1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 
-				1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,-1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 
+				1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,-2, 0, 0,-1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 
 				1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 
 				1, 0, 0, 0, 0, 0, 4, 1, 1, 1, 1, 1, 1, 1, 5, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 1, 
 				1, 0, 0, 0, 0, 0, 0, 4, 1, 1, 1, 1, 1, 5, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 3, 0, 0, 0, 0, 0, 0, 2, 1, 1, 0, 0, 0, 1, 
@@ -36,7 +36,8 @@ var levelOne = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 				1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 // key:
-const PLAYER = -1; /*
+const PLAYER = -1;
+const TEST_ENEMY = -2 /*
 const TILE_PATH = 0;
 const TILE_OBSTACLE_BOX = 1;
 const TILE_OBSTACLE_LEFT_UP_DIAG = 2;
@@ -71,12 +72,17 @@ function initialiseEntityPositions() {
 	for (row = 0; row < TILE_ROWS; row++) {
 		for (col = 0; col < TILE_COLS; col++) {
 			tileType = tileTypeAtColRow(col, row);
-			if (tileType == PLAYER) {
+			switch(tileType) {
+			case PLAYER:
 				Player.initialisePosition(col*TILE_W, row*TILE_H);
 				moveCamToPlayer();
 				var arrayIndex = colRowToArrayIndex(col, row);
 				tileGrid[arrayIndex] = 0;
 				break;
+			case TEST_ENEMY:
+				TestEnemy.initialisePosition(col*TILE_W, row*TILE_H);
+				var arrayIndex = colRowToArrayIndex(col, row);
+				tileGrid[arrayIndex] = 0;
 			}
 		}
 	}

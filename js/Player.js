@@ -2,6 +2,7 @@ const DASH_LENGTH = 150;
 const DASH_SPEED = 50;
 const DASH_COOLDOWN = 5;
 
+// inherit from EntityClass
 PlayerClass.prototype = new EntityClass();
 PlayerClass.prototype.constructor = PlayerClass;
 
