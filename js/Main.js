@@ -12,7 +12,7 @@ var GroundArt = [
 ]
 
 var SortedArt = [
-	{x: 191, y: 575, imgName: "hexagonObstacle"}
+	{x: 480, y: 192, imgName: "octagonObstacle"}
 ]
 
 var OverlayingArt = [

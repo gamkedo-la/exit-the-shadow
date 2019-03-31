@@ -9,7 +9,7 @@ function TestEnemyClass() {
 	
 	this.collisionBoxHeight = this.width;
 	
-	this.moveSpeed = 5;
+	this.moveSpeed = 2;
 	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
@@ -19,22 +19,26 @@ function TestEnemyClass() {
 	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, this.states);
 		
 	this.move = function () {
-
+		
 		this.movementDirection = [false, false, false, false]; // up, left, down, right
-		if (this.keyHeld_Up && !isDashing) {
-			this.movementDirection[UP] = true;
+		if (Math.abs(Player.y - this.y) > 75) {
+			if (Player.y < this.y) {
+				this.movementDirection[UP] = true;
+			}
+		
+			if (Player.y > this.y) {
+				this.movementDirection[DOWN] = true;
+			}
 		}
 		
-		if (this.keyHeld_Down && !isDashing) {
-			this.movementDirection[DOWN] = true;
-		}
-		
-		if (this.keyHeld_Right && !isDashing) {
-			this.movementDirection[RIGHT] = true;
-		}
+		if (Math.abs(Player.x - this.x) > 50) {
+			if (Player.x > this.x) {
+				this.movementDirection[RIGHT] = true;
+			}
 
-		if (this.keyHeld_Left && !isDashing) {
-			this.movementDirection[LEFT] = true;
+			if (Player.x < this.x) {
+				this.movementDirection[LEFT] = true;
+			}
 		}
 
 		this.updateState();
