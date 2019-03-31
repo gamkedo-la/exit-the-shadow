@@ -2,11 +2,25 @@ var canvas, canvasContext;
 var Player = new PlayerClass();
 var TestEnemy = new TestEnemyClass();
 
-// maybe still keep entities in an object but then have a arrays for things like "moveable" - all have a move card or "sortable" - need depth sorting etc
-
 var Entities = [
 	Player,
-	TestEnemy
+	TestEnemy,
+]
+
+var GroundArt = [
+	
+]
+
+var SortedArt = [
+	{x: 191, y: 575, imgName: "hexagonObstacle"}
+]
+
+var OverlayingArt = [
+	
+]
+
+var SortedDrawList = [
+	
 ]
 	
 window.onload = function() {
@@ -22,6 +36,11 @@ function startGame() {
 	var framesPerSecond = 30;
 	setInterval(updateAll, 1000/framesPerSecond);
 	
+	// fill in height (/2) for art that needs sorting
+	SortedArt.forEach(function(art) {
+		art.height = window[art.imgName].height/2;
+	});
+
 	setUpInput();
 	loadLevel(levelOne);
 	initialiseEntityPositions();
@@ -41,13 +60,23 @@ function moveAll() {
 
 function drawAll() {
 	colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
-	drawTiles();
 	
-	// PUT ALL THINGS THAT NEED DEPTH SORTING IN ONE ARRAY 
-	Entities.sort(function(a, b){return (a.y+a.height)-(b.y+b.height)});
-	for (var i = 0; i < Entities.length ; i++) {
-		Entities[i].draw();
+	drawTiles(); // CAN TAKE THIS OUT AS ART IS GOING ON TOP OF IT
+	
+	SortedDrawList = [];
+	SortedDrawList = SortedDrawList.concat(Entities, SortedArt);
+	SortedDrawList.sort(function(a, b){return (a.y+a.height)-(b.y+b.height)});
+	canvasContext.save();
+	canvasContext.translate(-camPanX, -camPanY);
+	for (var i = 0; i < SortedDrawList.length ; i++) {
+		if (typeof SortedDrawList[i].imgName !== 'undefined') { // sorted art
+			canvasContext.drawImage(window[SortedDrawList[i].imgName], SortedDrawList[i].x, SortedDrawList[i].y);
+		}
+		else { // entities
+			SortedDrawList[i].draw();
+		}
 	}
+	canvasContext.restore();
 }
 
 function animateAll() {

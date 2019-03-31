@@ -51,11 +51,6 @@ function TestEnemyClass() {
 	}
 	
 	this.draw = function() {
-		canvasContext.save();
-		canvasContext.translate(-camPanX, -camPanY);
-		
 		EntityClass.prototype.draw.call(this);
-		
-		canvasContext.restore();
 	}
 }

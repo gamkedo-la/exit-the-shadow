@@ -1,4 +1,5 @@
 var playerSheet = document.createElement("img");
+var hexagonObstacle = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -9,7 +10,8 @@ function loadImage(imgVar, fileName) {
 
 function loadImages() {
 	var imageList = [
-		{varName: playerSheet, fileName: "playersheet.png"}
+		{varName: playerSheet, fileName: "playersheet.png"},
+		{varName: hexagonObstacle, fileName: "hexagonobstacle.png"}
 	];
 	
 	picsToLoad = imageList.length;
