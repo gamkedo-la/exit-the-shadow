@@ -155,10 +155,10 @@ function PlayerClass() {
 				
 				switch(this.directionFacing) {
 				case UP:
-					centerY -= ((this.height / 2) + (attackHeight / 2));
+					centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
 					break;
 				case DOWN:
-					centerY += ((this.height / 2) + (attackHeight / 2));
+					centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
 					break;
 				case LEFT:
 					centerX -= ((this.width / 2) + (attackWidth / 2));
