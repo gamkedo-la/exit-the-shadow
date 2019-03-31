@@ -21,7 +21,16 @@ var OverlayingArt = [
 
 var SortedDrawList = [
 	
-]
+] 
+
+var mouseX, mouseY;
+function displayMousePos(evt) {
+	var rect = canvas.getBoundingClientRect();
+	var root = document.documentElement;
+	
+	mouseX = evt.clientX - rect.left - root.scrollLeft;
+	mouseY = evt.clientY - rect.top - root.scrollTop;
+}
 	
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -30,6 +39,8 @@ window.onload = function() {
 	colorRect(0,0, canvas.width,canvas.height, 'white');
 	
 	loadImages();
+	
+	canvas.addEventListener('mousemove', displayMousePos);
 }
 
 function startGame() {
@@ -77,6 +88,8 @@ function drawAll() {
 		}
 	}
 	canvasContext.restore();
+	
+	colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
 }
 
 function animateAll() {
