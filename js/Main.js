@@ -4,7 +4,7 @@ var TestEnemy = new TestEnemyClass();
 
 var Entities = [
 	Player,
-	TestEnemy,
+	//TestEnemy,
 ]
 
 var GroundArt = [

@@ -221,7 +221,23 @@ function handleEntityCollisions(entity) {
 		if (AABBCollisionDetection(entity.x,collisionBoxY(entity), entity.width,entity.collisionBoxHeight,
 				 				   Entities[i].x,collisionBoxY(Entities[i]), Entities[i].width,Entities[i].collisionBoxHeight)) {
 			   console.log("entity collision detected");
-			   // handle entity collisions
+				 	if(entity.movementDirection[UP]){
+					 Entities[i].nextY-=15;
+					 entity.nextY += 15;
+					}
+					if(entity.movementDirection[DOWN]){
+						Entities[i].nextY+=15;
+						entity.nextY -= 15;
+					 }
+					 if(entity.movementDirection[LEFT]){
+						Entities[i].nextX-=15;
+						entity.nextX += 15;
+					 }
+					 if(entity.movementDirection[RIGHT]){
+						Entities[i].nextX+=15;
+						entity.nextX -= 15;
+					 }
+					
 		}
 	}
 }
