@@ -4,6 +4,7 @@ const KEY_S = 83;
 const KEY_D = 68;
 const KEY_SPACE = 32;
 const KEY_K = 75;
+const KEY_L = 76;
 
 function setUpInput() {
 	//canvas.addEventListener('mousemove', updateMousePos);
@@ -11,7 +12,7 @@ function setUpInput() {
 	document.addEventListener('keydown', keyPressed);
 	document.addEventListener('keyup', keyReleased);
 	
-	Player.setupInput(KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_K);
+	Player.setupInput(KEY_W, KEY_A, KEY_S, KEY_D, KEY_SPACE, KEY_K, KEY_L);
 }
 
 function keySet(evt, player, isPressed) {
@@ -32,6 +33,9 @@ function keySet(evt, player, isPressed) {
 	}
 	if (evt.keyCode == player.controlKeyAttack) {
 		player.keyHeld_Attack = isPressed;
+	}
+	if (evt.keyCode == player.controlKeyShield) {
+		player.keyHeld_Shield = isPressed;
 	}
 	
 	evt.preventDefault();

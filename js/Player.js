@@ -2,6 +2,8 @@ const DASH_LENGTH = 150;
 const DASH_SPEED = 50;
 const DASH_COOLDOWN = 5;
 const ATTACK_COOLDOWN = 5;
+const SHIELD_MAX_TIME = 10;
+const SHIELD_COOLDOWN = 5;
 
 // inherit from EntityClass
 PlayerClass.prototype = new EntityClass();
@@ -20,7 +22,9 @@ function PlayerClass() {
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.25},
-		dash: {startFrame: 8, endFrame: 9, animationSpeed: 1}
+		dash: {startFrame: 8, endFrame: 9, animationSpeed: 1},
+		attack: {startFrame: 10, endFrame: 10, animationSpeed: 1},
+		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1}
 	}
 	
 	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, this.states);
@@ -31,6 +35,7 @@ function PlayerClass() {
 	this.keyHeld_Right = false;
 	this.keyHeld_Dash = false;
 	this.keyHeld_Attack = false;
+	this.keyHeld_Shield = false;
 	
 	this.controlKeyUp;
 	this.controlKeyLeft;
@@ -38,6 +43,7 @@ function PlayerClass() {
 	this.controlKeyDown;
 	this.controlKeyDash;
 	this.controlKeyAttack;
+	this.controlKeyShield;
 	
 	// private
 	let isDashing = false;
@@ -51,33 +57,41 @@ function PlayerClass() {
 	let attackWidth = 40;
 	let attackHeight = 40;
 	
-	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, attackKey) {
+	let isShielding = false;
+	let shieldRemaining = SHIELD_MAX_TIME;
+	let shieldCooldown = SHIELD_COOLDOWN;
+	
+	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, attackKey, shieldKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyLeft = leftKey;
 		this.controlKeyDown = downKey;
 		this.controlKeyRight = rightKey;
 		this.controlKeyDash = dashKey;
 		this.controlKeyAttack = attackKey;
+		this.controlKeyShield = shieldKey;
 	}
 	
 	this.move = function () {
 
 		// MOVEMENT
 		this.movementDirection = [false, false, false, false]; // up, left, down, right
-		if (this.keyHeld_Up && !isDashing) {
-			this.movementDirection[UP] = true;
-		}
 		
-		if (this.keyHeld_Down && !isDashing) {
-			this.movementDirection[DOWN] = true;
-		}
+		if (!isDashing && !isShielding) {
+			if (this.keyHeld_Up) {
+				this.movementDirection[UP] = true;
+			}
 		
-		if (this.keyHeld_Right && !isDashing) {
-			this.movementDirection[RIGHT] = true;
-		}
+			if (this.keyHeld_Down) {
+				this.movementDirection[DOWN] = true;
+			}
+		
+			if (this.keyHeld_Right) {
+				this.movementDirection[RIGHT] = true;
+			}
 
-		if (this.keyHeld_Left && !isDashing) {
-			this.movementDirection[LEFT] = true;
+			if (this.keyHeld_Left) {
+				this.movementDirection[LEFT] = true;
+			}
 		}
 		
 		// DASH
@@ -134,9 +148,8 @@ function PlayerClass() {
 		}
 		
 		// ATTACK
-		if (this.keyHeld_Attack && attackCooldown <= 0) { // not attacking right now
+		if (this.keyHeld_Attack && attackCooldown <= 0 && !isShielding && !isDashing) { // not attacking right now & is able to
 			if (Attack == null) {
-				// NEED TO CHANGE DIRECTION OF ATTACK BASED ON PLAYER DIRECTION
 				let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
 				let attackX, attackY;
 				
@@ -186,6 +199,29 @@ function PlayerClass() {
 				attackCooldown = 1;
 			}
 		}
+		
+		// SHIELD
+		if (this.keyHeld_Shield && !isShielding && shieldCooldown <= 0 && !isDashing && Attack == null) { // not currently shielding & is able to
+			isShielding = true; // prevents taking damage
+		}
+		if (isShielding){ // currently shielding
+			shieldRemaining--;
+			
+			if (shieldRemaining <= 0 || !this.keyHeld_Shield) {
+				isShielding = false;
+				shieldCooldown = SHIELD_COOLDOWN;
+			}
+		}
+		if (shieldCooldown > 0) {
+			shieldCooldown--;
+			
+			if (shieldCooldown <= 0 && !this.keyHeld_Shield) {
+				shieldRemaining = SHIELD_MAX_TIME;
+			}
+			else if (shieldCooldown <= 0 && this.keyHeld_Shield) {
+				shieldCooldown = 1; // prevent repeatedly shielding if keyheld
+			}
+		}
 
 		this.updateState(); // update animation state
 		EntityClass.prototype.move.call(this); // call superclass function
@@ -228,6 +264,12 @@ function PlayerClass() {
 	this.updateState = function() {
 		if (isDashing) {
 			this.AnimatedSprite.changeState("dash");
+		}
+		else if (Attack != null) {
+			this.AnimatedSprite.changeState("attack");
+		}
+		else if (isShielding) {
+			this.AnimatedSprite.changeState("shield");
 		}
 		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
 			this.AnimatedSprite.changeState("walk");
