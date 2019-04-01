@@ -36,8 +36,8 @@ function cameraFollow() {
 }
 
 function enforceCamBoundaries() {
-	var maxPanRight = TILE_COLS * TILE_W - canvas.width;
-	var maxPanBottom = TILE_ROWS * TILE_H - canvas.height;
+	var maxPanRight = canvas.width; //- TILE_COLS * TILE_W
+	var maxPanBottom = canvas.height; //- TILE_ROWS * TILE_H
 	if (camPanX < 0) {
 		camPanX = 0;
 	}

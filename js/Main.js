@@ -36,11 +36,20 @@ window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
 	
+	window.addEventListener("resize", resizeCanvas);
+	resizeCanvas();
+
 	colorRect(0,0, canvas.width,canvas.height, 'white');
 	
 	loadImages();
 	
 	canvas.addEventListener('mousemove', displayMousePos);
+}
+
+function resizeCanvas() {
+	console.log("resizing canvas")
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
 
 function startGame() {
