@@ -216,6 +216,7 @@ function handleEntityCollisions(entity) {
 	for (var i = 0; i < Entities.length; i++) {
 		if (entity == Entities[i]) {
 			continue;
+			//Adding comment for practice commit 
 		}
 		
 		if (AABBCollisionDetection(entity.x,collisionBoxY(entity), entity.width,entity.collisionBoxHeight,
