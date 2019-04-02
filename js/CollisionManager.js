@@ -1,16 +1,16 @@
 function handleWorldCollisions(object) {
 	var objectXMovement = Math.abs(object.nextX - object.x);
 	var objectYMovement = Math.abs(object.nextY - object.y);
-	var numSteps = objectXMovement > objectYMovement ? objectXMovement : objectYMovement;
-	var speedX = (object.nextX - object.x) / numSteps;
-	var speedY = (object.nextY - object.y) / numSteps;
+	var numSteps = objectXMovement > objectYMovement ? objectXMovement : objectYMovement; // take the larger number of pixel movements from x or y
+	var speedX = (object.nextX - object.x) / numSteps; // max can be 1 (these used to slowly increment through movement)
+	var speedY = (object.nextY - object.y) / numSteps; // max can be 1 (and check collisions on max 1 pixel movement)
 	var prevX, prevY;
 	
-	if(numSteps > object.moveSpeed) {
-		// NEED TO IMPLEMENT
-		// object is not moving of its own accord - direction should change on collision
-		// how to do this??
-	}
+	/*if(numSteps > object.moveSpeed) {
+		// NEED TO IMPLEMENT (Maybe)
+		// object is not moving of its own accord (e.g. been hit by an enemy)
+		// direction should change on collision - how to do this??
+	}*/
 	
 	// use these variables to store the current position that we will alter
 	object.nextX = object.x;

@@ -13,7 +13,7 @@ function PlayerClass() {
 	// public
 	this.width = 25;
 	this.height = 50;
-	this.hp = 2;
+	this.hp = 3;
 	
 	this.collisionBoxHeight = this.width;
 	
@@ -202,13 +202,16 @@ function PlayerClass() {
 		
 		// SHIELD
 		if (this.keyHeld_Shield && !isShielding && shieldCooldown <= 0 && !isDashing && Attack == null) { // not currently shielding & is able to
-			isShielding = true; // prevents taking damage
+			isShielding = true;
+			this.isInvulnerable = true;
+			console.log('shield activated');
 		}
 		if (isShielding){ // currently shielding
 			shieldRemaining--;
 			
 			if (shieldRemaining <= 0 || !this.keyHeld_Shield) {
 				isShielding = false;
+				this.isInvulnerable = false;
 				shieldCooldown = SHIELD_COOLDOWN;
 			}
 		}

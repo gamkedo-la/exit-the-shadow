@@ -31,8 +31,10 @@ function EntityClass() {
 	this.states;
 	this.AnimatedSprite;
 	
-	this.hp = 100;
+	this.HP = 30;
 	this.directionFacing = UP;
+	
+	this.isInvulnerable = false;
 }
 
 // add new functions in here
