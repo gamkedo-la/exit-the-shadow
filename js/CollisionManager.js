@@ -224,7 +224,7 @@ function handleEntityCollisions(entity) {
 				 	if(entity.movementDirection[UP]){
 					 Entities[i].nextY-=15;
 					 entity.nextY += 15;
-					}
+					 					}
 					if(entity.movementDirection[DOWN]){
 						Entities[i].nextY+=15;
 						entity.nextY -= 15;
@@ -237,7 +237,7 @@ function handleEntityCollisions(entity) {
 						Entities[i].nextX+=15;
 						entity.nextX -= 15;
 					 }
-					
+					 camWobble();		
 		}
 	}
 }
@@ -273,3 +273,5 @@ function AABBCollisionDetection(object1X,object1Y, object1Width,object1Height, o
 	}
 	return false;
 }
+
+

@@ -51,3 +51,7 @@ function enforceCamBoundaries() {
 		camPanY = maxPanBottom
 	}
 }
+
+function camWobble() {
+	console.log("camera to wobble");
+}
