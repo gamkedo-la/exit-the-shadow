@@ -37,6 +37,14 @@ window.onload = function() {
 	canvasContext = canvas.getContext('2d');
 	
 	window.addEventListener("resize", resizeCanvas);
+	window.addEventListener('focus', function () {
+		gamePaused = false;
+		}
+	);
+    window.addEventListener('blur', function() {
+		gamePaused = true;
+		}
+	);
 	resizeCanvas();
 
 	colorRect(0,0, canvas.width,canvas.height, 'white');
