@@ -54,4 +54,14 @@ function enforceCamBoundaries() {
 
 function camWobble() {
 	console.log("camera to wobble");
+
+	wobbleX = Math.floor(Math.random() * (10 - 1 + 1) + 1);
+	
+	if(camPanX != 100) {
+	camPanX = 100;
+	} else {
+	camPanX += wobbleX;
+	}
+
+	console.log(camPanX);
 }
