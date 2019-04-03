@@ -70,7 +70,9 @@ function updateAll() {
 
 	animateAll();
 	drawAll();
+		if (gamePaused == false) { //Updates position only if not paused
 	moveAll();
+	}
 	camScreenshake();
 }
 
