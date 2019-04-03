@@ -6,6 +6,7 @@ const KEY_SPACE = 32; // DASH
 const KEY_K = 75; // ATTACK
 const KEY_L = 76; // SHIELD
 const KEY_P = 80; // PAUSE
+const KEY_H = 72; // HELP SCREEN KEY
 
 function setUpInput() {
 	//canvas.addEventListener('mousemove', updateMousePos);
@@ -49,8 +50,22 @@ function keySet(evt, player, isPressed) {
 
 function keyPressed(evt) {	
 	keySet(evt, Player, true);
+	var helpScreenKey = KEY_H;
+	
+	if (evt.keyCode == helpScreenKey) {
+		if (helpScreen) {
+			mainGameState = true;
+			gamePause = false;
+			helpScreen = false;
+		} else {
+			mainGameState = false;
+			gamePause = true;
+			helpScreen = true;
+		}
+	}
 }
 
 function keyReleased(evt) {
 	keySet(evt, Player, false);
 }
+

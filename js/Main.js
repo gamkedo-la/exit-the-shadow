@@ -1,6 +1,8 @@
 var canvas, canvasContext;
 var Player = new PlayerClass();
 var TestEnemy = new TestEnemyClass();
+var mainGameState = true;
+var helpScreen = false;
 
 var Entities = [
 	Player,
@@ -91,26 +93,31 @@ function moveAll() {
 }
 
 function drawAll() {
-	colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
-	
-	drawTiles(); // CAN TAKE THIS OUT AS ART IS GOING ON TOP OF IT
-	
-	SortedDrawList = [];
-	SortedDrawList = SortedDrawList.concat(Entities, SortedArt);
-	SortedDrawList.sort(function(a, b){return (a.y+a.height)-(b.y+b.height)});
-	canvasContext.save();
-	canvasContext.translate(-camPanX, -camPanY);
-	for (var i = 0; i < SortedDrawList.length ; i++) {
-		if (typeof SortedDrawList[i].imgName !== 'undefined') { // sorted art
-			canvasContext.drawImage(window[SortedDrawList[i].imgName], SortedDrawList[i].x, SortedDrawList[i].y);
+	if(mainGameState){
+		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
+		
+		drawTiles(); // CAN TAKE THIS OUT AS ART IS GOING ON TOP OF IT
+		
+		SortedDrawList = [];
+		SortedDrawList = SortedDrawList.concat(Entities, SortedArt);
+		SortedDrawList.sort(function(a, b){return (a.y+a.height)-(b.y+b.height)});
+		canvasContext.save();
+		canvasContext.translate(-camPanX, -camPanY);
+		for (var i = 0; i < SortedDrawList.length ; i++) {
+			if (typeof SortedDrawList[i].imgName !== 'undefined') { // sorted art
+				canvasContext.drawImage(window[SortedDrawList[i].imgName], SortedDrawList[i].x, SortedDrawList[i].y);
+			}
+			else { // entities
+				SortedDrawList[i].draw();
+			}
 		}
-		else { // entities
-			SortedDrawList[i].draw();
-		}
+		canvasContext.restore();
+		
+		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
+	} else if(helpScreen){
+		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
+		gamePause == true;
 	}
-	canvasContext.restore();
-	
-	colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
 }
 
 function animateAll() {
