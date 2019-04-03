@@ -71,7 +71,7 @@ function updateAll() {
 	animateAll();
 	drawAll();
 	moveAll();
-	camWobble();
+	camScreenshake();
 }
 
 function moveAll() {
