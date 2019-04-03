@@ -67,9 +67,11 @@ function startGame() {
 }
 
 function updateAll() {
+
 	animateAll();
 	drawAll();
 	moveAll();
+	camWobble();
 }
 
 function moveAll() {

@@ -221,6 +221,7 @@ function handleEntityCollisions(entity) {
 		if (AABBCollisionDetection(entity.x,collisionBoxY(entity), entity.width,entity.collisionBoxHeight,
 				 				   Entities[i].x,collisionBoxY(Entities[i]), Entities[i].width,Entities[i].collisionBoxHeight)) {
 			   console.log("entity collision detected");
+				pendingWobbles = 5;
 				 	if(entity.movementDirection[UP]){
 					 Entities[i].nextY-=15;
 					 entity.nextY += 15;
@@ -237,7 +238,7 @@ function handleEntityCollisions(entity) {
 						Entities[i].nextX+=15;
 						entity.nextX -= 15;
 					 }
-					 camWobble();		
+					 		
 		}
 	}
 }
