@@ -56,7 +56,7 @@ function enforceCamBoundaries() {
 function camScreenshake() {
 	if (pendingScreenshakes > 0) {
 		pendingScreenshakes --; //substract one from the count
-	camPanX += Math.random() * 10 - 5;
-	camPanY += Math.random() * 10 - 5;
+	camPanX += Math.round(Math.random() * 10 - 5);
+	camPanY += Math.round(Math.random() * 10 - 5);
 	}
 }
