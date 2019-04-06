@@ -54,10 +54,13 @@ window.onload = function() {
 	loadImages();
 	
 	canvas.addEventListener('mousemove', displayMousePos);
+	
+	initAudio();
+	loadAudio();
 }
 
 function resizeCanvas() {
-	console.log("resizing canvas")
+	console.log("resizing canvas");
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 }

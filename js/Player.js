@@ -180,6 +180,7 @@ function PlayerClass() {
 				}
 				
 				Attack = new ProjectileClass(attackOptions);
+				sfx[ATTACK_SFX].play();
 			}
 		}
 		if (Attack != null){ // currently attacking
