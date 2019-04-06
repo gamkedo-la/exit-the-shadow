@@ -77,13 +77,12 @@ function startGame() {
 }
 
 function updateAll() {
-
-	animateAll();
-	drawAll();
-		if (gamePaused == false) { //Updates position only if not paused
-	moveAll();
+	if (gamePaused == false) { //Updates only if the game is not paused
+		animateAll();
+		moveAll();
+		drawAll();
+		camScreenshake();
 	}
-	camScreenshake();
 }
 
 function moveAll() {
