@@ -16,7 +16,7 @@ function TestEnemyClass() {
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.25}
 	}
 	
-	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, this.states);
+	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, 0, this.states);
 		
 	this.move = function () {
 		

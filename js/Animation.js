@@ -1,7 +1,11 @@
-function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animationSpriteHeight, animationStates) {
+function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animationSpriteHeight, animationSpritePadding, animationStates) {
 	let spriteSheet = animationSpriteSheet;
 	let spriteWidth = animationSpriteWidth;
 	let spriteHeight = animationSpriteHeight;
+	let spritePadding = animationSpritePadding;
+
+	let totalWidth = spriteWidth + (spritePadding*2);
+	let totalHeight = spriteHeight + (spritePadding*2);
 	
 	let states = animationStates;
 	let currentState = states[Object.keys(states)[0]];
@@ -14,10 +18,10 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 	this.render = function() {
 		canvasContext.drawImage(
 			spriteSheet,
-			frameRow*spriteWidth,
-			frameCol*spriteHeight,
-			spriteWidth,
-			spriteHeight,
+			frameRow*totalWidth,
+			frameCol*totalHeight,
+			totalWidth,
+			totalHeight,
 			0,
 			0,
 			spriteWidth,

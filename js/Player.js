@@ -27,7 +27,7 @@ function PlayerClass() {
 		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1}
 	}
 	
-	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, this.states);
+	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, 0, this.states);
 	
 	this.keyHeld_Up = false;
 	this.keyHeld_Down = false;
