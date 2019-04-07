@@ -8,23 +8,21 @@ var camShakeOn = false;
 var Entities = [
 	Player
 	// Test enemy dynamically added from map
-]
+];
 
 var GroundArt = [
-	
-]
+	{x: 150, y: 650, imgName: "platform"}
+];
 
 var SortedArt = [
-	{x: 480, y: 192, imgName: "octagonObstacle"}
-]
+	{x: 480, y: 192, imgName: "octagonObstacle"},
+];
 
 var OverlayingArt = [
-	
-]
+	{x: 165, y: 675, imgName: "playerConcept"}
+];
 
-var SortedDrawList = [
-	
-] 
+var SortedDrawList = [];
 
 var mouseX, mouseY;
 function displayMousePos(evt) {
@@ -100,20 +98,33 @@ function drawAll() {
 		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
 		
 		drawTiles(); // CAN TAKE THIS OUT AS ART IS GOING ON TOP OF IT
+
+		canvasContext.save();
+		canvasContext.translate(-camPanX, -camPanY);
+
+		// ground art
+		for (i = 0; i < GroundArt.length; i++) {
+			canvasContext.drawImage(window[GroundArt[i].imgName], GroundArt[i].x, GroundArt[i].y);
+		}
 		
+		// sorted art
 		SortedDrawList = [];
 		SortedDrawList = SortedDrawList.concat(Entities, SortedArt);
 		SortedDrawList.sort(function(a, b){return (a.y+a.height)-(b.y+b.height)});
-		canvasContext.save();
-		canvasContext.translate(-camPanX, -camPanY);
 		for (var i = 0; i < SortedDrawList.length ; i++) {
-			if (typeof SortedDrawList[i].imgName !== 'undefined') { // sorted art
+			if (typeof SortedDrawList[i].imgName !== 'undefined') { // sorted environment art
 				canvasContext.drawImage(window[SortedDrawList[i].imgName], SortedDrawList[i].x, SortedDrawList[i].y);
 			}
 			else { // entities
 				SortedDrawList[i].draw();
 			}
 		}
+
+		// overlaying art
+		for (i = 0; i < OverlayingArt.length; i++) {
+			canvasContext.drawImage(window[OverlayingArt[i].imgName], OverlayingArt[i].x, OverlayingArt[i].y);
+		}
+
 		canvasContext.restore();
 		
 		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
