@@ -27,8 +27,6 @@ function AudioClass() {
 		}
 		
 		this.altTurn = !this.altTurn;
-		
-		console.log("playing sfx");
 	}
 }
 
