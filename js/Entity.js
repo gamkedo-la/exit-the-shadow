@@ -137,7 +137,6 @@ EntityClass.prototype = {
 
 			if (this.HP <= 0) {
 				this.isDead = true;
-				handleDeadEntities();
 			}
 			return true;
 		}

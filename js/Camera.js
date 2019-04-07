@@ -54,9 +54,11 @@ function enforceCamBoundaries() {
 }
 
 function camScreenshake() {
-	if (pendingScreenshakes > 0) {
-		pendingScreenshakes --; //substract one from the count
-	camPanX += Math.round(Math.random() * 4 - 2);
-	camPanY += Math.round(Math.random() * 4 - 2);
+	if (camShakeOn) {
+		if (pendingScreenshakes > 0) {
+			pendingScreenshakes --; //substract one from the count
+		camPanX += Math.round(Math.random() * 4 - 2);
+		camPanY += Math.round(Math.random() * 4 - 2);
+		}
 	}
 }

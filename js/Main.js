@@ -3,6 +3,7 @@ var Player = new PlayerClass();
 var TestEnemy = new TestEnemyClass();
 var mainGameState = true;
 var helpScreen = false;
+var camShakeOn = false;
 
 var Entities = [
 	Player

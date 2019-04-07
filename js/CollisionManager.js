@@ -277,6 +277,7 @@ function handleProjectileCollisions(projectile) {
 					 Entities[i].forceX += projectile.velocityX;
 					 Entities[i].forceY += projectile.velocityY;
 					 projectile.immuneEntities.push(Entities[i]);
+					 handleDeadEntities(); // check if anyone is dead
 				 }
 		}
 	}
