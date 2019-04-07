@@ -118,7 +118,10 @@ function drawAll() {
 		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
 	} else if(helpScreen){
 		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
-		gamePause == true;
+
+		// DISPLAY CONTROLS / ANY OTHER HELP HERE
+
+		gamePaused = true;
 	}
 }
 

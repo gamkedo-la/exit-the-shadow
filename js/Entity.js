@@ -36,6 +36,10 @@ function EntityClass() {
 	
 	this.isInvulnerable = false;
 	this.isDead = false;
+
+	this.weight = 0; // 0-10 (10 means can't be pushed by anything)
+	this.forceX = 0;
+	this.forceY = 0;
 }
 
 // add new functions in here
@@ -77,6 +81,13 @@ EntityClass.prototype = {
 				this.AnimatedSprite.setEntityDirection(RIGHT);
 			}
 		}
+
+		// the heavier the entity, the less it gets pushed by a force
+		this.nextX += this.forceX * (10 - this.weight);
+		this.nextY += this.forceY * (10 - this.weight);
+
+		this.forceX = 0;
+		this.forceY = 0;
 
 		handleWorldCollisions(this);
 		handleEntityCollisions(this);

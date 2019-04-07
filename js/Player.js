@@ -151,20 +151,24 @@ function PlayerClass() {
 		if (this.keyHeld_Attack && attackCooldown <= 0 && !isShielding && !isDashing) { // not attacking right now & is able to
 			if (Attack == null) {
 				let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
-				let attackX, attackY;
+				let velocityX = 0, velocityY = 0;
 				
 				switch(this.directionFacing) {
 				case UP:
 					centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
+					velocityY = -1;
 					break;
 				case DOWN:
 					centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
+					velocityY = 1;
 					break;
 				case LEFT:
 					centerX -= ((this.width / 2) + (attackWidth / 2));
+					velocityX = -1;
 					break;
 				case RIGHT:
 					centerX += ((this.width / 2) + (attackWidth / 2));
+					velocityX = 1;
 					break;
 				}
 				
@@ -174,9 +178,10 @@ function PlayerClass() {
 					width: attackWidth,
 					height: attackHeight,
 					damage: 1,
-					velocityX: 0,
-					velocityY: 0,
-					frameLength: 1
+					velocityX: velocityX,
+					velocityY: velocityY,
+					frameLength: 1,
+					immuneEntities: [Player]
 				}
 				
 				Attack = new ProjectileClass(attackOptions);

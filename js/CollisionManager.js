@@ -274,6 +274,8 @@ function handleProjectileCollisions(projectile) {
 				 // collision detected: cause damage to entity, add to immune list if damage could be done
 				 if (Entities[i].takeDamage(projectile.damage)) {
 					 pendingScreenshakes = 6;
+					 Entities[i].forceX += projectile.velocityX;
+					 Entities[i].forceY += projectile.velocityY;
 					 projectile.immuneEntities.push(Entities[i]);
 				 }
 		}

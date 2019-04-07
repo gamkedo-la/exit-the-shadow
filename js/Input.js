@@ -22,7 +22,7 @@ var gamePaused = false;
 function keySet(evt, player, isPressed) {
   if (isPressed && evt.keyCode == KEY_P) {
         gamePaused = !gamePaused;
-    }
+  }
 	if (evt.keyCode == player.controlKeyLeft) {
 		player.keyHeld_Left = isPressed;
 	}
@@ -55,11 +55,10 @@ function keyPressed(evt) {
 	if (evt.keyCode == helpScreenKey) {
 		if (helpScreen) {
 			mainGameState = true;
-			gamePause = false;
+			gamePaused = false;
 			helpScreen = false;
 		} else {
 			mainGameState = false;
-			gamePause = true;
 			helpScreen = true;
 		}
 	}

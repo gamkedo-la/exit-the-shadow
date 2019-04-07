@@ -5,19 +5,15 @@ function ProjectileClass(options) {
 	this.height = options.height;
 	this.damage = options.damage;
 	this.immuneEntities = options.immuneEntities || [];
-	
+	this.velocityX = options.velocityX;
+	this.velocityY = options.velocityY;
 	this.attackFinished = false;
 
-	let velocityX = options.velocityX;
-	let velocityY = options.velocityY;
 	let frameLength = options.frameLength;
-	
 	let framesLeft = frameLength;
 	
 	this.update = function() {
 		if (!this.attackFinished) {
-			this.centerX += velocityX;
-			this.centerY += velocityY;
 			framesLeft--;
 			
 			// draw attack hitbox (TEMPORARY)
@@ -27,6 +23,9 @@ function ProjectileClass(options) {
 			canvasContext.restore();
 			
 			handleProjectileCollisions(this);
+
+			this.centerX += this.velocityX;
+			this.centerY += this.velocityY;
 		
 			if (framesLeft <= 0) {
 				this.attackFinished = true;
