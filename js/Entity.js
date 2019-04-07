@@ -35,6 +35,7 @@ function EntityClass() {
 	this.directionFacing = UP;
 	
 	this.isInvulnerable = false;
+	this.isDead = false;
 }
 
 // add new functions in here
@@ -116,5 +117,19 @@ EntityClass.prototype = {
 	
 	animate: function() {
 		this.AnimatedSprite.update();
+	},
+
+	takeDamage: function(damage) {
+		if (!this.isInvulnerable) {
+			console.log("entity took damage, HP: " + this.HP);
+			this.HP -= damage;
+
+			if (this.HP <= 0) {
+				this.isDead = true;
+				handleDeadEntities();
+			}
+			return true;
+		}
+		return false;
 	}
 }

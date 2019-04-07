@@ -3,11 +3,11 @@ function ProjectileClass(options) {
 	this.centerY = options.centerY;
 	this.width = options.width;
 	this.height = options.height;
+	this.damage = options.damage;
 	this.immuneEntities = options.immuneEntities || [];
 	
 	this.attackFinished = false;
-	
-	let damage = options.damage;
+
 	let velocityX = options.velocityX;
 	let velocityY = options.velocityY;
 	let frameLength = options.frameLength;

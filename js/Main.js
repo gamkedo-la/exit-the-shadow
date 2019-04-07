@@ -5,8 +5,8 @@ var mainGameState = true;
 var helpScreen = false;
 
 var Entities = [
-	Player,
-	//TestEnemy,
+	Player
+	// Test enemy dynamically added from map
 ]
 
 var GroundArt = [
@@ -82,8 +82,8 @@ function startGame() {
 function updateAll() {
 	if (gamePaused == false) { //Updates only if the game is not paused
 		animateAll();
-		moveAll();
 		drawAll();
+		moveAll();
 		camScreenshake();
 	}
 }
@@ -125,5 +125,13 @@ function drawAll() {
 function animateAll() {
 	for (var i = 0; i < Entities.length ; i++) {
 		Entities[i].animate();
+	}
+}
+
+function handleDeadEntities() {
+	for (var i = 0; i < Entities.length; i++) {
+		if (Entities[i].isDead) {
+			Entities.splice(i, 1); // remove dead entity
+		}
 	}
 }

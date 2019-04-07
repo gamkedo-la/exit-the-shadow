@@ -213,32 +213,46 @@ function lineLineCollider(x1,y1, x2,y2, x3,y3, x4,y4) {
 }
 
 function handleEntityCollisions(entity) {
-	for (var i = 0; i < Entities.length; i++) {
-		if (entity == Entities[i]) {
-			continue;
+	var entityXMovement = Math.abs(entity.nextX - entity.x);
+	var entityYMovement = Math.abs(entity.nextY - entity.y);
+	var numSteps = entityXMovement > entityYMovement ? entityXMovement : entityYMovement; // take the larger number of pixel movements from x or y
+	var speedX = (entity.nextX - entity.x) / numSteps; // max can be 1 (these used to slowly increment through movement)
+	var speedY = (entity.nextY - entity.y) / numSteps; // max can be 1 (and check collisions on max 1 pixel movement)
+	var prevX, prevY;
+	
+	// use these variables to store the current position that we will alter
+	entity.nextX = entity.x;
+	entity.nextY = entity.y;
+	
+	for (var i = 0; i < numSteps; i++) {
+		// handle x axis collisions
+		prevX = entity.nextX;
+		prevY = entity.nextY;
+		entity.nextX += speedX;
+		for (var j = 0; j < Entities.length; j++) {
+			if (entity == Entities[j]) {
+				continue;
+			}
+			
+			if (AABBCollisionDetection(entity.nextX,collisionBoxY(entity), entity.width,entity.collisionBoxHeight,
+											Entities[j].x,collisionBoxY(Entities[j]), Entities[j].width,Entities[j].collisionBoxHeight)) {
+					 entity.nextX = prevX;
+			}
 		}
-		
-		if (AABBCollisionDetection(entity.x,collisionBoxY(entity), entity.width,entity.collisionBoxHeight,
-				 				   Entities[i].x,collisionBoxY(Entities[i]), Entities[i].width,Entities[i].collisionBoxHeight)) {
-			   console.log("entity collision detected");
-				if (entity == Player) pendingScreenshakes = 5;
-				 	if(entity.movementDirection[UP]){
-					 Entities[i].nextY-=15;
-					 entity.nextY += 15;
-					 					}
-					if(entity.movementDirection[DOWN]){
-						Entities[i].nextY+=15;
-						entity.nextY -= 15;
-					 }
-					 if(entity.movementDirection[LEFT]){
-						Entities[i].nextX-=15;
-						entity.nextX += 15;
-					 }
-					 if(entity.movementDirection[RIGHT]){
-						Entities[i].nextX+=15;
-						entity.nextX -= 15;
-					 }
-					 		
+
+		// handle y axis collisions
+		prevX = entity.nextX;
+		prevY = entity.nextY;
+		entity.nextY += speedY;
+		for (j = 0; j < Entities.length; j++) {
+			if (entity == Entities[j]) {
+				continue;
+			}
+			
+			if (AABBCollisionDetection(entity.nextX,collisionBoxY(entity), entity.width,entity.collisionBoxHeight,
+											Entities[j].x,collisionBoxY(Entities[j]), Entities[j].width,Entities[j].collisionBoxHeight)) {
+					 entity.nextY = prevY;
+			}
 		}
 	}
 }
@@ -247,7 +261,7 @@ function handleProjectileCollisions(projectile) {
 	for (var i = 0; i < Entities.length; i++) {
 		var entityIsImmune = false;
 		for (var j = 0; j < projectile.immuneEntities.length; j++) {
-			if (projectile.immuneEntities[j] == Entities[i]) { // THIS MAY NOT ALWAYS WORK IF JAVASCRIPT COPIES OBJECTS INSTEAD OF PASSING POINTERS - MAY NEED TO ADD ENTITITY IDS IF THIS HAPPENS
+			if (projectile.immuneEntities[j] == Entities[i]) {
 				entityIsImmune = true;
 			}
 		}
@@ -257,8 +271,11 @@ function handleProjectileCollisions(projectile) {
 		
 		if (AABBCollisionDetection(projectile.centerX - projectile.width / 2,projectile.centerY - projectile.width / 2, projectile.width,projectile.height,
 				 				   Entities[i].x,collisionBoxY(Entities[i]), Entities[i].width,Entities[i].collisionBoxHeight)) {
-			   console.log("attack collision detected");
-			   // handle projectile collisions (cause damage to entity, add to immune list)
+				 // collision detected: cause damage to entity, add to immune list if damage could be done
+				 if (Entities[i].takeDamage(projectile.damage)) {
+					 pendingScreenshakes = 6;
+					 projectile.immuneEntities.push(Entities[i]);
+				 }
 		}
 	}
 }
