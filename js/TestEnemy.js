@@ -15,7 +15,7 @@ function TestEnemyClass(testEnemyBehaviour) {
 	this.moveSpeed = 2;
 	
 	this.states = {
-		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
+		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.25},
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.25},
 		dash: {startFrame: 8, endFrame: 9, animationSpeed: 1},
 		attack: {startFrame: 10, endFrame: 10, animationSpeed: 1},

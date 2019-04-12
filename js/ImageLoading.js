@@ -14,7 +14,7 @@ function loadImage(imgVar, fileName) {
 
 function loadImages() {
 	var imageList = [
-		{varName: playerSheet, fileName: "player_sheet.png"},
+		{varName: playerSheet, fileName: "player_sheet_underprogress.png"},
 		{varName: octagonObstacle, fileName: "octagon_obstacle.png"},
 		{varName: platform, fileName: "platform.png"},
 		{varName: playerConcept, fileName: "player.png"},
