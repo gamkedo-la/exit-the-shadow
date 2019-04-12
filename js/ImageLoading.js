@@ -3,6 +3,7 @@ var octagonObstacle = document.createElement("img");
 var platform = document.createElement("img");
 var playerConcept = document.createElement("img");
 var playerLifeIcon = document.createElement("img");
+var floorTileset = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -17,8 +18,8 @@ function loadImages() {
 		{varName: octagonObstacle, fileName: "octagon_obstacle.png"},
 		{varName: platform, fileName: "platform.png"},
 		{varName: playerConcept, fileName: "player.png"},
-		{varName: playerLifeIcon, fileName: "life_placeholder.png"}
-
+		{varName: playerLifeIcon, fileName: "life_placeholder.png"},
+		{varName: floorTileset, fileName: "floor_tiles.png"}
 	];
 	
 	picsToLoad = imageList.length;
