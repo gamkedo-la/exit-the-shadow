@@ -4,6 +4,7 @@ var platform = document.createElement("img");
 var playerConcept = document.createElement("img");
 var playerLifeIcon = document.createElement("img");
 var floorTileset = document.createElement("img");
+var wallsTileset = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -19,7 +20,8 @@ function loadImages() {
 		{varName: platform, fileName: "platform.png"},
 		{varName: playerConcept, fileName: "player.png"},
 		{varName: playerLifeIcon, fileName: "life_placeholder.png"},
-		{varName: floorTileset, fileName: "floor_tiles.png"}
+		{varName: floorTileset, fileName: "floor_tiles.png"},
+		{varName: wallsTileset, fileName: "walls_tileset.png"}
 	];
 	
 	picsToLoad = imageList.length;
