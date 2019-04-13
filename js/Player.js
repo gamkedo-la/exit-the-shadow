@@ -18,6 +18,9 @@ function PlayerClass() {
 	this.collisionBoxHeight = this.width;
 	
 	this.moveSpeed = 5;
+
+	// motion blur trail effect
+	this.trail = new TrailFX(trailImage);
 	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.25},
@@ -267,7 +270,8 @@ function PlayerClass() {
 
 	this.cancelDash = function() {
 		isDashing = false;
-		dashIsCoolingDown = true;
+		dashIsCoolingDown = true; // FIXME undefined
+		// dashCooldown = DASH_COOLDOWN; // maybe we want this instead?
 	}
 	
 	this.updateState = function() {
@@ -289,6 +293,14 @@ function PlayerClass() {
 	}
 	
 	this.draw = function() {
+		
+		// motion blur effect
+		this.trail.update(this.x+8,this.y+24);
+		if (isDashing || dashCooldown > 0)
+			this.trail.draw(); 
+
 		EntityClass.prototype.draw.call(this);
+		
+
 	}
 }

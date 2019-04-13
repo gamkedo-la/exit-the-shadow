@@ -5,6 +5,7 @@ var playerConcept = document.createElement("img");
 var playerLifeIcon = document.createElement("img");
 var floorTileset = document.createElement("img");
 var wallsTileset = document.createElement("img");
+var trailImage = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -21,7 +22,8 @@ function loadImages() {
 		{varName: playerConcept, fileName: "player.png"},
 		{varName: playerLifeIcon, fileName: "life_placeholder.png"},
 		{varName: floorTileset, fileName: "floor_tiles.png"},
-		{varName: wallsTileset, fileName: "walls_tileset.png"}
+		{varName: wallsTileset, fileName: "walls_tileset.png"},
+		{varName: trailImage, fileName: "trail.png"}
 	];
 	
 	picsToLoad = imageList.length;
