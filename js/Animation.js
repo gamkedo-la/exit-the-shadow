@@ -10,22 +10,22 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 	let states = animationStates;
 	let currentState = states[Object.keys(states)[0]];
 	
-	let frameRow = currentState.startFrame;
-	let frameCol = 0;
+	let frameCol = currentState.startFrame;
+	let frameRow = 0;
 	let tickCount = 0;
 	let ticksPerFrame = Math.round(1 / currentState.animationSpeed);
 	
 	this.render = function() {
 		canvasContext.drawImage(
 			spriteSheet,
-			frameRow*totalWidth,
-			frameCol*totalHeight,
+			frameCol*totalWidth,
+			frameRow*totalHeight,
 			totalWidth,
 			totalHeight,
-			0,
-			0,
-			spriteWidth,
-			spriteHeight
+			-spritePadding,
+			-spritePadding,
+			totalWidth,
+			totalHeight
 		)
 	}
 	
@@ -35,14 +35,14 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 		if (tickCount > ticksPerFrame) {
 			tickCount = 0;
 			
-			if (frameRow < currentState.startFrame) { // catch being out of bounds
-				frameRow = currentState.startFrame;
+			if (frameCol < currentState.startFrame) { // catch being out of bounds
+				frameCol = currentState.startFrame;
 			}
-			else if (frameRow < currentState.endFrame) {
-				frameRow++;
+			else if (frameCol < currentState.endFrame) {
+				frameCol++;
 			}
 			else {
-				frameRow = currentState.startFrame;
+				frameCol = currentState.startFrame;
 			}
 		}
 	}
@@ -53,12 +53,12 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 		if (newState != currentState && newState != null) {
 			currentState = newState;
 			
-			frameRow = currentState.startFrame;
+			frameCol = currentState.startFrame;
 			ticksPerFrame = Math.round(1 / currentState.animationSpeed);
 		}
 	}
 	
 	this.setEntityDirection = function(spriteSheetFrameCol) {
-		frameCol = spriteSheetFrameCol;
+		frameRow = spriteSheetFrameCol;
 	}
 }
