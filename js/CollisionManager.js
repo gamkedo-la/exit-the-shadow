@@ -70,7 +70,7 @@ function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
 	var row, col;
 	for (row = topTile; row <= bottomTile; row++) {
 		for (col = leftTile; col <= rightTile; col++) {
-			tileType = tileTypeAtColRow(col, row);
+			tileType = tileTypeAtColRow(tileGrid, col, row);
 			tileXPos = col*TILE_W;
 			tileYPos = row*TILE_W;
 			

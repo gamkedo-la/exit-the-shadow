@@ -5,8 +5,8 @@ const PLAYER_DIST_FROM_CENTER_BEFORE_CAM_PAN_X = 20;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAM_PAN_Y = 10;
 
 function moveCamToPlayer() {
-	camPanX = Player.x + Player.width/2 - canvas.width/2;
-	camPanY = Player.y + Player.height/2 - canvas.height/2;
+	camPanX = Math.round(Player.x + Player.width/2 - canvas.width/2);
+	camPanY = Math.round(Player.y + Player.height/2 - canvas.height/2);
 	enforceCamBoundaries();
 }
 
@@ -19,26 +19,26 @@ function cameraFollow() {
 	
 	if (playerDistFromCamCenterX > PLAYER_DIST_FROM_CENTER_BEFORE_CAM_PAN_X) {
 		if (camCenterX < Player.x) {
-			camPanX += Player.currentSpeedX;
+			camPanX += Math.round(Player.currentSpeedX);
 		}
 		else {
-			camPanX -= Player.currentSpeedX;
+			camPanX -= Math.round(Player.currentSpeedX);
 		}
 	}
 	if (playerDistFromCamCenterY > PLAYER_DIST_FROM_CENTER_BEFORE_CAM_PAN_Y) {
 		if (camCenterY < Player.y) {
-			camPanY += Player.currentSpeedY;
+			camPanY += Math.round(Player.currentSpeedY);
 		}
 		else {
-			camPanY -= Player.currentSpeedY;
+			camPanY -= Math.round(Player.currentSpeedY);
 		}
 	}
 	enforceCamBoundaries();
 }
 
 function enforceCamBoundaries() {
-	var maxPanRight = canvas.width; //- TILE_COLS * TILE_W
-	var maxPanBottom = canvas.height; //- TILE_ROWS * TILE_H
+	var maxPanRight = TILE_COLS * TILE_W
+	var maxPanBottom = TILE_ROWS * TILE_H
 	if (camPanX < 0) {
 		camPanX = 0;
 	}

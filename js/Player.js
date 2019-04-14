@@ -270,8 +270,6 @@ function PlayerClass() {
 
 	this.cancelDash = function() {
 		isDashing = false;
-		dashIsCoolingDown = true; // FIXME undefined
-		// dashCooldown = DASH_COOLDOWN; // maybe we want this instead?
 	}
 	
 	this.updateState = function() {

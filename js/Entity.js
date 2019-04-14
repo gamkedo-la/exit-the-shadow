@@ -89,8 +89,8 @@ EntityClass.prototype = {
 		this.forceX = 0;
 		this.forceY = 0;
 
-		handleWorldCollisions(this);
 		handleEntityCollisions(this);
+		handleWorldCollisions(this);
 		
 		// currently only used to calculate camera position for player
 		// but left in here as it may be useful for any entity

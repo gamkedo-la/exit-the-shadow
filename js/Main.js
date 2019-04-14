@@ -11,15 +11,15 @@ var Entities = [
 ];
 
 var GroundArt = [
-	{x: 150, y: 650, imgName: "platform"}
+	//{x: 150, y: 650, imgName: "platform"}
 ];
 
 var SortedArt = [
-	{x: 480, y: 192, imgName: "octagonObstacle"},
+
 ];
 
 var OverlayingArt = [
-	{x: 165, y: 675, imgName: "playerConcept"}
+	//{x: 165, y: 675, imgName: "playerConcept"}
 ];
 
 var SortedDrawList = [];
@@ -76,6 +76,7 @@ function startGame() {
 	setUpInput();
 	loadLevel(levelOne);
 	initialiseEntityPositions();
+	generateFloorTiles();
 }
 
 function updateAll() {
