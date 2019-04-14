@@ -1,13 +1,11 @@
 var canvas, canvasContext;
 var Player = new PlayerClass();
-var TestEnemy = new TestEnemyClass();
 var mainGameState = true;
 var helpScreen = false;
 var camShakeOn = false;
 
 var Entities = [
 	Player
-	// Test enemy dynamically added from map
 ];
 
 var GroundArt = [
@@ -19,7 +17,6 @@ var SortedArt = [
 ];
 
 var OverlayingArt = [
-	//{x: 165, y: 675, imgName: "playerConcept"}
 ];
 
 var SortedDrawList = [];
