@@ -1,9 +1,9 @@
-console.log ("UI");
-
-/* can delete, attempt at loading heart image for player life
 function playerLife () {
-canvasContext.drawImage(playerLifeIcon, canvas.width/2 ,canvas.height/2);
+	var x = 10, y = 8;
+
+	for (var i = 0; i < 3; i++) {
+		canvasContext.drawImage(playerLifeIcon, x,y, 50,50);
+		x += 50;
+	}
 }
 
-playerLife ();
-*/

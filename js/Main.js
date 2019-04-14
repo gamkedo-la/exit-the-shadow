@@ -9,7 +9,7 @@ var Entities = [
 ];
 
 var GroundArt = [
-	//{x: 150, y: 650, imgName: "platform"}
+	{x: 750, y: 3000, imgName: "platform"}
 ];
 
 var SortedArt = [
@@ -125,6 +125,7 @@ function drawAll() {
 
 		canvasContext.restore();
 		
+		playerLife (); // leaving this here temporarily
 		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
 	} else if(helpScreen){
 		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
