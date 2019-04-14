@@ -169,28 +169,28 @@ function initialiseEntityPositions() {
 			tileType = tileTypeAtColRow(tileGrid, col, row);
 			switch(tileType) {
 			case PLAYER:
-				Player.initialisePosition(col*TILE_W + (TILE_W/2), row*TILE_H + (TILE_H/2));
+				Player.initialisePosition(col*TILE_W + (TILE_W), row*TILE_H + (TILE_H));
 				moveCamToPlayer();
 				var arrayIndex = colRowToArrayIndex(col, row);
 				tileGrid[arrayIndex] = 0;
 				break;
 			case SHADOW:
 				let shadowBoss = new ShadowBoss();
-				shadowBoss.initialisePosition(col*TILE_W + (TILE_W/2), row*TILE_H + (TILE_H/2));
+				shadowBoss.initialisePosition(col*TILE_W + (TILE_W), row*TILE_H + (TILE_H));
 				Entities.push(shadowBoss);
 				var arrayIndex = colRowToArrayIndex(col, row);
 				tileGrid[arrayIndex] = 0;
 				break;
 			case BEAST:
 				enemy = new BeastBoss();
-				enemy.initialisePosition(col*TILE_W + (TILE_W/2), row*TILE_H + (TILE_H/2));
+				enemy.initialisePosition(col*TILE_W + (TILE_W), row*TILE_H + (TILE_H));
 				Entities.push(enemy);
 				var arrayIndex = colRowToArrayIndex(col, row);
 				tileGrid[arrayIndex] = 0;
 				break;
 			case EVIL_PLAYER:
 				enemy = new EvilPlayerBoss();
-				enemy.initialisePosition(col*TILE_W + (TILE_W/2), row*TILE_H + (TILE_H/2));
+				enemy.initialisePosition(col*TILE_W + (TILE_W), row*TILE_H + (TILE_H));
 				Entities.push(enemy);
 				var arrayIndex = colRowToArrayIndex(col, row);
 				tileGrid[arrayIndex] = 0;

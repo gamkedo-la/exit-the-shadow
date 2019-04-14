@@ -9,7 +9,7 @@ function ShadowBoss() {
 	const ATTACKING = 2;
 	const SHIELDING = 3;
 	
-	this.width = 32;
+	this.width = 48;
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
@@ -22,8 +22,8 @@ function ShadowBoss() {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1}
 	}
 	
-	let spritePadding = 0;
-	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, spritePadding, this.states);
+	let spritePadding = 64;
+	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
 
 	this.directionFacing = DOWN;
 

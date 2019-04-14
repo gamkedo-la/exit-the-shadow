@@ -45,8 +45,8 @@ function EntityClass() {
 // add new functions in here
 EntityClass.prototype = {
 	initialisePosition: function(x, y) {
-		this.x = this.nextX = x;
-		this.y = this.nextY = y;
+		this.x = this.nextX = x - this.width/2;
+		this.y = this.nextY = y - this.height/2;
 	},
 	// call this at the end of the move function for your specific entity - will handle collisions and movement
 	move: function () {

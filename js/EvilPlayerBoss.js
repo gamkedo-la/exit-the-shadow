@@ -26,8 +26,8 @@ function EvilPlayerBoss() {
 		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1}
 	}
 	
-	let spritePadding = 0;
-	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, spritePadding, this.states);
+	let spritePadding = 50;
+	this.AnimatedSprite = new AnimatedSpriteClass(evilPlayerSheet, this.width, this.height, spritePadding, this.states);
 
 	this.directionFacing = DOWN;
 

@@ -19,10 +19,11 @@ function BeastBoss() {
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
 	
 	this.states = {
-		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.25}
+		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1}
 	}
 	
-	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, 0, this.states);
+	let spritePadding = 64;
+	this.AnimatedSprite = new AnimatedSpriteClass(beastSheet, this.width, this.height, spritePadding, this.states);
 
 	this.directionFacing = DOWN;
 
