@@ -24,7 +24,7 @@ function PlayerClass() {
 	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
-		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.75},
+		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.5},
 		dash: {startFrame: 8, endFrame: 9, animationSpeed: 1},
 		attack: {startFrame: 10, endFrame: 10, animationSpeed: 1},
 		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1}
