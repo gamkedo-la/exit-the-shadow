@@ -26,7 +26,7 @@ function loadImages() {
 		{varName: playerConcept, fileName: "player.png"},
 		{varName: playerLifeIcon, fileName: "life_placeholder.png"},
 		{varName: floorTileset, fileName: "floor_tiles.png"},
-		{varName: wallsTileset, fileName: "walls_tileset.png"},
+		{varName: wallsTileset, fileName: "walls_tileset_v2.png"},
 		{varName: trailImage, fileName: "trail.png"}
 	];
 	
