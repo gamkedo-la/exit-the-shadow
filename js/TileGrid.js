@@ -104,11 +104,11 @@ var levelOne = [
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,31,17,11,19,20,17,16,11,18, 8, 0, 0, 9,15,11,16,17,11,18,19,20,32, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,28, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,27, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,35,15,11,16,17,11,18,19,20,21,22,16,15,22,20,18,19,17,16,15,11,17,16,19,18,20,21,16,22,11,19,20,17,16,11,18,19,20,21,15,22,17,18,18,15,11,19,20, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,18,19,20,21,22,16,15,22,20,18,19,17,16,15,11,17,16,19,18,20,21,16,22,11,19,20,17,16,11,18,19,20,21,15,22,17,17,16,15,11,17,16,19,18,20,21,36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,23, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,28, 0, 0,37,38,39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,27, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,35,15,11,16,17,11,18,19,20,21,22,16,15,22,20,18,19,17,16,15,11,17,16,19,18,20,21,16,22,11,19,20,17,16,11,18,19,20,21,15,22,17,18,18,15,11,19,20, 8, 0, 0,40,41,42,43,44,45,46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,18,19,20,21,22,16,15,22,20,18,19,17,16,15,11,17,16,19,18,20,21,16,22,11,19,20,17,16,11,18,19,20,21,15,22,17,17,16,15,11,17,16,19,18,20,21,36, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,47,48,49,50,51,52,53, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,54,55,56,57,58,58,60, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,23, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 3, 0, 0,61,62,63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,25, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,26, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,25, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,26, 
@@ -373,22 +373,103 @@ function drawTilesOnScreen() {
 				canvasContext.drawImage(wallsTileset, TILE_W, 4 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
 				break;
 			case VERTICAL_TO_RIGHT:
-				canvasContext.drawImage(wallsTileset,  2 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
 				break;
 			case VERTICAL_TO_LEFT:
-				canvasContext.drawImage(wallsTileset,  3 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
 				break;
 			case HORZ_TO_VERT_LEFT_SKULL:
-				canvasContext.drawImage(wallsTileset,  5 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
 				break;
 			case HORZ_TO_VERT_RIGHT_SKULL:
-				canvasContext.drawImage(wallsTileset,  4 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
 				break;
 			case HORZ_TO_VERT_LEFT:
-				canvasContext.drawImage(wallsTileset,  7 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				canvasContext.drawImage(wallsTileset, 7 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
 				break;
 			case HORZ_TO_VERT_RIGHT:
-				canvasContext.drawImage(wallsTileset,  6 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_1:
+				canvasContext.drawImage(wallsTileset, 0, 5 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_2:
+				canvasContext.drawImage(wallsTileset, TILE_W, 5 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_3:
+				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 5 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_4:
+				canvasContext.drawImage(wallsTileset, 0, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_5:
+				canvasContext.drawImage(wallsTileset, TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_6:
+				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_7:
+				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_8:
+				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_9:
+				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_10:
+				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_11:
+				canvasContext.drawImage(wallsTileset, 0, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_12:
+				canvasContext.drawImage(wallsTileset, TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_13:
+				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_14:
+				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_15:
+				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_16:
+				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_17:
+				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_18:
+				canvasContext.drawImage(wallsTileset, 0, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_19:
+				canvasContext.drawImage(wallsTileset, TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_20:
+				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_21:
+				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_22:
+				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_23:
+				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_24:
+				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_25:
+				canvasContext.drawImage(wallsTileset,  0, 9 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_26:
+				canvasContext.drawImage(wallsTileset,  TILE_W, 9 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
+				break;
+			case PLATFORM_27:
+				canvasContext.drawImage(wallsTileset,  2 * TILE_W, 9 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
 				break;
 			}
 		}

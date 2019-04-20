@@ -35,6 +35,33 @@ const HORZ_TO_VERT_LEFT_SKULL = 33;
 const HORZ_TO_VERT_RIGHT_SKULL = 34;
 const HORZ_TO_VERT_LEFT = 35;
 const HORZ_TO_VERT_RIGHT = 36;
+const PLATFORM_1 = 37;
+const PLATFORM_2 = 38;
+const PLATFORM_3 = 39;
+const PLATFORM_4 = 40;
+const PLATFORM_5 = 41;
+const PLATFORM_6 = 42;
+const PLATFORM_7 = 43;
+const PLATFORM_8 = 44;
+const PLATFORM_9 = 45;
+const PLATFORM_10 = 46;
+const PLATFORM_11 = 47;
+const PLATFORM_12 = 48;
+const PLATFORM_13 = 49;
+const PLATFORM_14 = 50;
+const PLATFORM_15 = 51;
+const PLATFORM_16 = 52;
+const PLATFORM_17 = 53;
+const PLATFORM_18 = 54;
+const PLATFORM_19 = 55;
+const PLATFORM_20 = 56;
+const PLATFORM_21 = 57;
+const PLATFORM_22 = 58;
+const PLATFORM_23 = 59;
+const PLATFORM_24 = 60;
+const PLATFORM_25 = 61;
+const PLATFORM_26 = 62;
+const PLATFORM_27 = 63;
 
 var TILE_COLLISION_DATA = [
 // 0	
@@ -320,5 +347,196 @@ HORZ_TO_VERT_RIGHT_COLLISION_DATA = {
 	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
 	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
 },
+
+//37
+PLATFORM_1_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 4}, topRightVertex: {x: TILE_W, y: 4},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_2_COLLISION_DATA ={
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 4}, topRightVertex: {x: TILE_W, y: 4},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_3_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 4}, topRightVertex: {x: TILE_W - 7, y: 4},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W - 7, y: TILE_H}
+},
+
+ PLATFORM_4_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: 6, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: 6, y: TILE_H}
+},
+
+ PLATFORM_5_COLLISION_DATA = {
+	leftWallCollider: false, rightWallCollider: false,
+	topWallCollider: false, bottomWallCollider: false,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: 0, y: 0},
+	bottomLeftVertex: {x: 0, y: 0}, bottomRightVertex: {x: 0, y: 0}	
+},
+
+ PLATFORM_6_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: TILE_W - 13, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: TILE_W - 13, y: TILE_H - 11}, bottomRightVertex: {x: TILE_W, y: TILE_H - 11}
+},
+
+ PLATFORM_7_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H - 11}, bottomRightVertex: {x: TILE_W, y: TILE_H - 11}
+},
+
+ PLATFORM_8_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H - 11}, bottomRightVertex: {x: TILE_W, y: TILE_H - 11}
+},
+
+ PLATFORM_9_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: false,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: TILE_H / 2},
+	bottomLeftVertex: {x: 0, y: TILE_H - 11}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_10_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: false,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: TILE_H - 12}, topRightVertex: {x: 13, y: TILE_H},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: 13, y: TILE_H}
+},
+
+ PLATFORM_11_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: 6, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: 6, y: TILE_H}
+},
+
+ PLATFORM_12_COLLISION_DATA = {
+	leftWallCollider: false, rightWallCollider: false,
+	topWallCollider: false, bottomWallCollider: false,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: 0, y: 0},
+	bottomLeftVertex: {x: 0, y: 0}, bottomRightVertex: {x: 0, y: 0}
+},
+
+ PLATFORM_13_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: TILE_W - 13, y: TILE_H - 16}, topRightVertex: {x: TILE_W, y: TILE_H - 16},
+	bottomLeftVertex: {x: TILE_W - 13, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_14_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: TILE_H - 16}, topRightVertex: {x: TILE_W, y: TILE_H - 16},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_15_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: TILE_H - 16}, topRightVertex: {x: TILE_W, y: TILE_H - 16},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_16_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: false,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: TILE_H - 16}, topRightVertex: {x: TILE_W, y: TILE_H},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W - 3, y: TILE_H}
+},
+
+ PLATFORM_17_COLLISION_DATA = {
+	leftWallCollider: false, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W - 11, y: 6},
+	bottomLeftVertex: {x: 0, y: 0}, bottomRightVertex: {x: TILE_W - 11, y: 18}
+},
+
+ PLATFORM_18_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 8},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_19_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 8}, topRightVertex: {x: TILE_W, y: 8},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
+},
+
+ PLATFORM_20_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 8}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W - 6, y: TILE_H - 4}
+},
+
+ PLATFORM_21_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H - 4}, bottomRightVertex: {x: TILE_W, y: TILE_H - 4}
+},
+
+ PLATFORM_22_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H - 4}, bottomRightVertex: {x: TILE_W, y: TILE_H - 4}
+},
+
+ PLATFORM_23_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W - 4, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H - 4}, bottomRightVertex: {x: TILE_W, y: TILE_H - 4}
+},
+
+ PLATFORM_24_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 6}, topRightVertex: {x: TILE_W - 10, y: TILE_H - 12},
+	bottomLeftVertex: {x: 0, y: TILE_H - 4}, bottomRightVertex: {x: TILE_W - 10, y: TILE_H - 4}
+},
+
+ PLATFORM_25_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H  -12}, bottomRightVertex: {x: TILE_W, y: TILE_H - 12}
+},
+
+ PLATFORM_26_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H - 12}, bottomRightVertex: {x: TILE_W, y: TILE_H - 12}
+},
+
+ PLATFORM_27_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W - 6, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H - 12}, bottomRightVertex: {x: TILE_W - 6, y: TILE_H - 12}
+},
+
 
 ];
