@@ -9,7 +9,7 @@ var Entities = [
 ];
 
 var GroundArt = [
-	{x: 750, y: 3000, imgName: "platform"}
+	//{x: 750, y: 3000, imgName: "platform"}
 ];
 
 var SortedArt = [

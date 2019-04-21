@@ -3,7 +3,12 @@ BeastBoss.prototype = new EntityClass();
 BeastBoss.prototype.constructor = BeastBoss;
 
 function BeastBoss() {
-	// behaviours
+	// PHASES
+	const NOT_IN_BATTLE = 0;
+	const PHASE_1 = 1;
+	const PHASE_2 = 2;
+	
+	// BEHAVIOURS - ALTER AS NEEDED
 	const IDLE = 0
 	const FOLLOWING = 1;
 	const ATTACKING = 2;
@@ -31,85 +36,30 @@ function BeastBoss() {
 
 	this.directionFacing = DOWN;
 
-	let enemyBehaviour = IDLE;
-	let attackCooldown = 0;
-	let Attack;
-	let isAttacking = false;
-
-	let shieldCooldown = 0;
-	let isShielding = false;
+	let phase = NOT_IN_BATTLE;
+	let behaviour = IDLE;
 		
 	this.move = function () {
-		this.movementDirection = [false, false, false, false]; // up, left, down, right
+		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
+		if (phase == NOT_IN_BATTLE) {
+			if (distanceBetweenEntities(this, Player) < 200) {
+				this.progressPhase();
+			}
+		}
+		else if (phase == PHASE_1 || phase == PHASE_2) {
+			switch(behaviour) {
+			case FOLLOWING:
+				// BEHAVIOUR GOES HERE
+				break;
 
-		switch(enemyBehaviour) {
-		case FOLLOWING:
-			if (Math.abs(Player.y - this.y) > 75) {
-				if (Player.y < this.y) {
-					this.movementDirection[UP] = true;
-				}
-		
-				if (Player.y > this.y) {
-					this.movementDirection[DOWN] = true;
-				}
-			}
-		
-			if (Math.abs(Player.x - this.x) > 50) {
-				if (Player.x > this.x) {
-					this.movementDirection[RIGHT] = true;
-				}
+			case ATTACKING:
+				// BEHAVIOUR GOES HERE
+				break;
 
-				if (Player.x < this.x) {
-					this.movementDirection[LEFT] = true;
-				}
+			case SHIELDING:
+				// BEHAVIOUR GOES HERE
+				break;
 			}
-			break;
-
-		case ATTACKING:
-			if (attackCooldown <= 0) {
-				let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
-				centerY += ((this.collisionBoxHeight / 2) + 20 + (this.collisionBoxHeight / 2));
-
-				let attackOptions = {
-					centerX: centerX,
-					centerY: centerY,
-					width: 40,
-					height: 40,
-					damage: 1,
-					velocityX: 0,
-					velocityY: 1,
-					frameLength: 1,
-					immuneEntities: [this]
-				}
-				
-				Attack = new ProjectileClass(attackOptions);
-				sfx[ATTACK_SFX].play();
-				attackCooldown = 50;
-				isAttacking = true;
-			}
-			else {
-				if (Attack.attackFinished) {
-					isAttacking = false;
-				}
-				attackCooldown--;
-				Attack.update();
-			}
-			break;
-
-		case SHIELDING:
-			if (shieldCooldown <= 0) {
-				this.isInvulnerable = true;
-				isShielding = true;
-				shieldCooldown = 50;
-			}
-			else {
-				if (shieldCooldown <= 10) {
-					this.isInvulnerable = false;
-					isShielding = false;
-				}
-				shieldCooldown--;
-			}
-			break;
 		}
 
 		this.updateState();
@@ -117,21 +67,20 @@ function BeastBoss() {
 	}
 	
 	this.updateState = function() {
-		if (isAttacking) {
-			this.AnimatedSprite.changeState("attack");
-		}
-		else if (isShielding) {
-			this.AnimatedSprite.changeState("shield");
-		}
-		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
-			this.AnimatedSprite.changeState("walk");
-		}
-		else {
-			this.AnimatedSprite.changeState("idle");
-		}
+		// CHANGE ANIMATION STATES HERE
 	}
 	
 	this.draw = function() {
 		EntityClass.prototype.draw.call(this);
+	}
+	
+	this.progressPhase = function() {
+		if (phase == NOT_IN_BATTLE) {
+			phase = PHASE_1;
+			this.isActive = true;
+		}
+		else if (phase == PHASE_1) {
+			phase = phase_2;
+		}
 	}
 }

@@ -3,6 +3,11 @@ EvilPlayerBoss.prototype = new EntityClass();
 EvilPlayerBoss.prototype.constructor = EvilPlayerBoss;
 
 function EvilPlayerBoss() {
+	// PHASES
+	const NOT_IN_BATTLE = 0;
+	const PHASE_1 = 1;
+	const PHASE_2 = 2;
+	
 	// BEHAVIOURS - ALTER AS NEEDED
 	const IDLE = 0
 	const FOLLOWING = 1;
@@ -20,7 +25,7 @@ function EvilPlayerBoss() {
 	this.weight = 2; // 0-10 (10 means can't be pushed by anything)
 	
 	this.name = "Self";
-	this.isActive = true;
+	this.isActive = false;
 	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
@@ -35,23 +40,30 @@ function EvilPlayerBoss() {
 
 	this.directionFacing = DOWN;
 
-	let enemyBehaviour = IDLE;
+	let phase = NOT_IN_BATTLE;
+	let behaviour = IDLE;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
+		if (phase == NOT_IN_BATTLE) {
+			if (distanceBetweenEntities(this, Player) < 150) {
+				this.progressPhase();
+			}
+		}
+		else if (phase == PHASE_1 || phase == PHASE_2) {
+			switch(behaviour) {
+			case FOLLOWING:
+				// BEHAVIOUR GOES HERE
+				break;
 
-		switch(enemyBehaviour) {
-		case FOLLOWING:
-			// BEHAVIOUR GOES HERE
-			break;
+			case ATTACKING:
+				// BEHAVIOUR GOES HERE
+				break;
 
-		case ATTACKING:
-			// BEHAVIOUR GOES HERE
-			break;
-
-		case SHIELDING:
-			// BEHAVIOUR GOES HERE
-			break;
+			case SHIELDING:
+				// BEHAVIOUR GOES HERE
+				break;
+			}
 		}
 
 		this.updateState();
@@ -64,5 +76,15 @@ function EvilPlayerBoss() {
 	
 	this.draw = function() {
 		EntityClass.prototype.draw.call(this);
+	}
+	
+	this.progressPhase = function() {
+		if (phase == NOT_IN_BATTLE) {
+			phase = PHASE_1;
+			this.isActive = true;
+		}
+		else if (phase == PHASE_1) {
+			phase = phase_2;
+		}
 	}
 }
