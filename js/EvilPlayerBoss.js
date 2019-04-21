@@ -7,12 +7,15 @@ function EvilPlayerBoss() {
 	const NOT_IN_BATTLE = 0;
 	const PHASE_1 = 1;
 	const PHASE_2 = 2;
+	const PLAYER_DEAD = 3;
 	
 	// BEHAVIOURS - ALTER AS NEEDED
 	const IDLE = 0
-	const FOLLOWING = 1;
-	const ATTACKING = 2;
-	const SHIELDING = 3;
+	const FOLLOW = 1;
+	const SIMPLE_ATTACK = 2;
+	const SHIELD = 3;
+	const DASH_TOWARDS = 4;
+	const DASH_AWAY = 5;
 	
 	this.width = 25;
 	this.height = 50;
@@ -41,7 +44,17 @@ function EvilPlayerBoss() {
 	this.directionFacing = DOWN;
 
 	let phase = NOT_IN_BATTLE;
-	let behaviour = IDLE;
+	let behaviour = FOLLOW;
+	
+	let attackCooldown = 0;
+	let Attack = null;
+	let attackWidth = 40;
+	let attackHeight = 40;
+	let isAttacking = false;
+	let partOfSameComboAsNextHit = true;
+
+	let shieldCooldown = 0;
+	let isShielding = false;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -50,28 +63,63 @@ function EvilPlayerBoss() {
 				this.progressPhase();
 			}
 		}
-		else if (phase == PHASE_1 || phase == PHASE_2) {
-			switch(behaviour) {
-			case FOLLOWING:
-				// BEHAVIOUR GOES HERE
-				break;
+		if (phase == PHASE_1 || phase == PHASE_2) {
+			if (behaviour == FOLLOW) {
+				if (Math.abs(Player.y - this.y) > 2) {
+					if (Player.y < this.y) {
+						this.movementDirection[UP] = true;
+					}
+		
+					if (Player.y > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+		
+				if (Math.abs(Player.x - this.x) > 2) {
+					if (Player.x > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
 
-			case ATTACKING:
-				// BEHAVIOUR GOES HERE
-				break;
-
-			case SHIELDING:
-				// BEHAVIOUR GOES HERE
-				break;
+					if (Player.x < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
+			}
+			else if (behaviour == SIMPLE_ATTACK) {
+				this.initiateAttack();
+			}
+			else if (behaviour == SHIELD) {
+				this.initiateShield();
+			}
+			this.updateAttack();
+			this.updateShield();
+			
+			if (this.HP <= this.maxHP / 2) {
+				this.progressPhase();
 			}
 		}
-
+		if (phase == PHASE_2) {
+			// extra phase 2 behaviours go here
+		}
+		
+		this.updateBehaviour();
 		this.updateState();
 		EntityClass.prototype.move.call(this); // call superclass function
 	}
 	
 	this.updateState = function() {
-		// CHANGE ANIMATION STATES HERE
+		if (isAttacking) {
+			this.AnimatedSprite.changeState("attack");
+		}
+		else if (isShielding) {
+			this.AnimatedSprite.changeState("shield");
+		}
+		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
+			this.AnimatedSprite.changeState("walk");
+		}
+		else {
+			this.AnimatedSprite.changeState("idle");
+		}
 	}
 	
 	this.draw = function() {
@@ -85,6 +133,168 @@ function EvilPlayerBoss() {
 		}
 		else if (phase == PHASE_1) {
 			phase = phase_2;
+		}
+	}
+	
+	this.updateBehaviour = function() {
+		if ((Player.isAttacking() && this.playerIsInAttackRange(false)) || isShielding) {
+			partOfSameComboAsNextHit = true;
+			behaviour = SHIELD;
+		}
+		else if (this.playerIsInAttackRange(false)) {
+			this.directionFacing = this.playerIsInAttackRange(true);
+			behaviour = SIMPLE_ATTACK;
+		}
+		else if (Math.abs((Player.x+Player.width/2) - (this.x+this.width/2)) > 5) {
+			partOfSameComboAsNextHit = true;
+			behaviour = FOLLOW;
+		}
+		else if (Math.abs((Player.y+Player.height/2) - (this.y+this.height/2)) > 5) {
+			partOfSameComboAsNextHit = true;
+			behaviour = FOLLOW;
+		}
+	}
+	
+	this.initiateAttack = function() {
+		if (attackCooldown <= 0 && Attack == null) {
+			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+			let velocityX = 0, velocityY = 0;
+			
+			switch(this.directionFacing) {
+			case UP:
+				centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
+				velocityY = -1;
+				break;
+			case DOWN:
+				centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
+				velocityY = 1;
+				break;
+			case LEFT:
+				centerX -= ((this.width / 2) + (attackWidth / 2));
+				velocityX = -1;
+				break;
+			case RIGHT:
+				centerX += ((this.width / 2) + (attackWidth / 2));
+				velocityX = 1;
+				break;
+			}
+			
+			let attackOptions = {
+				centerX: centerX,
+				centerY: centerY,
+				width: attackWidth,
+				height: attackHeight,
+				damage: 1,
+				velocityX: velocityX,
+				velocityY: velocityY,
+				frameLength: 1
+			}
+			
+			Attack = new ProjectileClass(attackOptions);
+			sfx[ATTACK_SFX].play();
+			
+			if (partOfSameComboAsNextHit) {
+				attackCooldown = 3;
+				partOfSameComboAsNextHit = false;
+			}
+			else {
+				attackCooldown = 15;
+				partOfSameComboAsNextHit = true;
+			}
+		}
+	}
+	
+	this.updateAttack = function() {
+		if (attackCooldown > 0) {
+			if (Attack.attackFinished) {
+				isAttacking = false;
+			}
+			attackCooldown--;
+			Attack.update();
+		}
+		else {
+			Attack = null;
+		}
+		this.checkIfPlayerIsDead();
+	}
+	
+	this.initiateShield = function() {
+		if (shieldCooldown <= 0) {
+			this.isInvulnerable = true;
+			isShielding = true;
+			shieldCooldown = 30;
+		}
+	}
+	
+	this.updateShield = function() {
+		if (shieldCooldown > 0) {
+			if (shieldCooldown <= 10) {
+				this.isInvulnerable = false;
+				isShielding = false;
+			}
+			shieldCooldown--;
+		}
+	}
+	
+	this.playerIsInAttackRange = function(shouldReturnDirection) {
+		for (var i = 0; i < 4; i++) {
+			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+			let velocityX = 0, velocityY = 0;
+			
+			switch(i) {
+			case UP:
+				centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
+				velocityY = -1;
+				break;
+			case DOWN:
+				centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
+				velocityY = 1;
+				break;
+			case LEFT:
+				centerX -= ((this.width / 2) + (attackWidth / 2));
+				velocityX = -1;
+				break;
+			case RIGHT:
+				centerX += ((this.width / 2) + (attackWidth / 2));
+				velocityX = 1;
+				break;
+			}
+			
+			let attackOptions = {
+				centerX: centerX,
+				centerY: centerY,
+				width: attackWidth,
+				height: attackHeight,
+				damage: 1,
+				velocityX: velocityX,
+				velocityY: velocityY,
+				frameLength: 1
+			}
+			
+			let testAttack = new ProjectileClass(attackOptions);
+			if (projectileHitEntity(Player, testAttack)) {
+				switch(shouldReturnDirection) {
+				case false:
+					return true;
+				case true:
+					return i;
+				}
+			} // end of if
+		} // end of for
+		return false;
+	} // end of func
+	
+	this.checkIfPlayerIsDead = function() {
+		var playerAlive = false;
+		for (var i = 0; i < Entities.length; i++) {
+			if (Entities[i] instanceof PlayerClass) {
+				playerAlive = true;
+				break;
+			}
+		}
+		
+		if (!playerAlive) {
+			phase = PLAYER_DEAD;
 		}
 	}
 }

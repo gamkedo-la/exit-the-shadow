@@ -292,14 +292,18 @@ function PlayerClass() {
 	}
 	
 	this.draw = function() {
-		
 		// motion blur effect
 		this.trail.update(this.x+10,this.y+24);
 		if (isDashing || dashCooldown > 0)
 			this.trail.draw(); 
 
 		EntityClass.prototype.draw.call(this);
-		
-
+	}
+	
+	this.isAttacking = function() {
+		if (Attack != null) {
+			return true;
+		}
+		return false;
 	}
 }

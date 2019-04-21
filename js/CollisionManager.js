@@ -269,18 +269,25 @@ function handleProjectileCollisions(projectile) {
 			continue;
 		}
 		
-		if (AABBCollisionDetection(projectile.centerX - projectile.width / 2,projectile.centerY - projectile.width / 2, projectile.width,projectile.height,
-				 				   Entities[i].x,collisionBoxY(Entities[i]), Entities[i].width,Entities[i].collisionBoxHeight)) {
-				 // collision detected: cause damage to entity, add to immune list if damage could be done
-				 if (Entities[i].takeDamage(projectile.damage)) {
-					 pendingScreenshakes = 6;
-					 Entities[i].forceX += projectile.velocityX;
-					 Entities[i].forceY += projectile.velocityY;
-					 projectile.immuneEntities.push(Entities[i]);
-					 handleDeadEntities(); // check if anyone is dead
-				 }
+		if (projectileHitEntity(Entities[i], projectile)) {
+			// collision detected: cause damage to entity, add to immune list if damage could be done
+			if (Entities[i].takeDamage(projectile.damage)) {
+				pendingScreenshakes = 6;
+				Entities[i].forceX += projectile.velocityX;
+				Entities[i].forceY += projectile.velocityY;
+				projectile.immuneEntities.push(Entities[i]);
+				handleDeadEntities(); // check if anyone is dead
+			}
 		}
 	}
+}
+
+function projectileHitEntity(entity, projectile) {
+	if (AABBCollisionDetection(projectile.centerX - projectile.width / 2,projectile.centerY - projectile.width / 2, projectile.width,projectile.height,
+		entity.x,collisionBoxY(entity), entity.width,entity.collisionBoxHeight)) {
+			return true;
+	}
+	return false;
 }
 
 function AABBCollisionDetection(object1X,object1Y, object1Width,object1Height, object2X,object2Y, object2Width,object2Height) {
