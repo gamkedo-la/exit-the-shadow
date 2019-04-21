@@ -294,7 +294,7 @@ function PlayerClass() {
 	this.draw = function() {
 		// motion blur effect
 		this.trail.update(this.x+10,this.y+24);
-		if (isDashing || dashCooldown > 0)
+		if (isDashing || dashCooldown > 1)
 			this.trail.draw(); 
 
 		EntityClass.prototype.draw.call(this);

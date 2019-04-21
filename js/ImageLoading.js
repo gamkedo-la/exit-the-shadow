@@ -8,6 +8,7 @@ var playerLifeIcon = document.createElement("img");
 var floorTileset = document.createElement("img");
 var wallsTileset = document.createElement("img");
 var trailImage = document.createElement("img");
+var bossTrailImage = document.createElement("img");
 var bossHealthBarOutline = document.createElement("img");
 var bossHealth = document.createElement("img");
 
@@ -30,6 +31,7 @@ function loadImages() {
 		{varName: floorTileset, fileName: "floor_tiles.png"},
 		{varName: wallsTileset, fileName: "walls_tileset_v2.png"},
 		{varName: trailImage, fileName: "trail.png"},
+		{varName: bossTrailImage, fileName: "bossTrail.png"},
 		{varName: bossHealthBarOutline, fileName: "BossHealthBarOutline.png"},
 		{varName: bossHealth, fileName: "BossHealthBar.png"},
 	];

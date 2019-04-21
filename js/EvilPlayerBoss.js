@@ -42,6 +42,9 @@ function EvilPlayerBoss() {
 	this.AnimatedSprite = new AnimatedSpriteClass(evilPlayerSheet, this.width, this.height, spritePadding, this.states);
 
 	this.directionFacing = DOWN;
+	
+	// motion blur trail effect
+	this.trail = new TrailFX(bossTrailImage);
 
 	let phase = NOT_IN_BATTLE;
 	let behaviour = FOLLOW;
@@ -50,7 +53,8 @@ function EvilPlayerBoss() {
 	let dashRemaining;
 	let dashCooldown = 0;
 	let dashDirection = NO_DIRECTION;
-	let diagonalDashSpeed = Math.sqrt((DASH_SPEED*DASH_SPEED) / 2);
+	let dashSpeed = 30;
+	let diagonalDashSpeed = Math.sqrt((dashSpeed*dashSpeed) / 2);
 	let dashAway = false;
 	
 	let attackCooldown = 0;
@@ -179,6 +183,12 @@ function EvilPlayerBoss() {
 	}
 	
 	this.draw = function() {
+		// motion blur effect
+		this.trail.update(this.x+10,this.y+24);
+		console.log(dashCooldown);
+		if (isDashing || dashCooldown > 17)
+			this.trail.draw(); 
+		
 		EntityClass.prototype.draw.call(this);
 	}
 	
@@ -305,26 +315,25 @@ function EvilPlayerBoss() {
 	}
 	
 	this.handleDash = function(movementDirection, dashLength) {
-		console.log(dashLength);
 		if (dashCooldown <= 0 && !isDashing) {
 			isDashing = true;
-			dashRemaining = dashLength / DASH_SPEED;
+			dashRemaining = dashLength / dashSpeed;
 			dashDirection = this.calculateDashDirection(movementDirection);
 		}
 		if (isDashing) {
 			dashRemaining--;
 			switch(dashDirection) {
 			case UP:
-				this.nextY -= DASH_SPEED;
+				this.nextY -= dashSpeed;
 				break;
 			case LEFT:
-				this.nextX -= DASH_SPEED;
+				this.nextX -= dashSpeed;
 				break;
 			case DOWN:
-				this.nextY += DASH_SPEED;
+				this.nextY += dashSpeed;
 				break;
 			case RIGHT:
-				this.nextX += DASH_SPEED;
+				this.nextX += dashSpeed;
 				break;
 			case UP_LEFT:
 				this.nextX -= diagonalDashSpeed;
