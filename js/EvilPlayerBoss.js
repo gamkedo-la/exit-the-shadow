@@ -47,10 +47,11 @@ function EvilPlayerBoss() {
 	let behaviour = FOLLOW;
 	
 	let isDashing = false;
-	let dashRemaining = DASH_LENGTH/DASH_SPEED;
+	let dashRemaining;
 	let dashCooldown = 0;
 	let dashDirection = NO_DIRECTION;
 	let diagonalDashSpeed = Math.sqrt((DASH_SPEED*DASH_SPEED) / 2);
+	let dashAway = false;
 	
 	let attackCooldown = 0;
 	let Attack = null;
@@ -61,6 +62,7 @@ function EvilPlayerBoss() {
 
 	let shieldCooldown = 0;
 	let isShielding = false;
+	let shield = false;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -118,10 +120,35 @@ function EvilPlayerBoss() {
 					}
 				}
 				
-				this.handleDash();
+				this.handleDash(this.movementDirection, 150);
+			}
+			else if (behaviour == DASH_AWAY) {
+				var movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
+				if (Math.abs(Player.y - this.y) > 10) {
+					if (Player.y < this.y) {
+						movementDirection[DOWN] = true;
+					}
+		
+					if (Player.y > this.y) {
+						movementDirection[UP] = true;
+					}
+				}
+		
+				if (Math.abs(Player.x - this.x) > 10) {
+					if (Player.x > this.x) {
+						movementDirection[LEFT] = true;
+					}
+
+					if (Player.x < this.x) {
+						movementDirection[RIGHT] = true;
+					}
+				}
+				
+				this.handleDash(movementDirection, 100);
 			}
 			this.updateAttack();
 			this.updateShield();
+			this.updateDashCooldown();
 			
 			if (this.HP <= this.maxHP / 2) {
 				this.progressPhase();
@@ -161,18 +188,22 @@ function EvilPlayerBoss() {
 			this.isActive = true;
 		}
 		else if (phase == PHASE_1) {
-			phase = phase_2;
+			phase = PHASE_2;
 		}
 	}
 	
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
-		if (isDashing) {
-			return; // to prevent going into a different behaviour mid dash
+		if (isDashing || isShielding) {
+			return; // to prevent going into a different behaviour mid dash or mid shield
 		}
-		else if ((Player.isAttacking() && this.playerIsInAttackRange(false)) || isShielding) {
-			partOfSameComboAsNextHit = true;
+		else if (dashAway) {
+			dashAway = false;
+			behaviour = DASH_AWAY;
+		}
+		else if (shield && !isShielding) {
+			shield = false;
 			behaviour = SHIELD;
 		}
 		else if (this.playerIsInAttackRange(false)) {
@@ -227,13 +258,16 @@ function EvilPlayerBoss() {
 			Attack = new ProjectileClass(attackOptions);
 			sfx[ATTACK_SFX].play();
 			
-			if (partOfSameComboAsNextHit) {
-				attackCooldown = 3;
-				partOfSameComboAsNextHit = false;
-			}
-			else {
-				attackCooldown = 15;
-				partOfSameComboAsNextHit = true;
+			attackCooldown = 30;
+			partOfSameComboAsNextHit = true;
+			
+			switch(Math.floor(Math.random() * 2)) {
+			case 0:
+				dashAway = true;
+				break;
+			default:
+				shield = true;
+				break;
 			}
 		}
 	}
@@ -256,7 +290,7 @@ function EvilPlayerBoss() {
 		if (shieldCooldown <= 0) {
 			this.isInvulnerable = true;
 			isShielding = true;
-			shieldCooldown = 30;
+			shieldCooldown = 25;
 		}
 	}
 	
@@ -270,11 +304,12 @@ function EvilPlayerBoss() {
 		}
 	}
 	
-	this.handleDash = function() {
+	this.handleDash = function(movementDirection, dashLength) {
+		console.log(dashLength);
 		if (dashCooldown <= 0 && !isDashing) {
 			isDashing = true;
-			
-			dashDirection = this.calculateDashDirection(this.movementDirection);
+			dashRemaining = dashLength / DASH_SPEED;
+			dashDirection = this.calculateDashDirection(movementDirection);
 		}
 		if (isDashing) {
 			dashRemaining--;
@@ -310,17 +345,14 @@ function EvilPlayerBoss() {
 			}
 			if (dashRemaining <= 0) {
 				isDashing = false;
-				dashCooldown = DASH_COOLDOWN;
+				dashCooldown = 20;
 			}
 		}
+	}
+	
+	this.updateDashCooldown = function() {
 		if (dashCooldown > 0) {
 			dashCooldown--;
-			if (dashCooldown <= 0 && !this.keyHeld_Dash) {
-				dashRemaining = DASH_LENGTH/DASH_SPEED;
-			}
-			else if (dashCooldown <= 0 && this.keyHeld_Dash) {
-				dashCooldown = 1; // prevent repeatedly dashing if keyheld
-			}
 		}
 	}
 	
