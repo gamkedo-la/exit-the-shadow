@@ -15,8 +15,12 @@ function EvilPlayerBoss() {
 	this.collisionBoxHeight = this.width;
 	
 	this.moveSpeed = 2;
-	this.HP = 30;
+	this.HP = 50;
+	this.maxHP = this.HP;
 	this.weight = 2; // 0-10 (10 means can't be pushed by anything)
+	
+	this.name = "Self";
+	this.isActive = true;
 	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},

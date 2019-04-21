@@ -16,7 +16,11 @@ function ShadowBoss() {
 	
 	this.moveSpeed = 2;
 	this.HP = 30;
+	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
+	
+	this.name = "Shadow";
+	this.isActive = false;
 	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1}

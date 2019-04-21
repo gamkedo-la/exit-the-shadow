@@ -125,8 +125,9 @@ function drawAll() {
 
 		canvasContext.restore();
 		
-		playerLife(); // leaving this here temporarily
-		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
+		drawUI();
+		
+		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'black');
 	} else if(helpScreen){
 		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
 

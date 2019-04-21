@@ -132,7 +132,6 @@ EntityClass.prototype = {
 
 	takeDamage: function(damage) {
 		if (!this.isInvulnerable) {
-			console.log("entity took damage, HP: " + this.HP);
 			this.HP -= damage;
 
 			if (this.HP <= 0) {
