@@ -185,7 +185,6 @@ function EvilPlayerBoss() {
 	this.draw = function() {
 		// motion blur effect
 		this.trail.update(this.x+10,this.y+24);
-		console.log(dashCooldown);
 		if (isDashing || dashCooldown > 17)
 			this.trail.draw(); 
 		
