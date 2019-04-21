@@ -1,5 +1,7 @@
 var camPanX = 100;
 var camPanY = 100;
+var lastCamPanX;
+var lastCamPanY;
 var pendingScreenshakes = 0;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAM_PAN_X = 20;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAM_PAN_Y = 10;
@@ -55,10 +57,19 @@ function enforceCamBoundaries() {
 
 function camScreenshake() {
 	if (camShakeOn) {
-		if (pendingScreenshakes > 0) {
+		if (pendingScreenshakes > 1) {
 			pendingScreenshakes --; //substract one from the count
-		camPanX += Math.round(Math.random() * 4 - 2);
-		camPanY += Math.round(Math.random() * 4 - 2);
+			camPanX += Math.round(Math.random() * 4 - 2);
+			camPanY += Math.round(Math.random() * 4 - 2);
+		}
+		else if (pendingScreenshakes == 1) {
+			pendingScreenshakes --; //substract one from the count
+			camPanX = lastCamPanX;
+			camPanY = lastCamPanY;
+		}
+		else {
+			lastCamPanX = camPanX;
+			lastCamPanY = camPanY;
 		}
 	}
 }
