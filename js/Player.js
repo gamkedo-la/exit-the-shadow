@@ -13,7 +13,7 @@ function PlayerClass() {
 	// public
 	this.width = 25;
 	this.height = 50;
-	this.hp = 3;
+	this.HP = 3;
 	
 	this.collisionBoxHeight = this.width;
 	

@@ -125,7 +125,7 @@ function drawAll() {
 
 		canvasContext.restore();
 		
-		playerLife (); // leaving this here temporarily
+		playerLife(); // leaving this here temporarily
 		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'green');
 	} else if(helpScreen){
 		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
