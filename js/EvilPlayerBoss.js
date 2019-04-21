@@ -46,6 +46,12 @@ function EvilPlayerBoss() {
 	let phase = NOT_IN_BATTLE;
 	let behaviour = FOLLOW;
 	
+	let isDashing = false;
+	let dashRemaining = DASH_LENGTH/DASH_SPEED;
+	let dashCooldown = 0;
+	let dashDirection = NO_DIRECTION;
+	let diagonalDashSpeed = Math.sqrt((DASH_SPEED*DASH_SPEED) / 2);
+	
 	let attackCooldown = 0;
 	let Attack = null;
 	let attackWidth = 40;
@@ -90,6 +96,29 @@ function EvilPlayerBoss() {
 			}
 			else if (behaviour == SHIELD) {
 				this.initiateShield();
+			}
+			else if (behaviour == DASH_TOWARDS) {
+				if (Math.abs(Player.y - this.y) > 30) {
+					if (Player.y < this.y) {
+						this.movementDirection[UP] = true;
+					}
+		
+					if (Player.y > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+		
+				if (Math.abs(Player.x - this.x) > 30) {
+					if (Player.x > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
+
+					if (Player.x < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
+				
+				this.handleDash();
 			}
 			this.updateAttack();
 			this.updateShield();
@@ -137,7 +166,13 @@ function EvilPlayerBoss() {
 	}
 	
 	this.updateBehaviour = function() {
-		if ((Player.isAttacking() && this.playerIsInAttackRange(false)) || isShielding) {
+		var xDistFromPlayer = Math.abs((Player.x+Player.width/2) - (this.x+this.width/2));
+		var yDistFromPlayer = Math.abs((Player.y+Player.height/2) - (this.y+this.height/2));
+		
+		if (isDashing) {
+			return; // to prevent going into a different behaviour mid dash
+		}
+		else if ((Player.isAttacking() && this.playerIsInAttackRange(false)) || isShielding) {
 			partOfSameComboAsNextHit = true;
 			behaviour = SHIELD;
 		}
@@ -145,11 +180,11 @@ function EvilPlayerBoss() {
 			this.directionFacing = this.playerIsInAttackRange(true);
 			behaviour = SIMPLE_ATTACK;
 		}
-		else if (Math.abs((Player.x+Player.width/2) - (this.x+this.width/2)) > 5) {
+		else if (xDistFromPlayer > 200 || yDistFromPlayer > 200) {
 			partOfSameComboAsNextHit = true;
-			behaviour = FOLLOW;
+			behaviour = DASH_TOWARDS;
 		}
-		else if (Math.abs((Player.y+Player.height/2) - (this.y+this.height/2)) > 5) {
+		else if (xDistFromPlayer > 5 || yDistFromPlayer > 5) {
 			partOfSameComboAsNextHit = true;
 			behaviour = FOLLOW;
 		}
@@ -236,6 +271,60 @@ function EvilPlayerBoss() {
 		}
 	}
 	
+	this.handleDash = function() {
+		if (dashCooldown <= 0 && !isDashing) {
+			isDashing = true;
+			
+			dashDirection = this.calculateDashDirection(this.movementDirection);
+		}
+		if (isDashing) {
+			dashRemaining--;
+			switch(dashDirection) {
+			case UP:
+				this.nextY -= DASH_SPEED;
+				break;
+			case LEFT:
+				this.nextX -= DASH_SPEED;
+				break;
+			case DOWN:
+				this.nextY += DASH_SPEED;
+				break;
+			case RIGHT:
+				this.nextX += DASH_SPEED;
+				break;
+			case UP_LEFT:
+				this.nextX -= diagonalDashSpeed;
+				this.nextY -= diagonalDashSpeed;
+				break;
+			case DOWN_LEFT:
+				this.nextX -= diagonalDashSpeed;
+				this.nextY += diagonalDashSpeed;
+				break;
+			case DOWN_RIGHT:
+				this.nextX += diagonalDashSpeed;
+				this.nextY += diagonalDashSpeed;
+				break;
+			case UP_RIGHT:
+				this.nextX += diagonalDashSpeed;
+				this.nextY -= diagonalDashSpeed;
+				break;
+			}
+			if (dashRemaining <= 0) {
+				isDashing = false;
+				dashCooldown = DASH_COOLDOWN;
+			}
+		}
+		if (dashCooldown > 0) {
+			dashCooldown--;
+			if (dashCooldown <= 0 && !this.keyHeld_Dash) {
+				dashRemaining = DASH_LENGTH/DASH_SPEED;
+			}
+			else if (dashCooldown <= 0 && this.keyHeld_Dash) {
+				dashCooldown = 1; // prevent repeatedly dashing if keyheld
+			}
+		}
+	}
+	
 	this.playerIsInAttackRange = function(shouldReturnDirection) {
 		for (var i = 0; i < 4; i++) {
 			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
@@ -295,6 +384,33 @@ function EvilPlayerBoss() {
 		
 		if (!playerAlive) {
 			phase = PLAYER_DEAD;
+		}
+	}
+	
+	this.calculateDashDirection = function(movementDirection) {
+		if (movementDirection[UP] && movementDirection[LEFT]) {
+			return UP_LEFT;
+		}
+		else if (movementDirection[DOWN] && movementDirection[LEFT]) {
+			return DOWN_LEFT;
+		}
+		else if (movementDirection[DOWN] && movementDirection[RIGHT]) {
+			return DOWN_RIGHT;
+		}
+		else if (movementDirection[UP] && movementDirection[RIGHT]) {
+			return UP_RIGHT;
+		}
+		else if (movementDirection[UP]) {
+			return UP;
+		}
+		else if (movementDirection[LEFT]) {
+			return LEFT;
+		}
+		else if (movementDirection[DOWN]) {
+			return DOWN;
+		}
+		else if (movementDirection[RIGHT]) {
+			return RIGHT;
 		}
 	}
 }
