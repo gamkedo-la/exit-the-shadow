@@ -2,7 +2,7 @@ const DASH_LENGTH = 150;
 const DASH_SPEED = 50;
 const DASH_COOLDOWN = 5;
 const ATTACK_COOLDOWN = 5;
-const SHIELD_MAX_TIME = 10;
+const SHIELD_MAX_TIME = 15;
 const SHIELD_COOLDOWN = 5;
 
 // inherit from EntityClass

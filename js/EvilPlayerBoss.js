@@ -98,7 +98,7 @@ function EvilPlayerBoss() {
 				this.initiateShield();
 			}
 			else if (behaviour == DASH_TOWARDS) {
-				if (Math.abs(Player.y - this.y) > 30) {
+				if (Math.abs(Player.y - this.y) > 100) {
 					if (Player.y < this.y) {
 						this.movementDirection[UP] = true;
 					}
@@ -108,7 +108,7 @@ function EvilPlayerBoss() {
 					}
 				}
 		
-				if (Math.abs(Player.x - this.x) > 30) {
+				if (Math.abs(Player.x - this.x) > 100) {
 					if (Player.x > this.x) {
 						this.movementDirection[RIGHT] = true;
 					}
@@ -166,8 +166,7 @@ function EvilPlayerBoss() {
 	}
 	
 	this.updateBehaviour = function() {
-		var xDistFromPlayer = Math.abs((Player.x+Player.width/2) - (this.x+this.width/2));
-		var yDistFromPlayer = Math.abs((Player.y+Player.height/2) - (this.y+this.height/2));
+		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
 		if (isDashing) {
 			return; // to prevent going into a different behaviour mid dash
@@ -180,11 +179,11 @@ function EvilPlayerBoss() {
 			this.directionFacing = this.playerIsInAttackRange(true);
 			behaviour = SIMPLE_ATTACK;
 		}
-		else if (xDistFromPlayer > 200 || yDistFromPlayer > 200) {
+		else if (distFromPlayer > 200) {
 			partOfSameComboAsNextHit = true;
 			behaviour = DASH_TOWARDS;
 		}
-		else if (xDistFromPlayer > 5 || yDistFromPlayer > 5) {
+		else if (distFromPlayer > 5) {
 			partOfSameComboAsNextHit = true;
 			behaviour = FOLLOW;
 		}
