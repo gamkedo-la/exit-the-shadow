@@ -91,6 +91,10 @@ function moveAll() {
 	}
 }
 
+function sortByFloorPosition(a, b) {
+	return (a.y+a.height)-(b.y+b.height);
+}
+
 function drawAll() {
 	if(mainGameState){
 		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
@@ -106,9 +110,9 @@ function drawAll() {
 		}
 		
 		// sorted art
-		SortedDrawList = [];
+		//SortedDrawList = []; // overwitten by contact below
 		SortedDrawList = SortedDrawList.concat(Entities, SortedArt);
-		SortedDrawList.sort(function(a, b){return (a.y+a.height)-(b.y+b.height)});
+		SortedDrawList.sort(sortByFloorPosition); // defined once above
 		for (var i = 0; i < SortedDrawList.length ; i++) {
 			if (typeof SortedDrawList[i].imgName !== 'undefined') { // sorted environment art
 				canvasContext.drawImage(window[SortedDrawList[i].imgName], SortedDrawList[i].x, SortedDrawList[i].y);
