@@ -110,7 +110,7 @@ function drawAll() {
 		}
 		
 		// sorted art
-		//SortedDrawList = []; // overwitten by contact below
+		SortedDrawList = [];
 		SortedDrawList = SortedDrawList.concat(Entities, SortedArt);
 		SortedDrawList.sort(sortByFloorPosition); // defined once above
 		for (var i = 0; i < SortedDrawList.length ; i++) {

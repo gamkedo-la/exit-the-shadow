@@ -1,4 +1,5 @@
 function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animationSpriteHeight, animationSpritePadding, animationStates) {
+	
 	let spriteSheet = animationSpriteSheet;
 	let spriteWidth = animationSpriteWidth;
 	let spriteHeight = animationSpriteHeight;

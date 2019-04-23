@@ -10,6 +10,7 @@ PlayerClass.prototype = new EntityClass();
 PlayerClass.prototype.constructor = PlayerClass;
 
 function PlayerClass() {
+
 	// public
 	this.width = 25;
 	this.height = 50;
@@ -32,6 +33,7 @@ function PlayerClass() {
 	
 	let spritePadding = 50;
 	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, spritePadding, this.states);
+	//this.shadow = playerShadowSprite;
 	
 	this.keyHeld_Up = false;
 	this.keyHeld_Down = false;

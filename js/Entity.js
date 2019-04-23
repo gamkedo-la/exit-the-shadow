@@ -122,7 +122,12 @@ EntityClass.prototype = {
 			break;
 		}
 		
+		// draw a shadow on the floor - now built into the sprite_sheet 
+		// if (this.shadow) canvasContext.drawImage(this.shadow,-14,48);
+
+		// draw the sprite over top of the shadow
 		this.AnimatedSprite.render();
+
 		canvasContext.restore();
 	},
 	
