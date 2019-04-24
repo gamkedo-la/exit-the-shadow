@@ -298,8 +298,12 @@ function PlayerClass() {
 		this.trail.update(this.x+10,this.y+24);
 		if (isDashing || dashCooldown > 1)
 			this.trail.draw(); 
-
+		
 		EntityClass.prototype.draw.call(this);
+		
+		//increasing the number of draws for more effect
+		for(var i = 0; i < 3; i++)
+			canvasContext.drawImage(playerGradient, this.x-640, this.y-620, 1280, 1280);
 	}
 	
 	this.isAttacking = function() {

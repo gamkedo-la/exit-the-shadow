@@ -11,6 +11,7 @@ var trailImage = document.createElement("img");
 var bossTrailImage = document.createElement("img");
 var bossHealthBarOutline = document.createElement("img");
 var bossHealth = document.createElement("img");
+var playerGradient = document.createElement("img");
 //var playerShadowSprite = document.createElement("img");
 
 picsToLoad = 0;
@@ -35,6 +36,7 @@ function loadImages() {
 		{varName: bossTrailImage, fileName: "bossTrail.png"},
 		{varName: bossHealthBarOutline, fileName: "BossHealthBarOutline.png"},
 		{varName: bossHealth, fileName: "BossHealthBar.png"},
+		{varName: playerGradient, fileName: "gradient.png"},
 		//{varName: playerShadowSprite, fileName: "playerShadow.png"},
 	];
 	
