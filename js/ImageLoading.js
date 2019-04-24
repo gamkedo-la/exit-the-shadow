@@ -23,7 +23,7 @@ function loadImage(imgVar, fileName) {
 
 function loadImages() {
 	var imageList = [
-		{varName: playerSheet, fileName: "player_sheet.png"},
+		{varName: playerSheet, fileName: "player_sheet_no_shadows.png"},
 		{varName: beastSheet, fileName: "BeastSpriteSheet.png"},
 		{varName: shadowSheet, fileName: "ShadowSpriteSheet.png"},
 		{varName: evilPlayerSheet, fileName: "EvilPlayerSheet.png"},
