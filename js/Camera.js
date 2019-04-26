@@ -39,18 +39,17 @@ function cameraFollow() {
 }
 
 function enforceCamBoundaries() {
-	var maxPanRight = TILE_COLS * TILE_W
-	var maxPanBottom = TILE_ROWS * TILE_H
+	var maxPanRight = TILE_COLS * TILE_W - canvas.width;
+	var maxPanBottom = TILE_ROWS * TILE_H - canvas.height;
 	if (camPanX < 0) {
 		camPanX = 0;
-	}
-	else if(camPanX > maxPanRight) {
+	} else if(camPanX > maxPanRight) {
 		camPanX = maxPanRight;
 	}
+
 	if (camPanY < 0) {
 		camPanY = 0;
-	}
-	else if (camPanY > maxPanBottom) {
+	} else if (camPanY > maxPanBottom) {
 		camPanY = maxPanBottom
 	}
 }

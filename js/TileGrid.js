@@ -5,6 +5,7 @@ const TILE_COLS = 196;
 
 var tileGrid = [];
 var floorTiles = [];
+var tileEntites = [];
 
 var levelOne = [
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,10, 0, 0, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -209,7 +210,187 @@ function generateFloorTiles() {
 	}
 }
 
-function drawTiles() {
+function generateTileEntities() {
+	for (let row = 0; row < TILE_ROWS; row++) {
+		for (let col = 0; col < TILE_COLS; col++) {
+			const thisType = tileTypeAtColRow(tileGrid, col, row);
+			tileEntites.push(new TileEntity(thisType, col, row));
+		}
+	}
+}
+
+function getVisibleTileEntities() {
+	var camLeftMostCol = Math.floor(camPanX / TILE_W);
+	var camTopMostRow = Math.floor(camPanY / TILE_H);
+	
+	var colsThatFitOnScreen = Math.floor(canvas.width / TILE_W);
+	var rowsThatFitOnScreen = Math.floor(canvas.height / TILE_H);
+	
+	var camRightMostCol = camLeftMostCol + colsThatFitOnScreen + 2;
+	var camBottomMostRow = camTopMostRow + rowsThatFitOnScreen + 2;
+
+	const visibleTiles = [];
+	for(let i = 0; i < tileEntites.length; i++) {
+		if((tileEntites[i].col >= camLeftMostCol) && 
+		   (tileEntites[i].col <= camRightMostCol) &&
+		   (tileEntites[i].row >= camTopMostRow) &&
+		   (tileEntites[i].row <= camBottomMostRow)) {
+			visibleTiles.push(tileEntites[i]);
+		}
+	}
+
+	return visibleTiles;
+}
+
+function TileEntity(type, col, row) {
+	this.type = type;
+	this.col = col;
+	this.row = row;
+	this.x = col * TILE_W;
+	this.y = row * TILE_H;
+	this.width = TILE_W;
+	this.height = TILE_H;
+
+	const atlasPos = getAtlasPosForType(type);
+	this.draw = function() {
+		if(this.type == TILE_PATH) return;
+
+		canvasContext.drawImage(wallsTileset, atlasPos.x, atlasPos.y, TILE_W, TILE_H, this.x, this.y, TILE_W, TILE_H);
+	} 
+}
+
+const getAtlasPosForType = function(type) {
+	switch(type) {
+		case TILE_OBSTACLE_BOX:
+			return {x:1 * TILE_W, y:1 * TILE_H};
+		case TILE_OBSTACLE_LEFT_UP_DIAG:
+			return {x:9 * TILE_W, y:2 * TILE_H};
+		case TILE_OBSTACLE_RIGHT_UP_DIAG:
+			return {x:8 * TILE_W, y:2 * TILE_H};
+		case TILE_OBSTACLE_LEFT_DOWN_DIAG:
+			return {x:7 * TILE_W, y:0 * TILE_H};
+		case TILE_OBSTACLE_RIGHT_DOWN_DIAG:
+			return {x:8 * TILE_W, y:0 * TILE_H};
+		case TILE_WALL_TOP:
+			return {x:1 * TILE_W, y:0 * TILE_H};
+		case TILE_WALL_RIGHT_EDGE:
+			return {x:0 * TILE_W, y:1 * TILE_H};
+		case TILE_OBSTACLE_BOT_LEFT_DOWN_DIAG:
+			return {x:7 * TILE_W, y:1 * TILE_H};
+		case TILE_WALL_BOT_RIGHT_DIAG:
+			return {x:8 * TILE_W, y:1 * TILE_H};
+		case TILE_WALL_LEFT_EDGE:
+			return {x:2 * TILE_W, y:1 * TILE_H};
+		case TILE_WALL_FRONT_1:
+			return {x:0 * TILE_W, y:3 * TILE_H};
+		case TILE_WALL_BOT_LEFT_LINER:
+			return {x:0 * TILE_W, y:2 * TILE_H};
+		case TILE_WALL_ROOF:
+			return {x:1 * TILE_W, y:2 * TILE_H};
+		case TILE_WALL_TOP_RIGHT_LINER:
+			return {x:2 * TILE_W, y:0 * TILE_H};
+		case TILE_WALL_FRONT_2:
+			return {x:1 * TILE_W, y:3 * TILE_H};
+		case TILE_WALL_FRONT_3:
+			return {x:2 * TILE_W, y:3 * TILE_H};
+		case TILE_WALL_FRONT_4:
+			return {x:3 * TILE_W, y:3 * TILE_H};
+		case TILE_WALL_FRONT_5:
+			return {x:4 * TILE_W, y:3 * TILE_H};
+		case TILE_WALL_FRONT_6:
+			return {x:5 * TILE_W, y:3 * TILE_H};
+		case TILE_WALL_FRONT_7:
+			return {x:6 * TILE_W, y:3 * TILE_H};
+		case TILE_WALL_FRONT_8:
+			return {x:6 * TILE_W, y:2 * TILE_H};
+		case TILE_WALL_FRONT_9:
+			return {x:7 * TILE_W, y:2 * TILE_H};
+		case TILE_WALL_LEFT_TOP_LINER:
+			return {x:0 * TILE_W, y:0 * TILE_H};
+		case TILE_WALL_LEFT_BOT_LINER:
+			return {x:0 * TILE_W, y:2 * TILE_H};
+		case UPPER_RIGHT_CORNER:
+			return {x:8 * TILE_W, y:3 * TILE_H};
+		case UPPER_LEFT_CORNER:
+			return {x:9 * TILE_W, y:3 * TILE_H};
+		case LEFT_VERTICAL_TRANSITION:
+			return {x:6 * TILE_W, y:1 * TILE_H};
+		case RIGHT_VERTICAL_TRANSITION:
+			return {x:9 * TILE_W, y:1 * TILE_H};
+		case VERTICAL_TO_DIAG_RIGHT:
+			return {x:0 * TILE_W, y:4 * TILE_H};
+		case VERTICAL_TO_DIAG_LEFT:
+			return {x:1 * TILE_W, y:4 * TILE_H};
+		case VERTICAL_TO_RIGHT:
+			return {x:2 * TILE_W, y:4 * TILE_H};
+		case VERTICAL_TO_LEFT:
+			return {x:3 * TILE_W, y:4 * TILE_H};
+		case HORZ_TO_VERT_LEFT_SKULL:
+			return {x:5 * TILE_W, y:4 * TILE_H};
+		case HORZ_TO_VERT_RIGHT_SKULL:
+			return {x:4 * TILE_W, y:4 * TILE_H};
+		case HORZ_TO_VERT_LEFT:
+			return {x:7 * TILE_W, y:4 * TILE_H};
+		case HORZ_TO_VERT_RIGHT:
+			return {x:6 * TILE_W, y:4 * TILE_H};
+		case PLATFORM_1:
+			return {x:0 * TILE_W, y:5 * TILE_H};
+		case PLATFORM_2:
+			return {x:1 * TILE_W, y:5 * TILE_H};
+		case PLATFORM_3:
+			return {x:2 * TILE_W, y:5 * TILE_H};
+		case PLATFORM_4:
+			return {x:0 * TILE_W, y:6 * TILE_H};
+		case PLATFORM_5:
+			return {x:1 * TILE_W, y:6 * TILE_H};
+		case PLATFORM_6:
+			return {x:2 * TILE_W, y:6 * TILE_H};
+		case PLATFORM_7:
+			return {x:3 * TILE_W, y:6 * TILE_H};
+		case PLATFORM_8:
+			return {x:4 * TILE_W, y:6 * TILE_H};
+		case PLATFORM_9:
+			return {x:5 * TILE_W, y:6 * TILE_H};
+		case PLATFORM_10:
+			return {x:6 * TILE_W, y:6 * TILE_H};
+		case PLATFORM_11:
+			return {x:0 * TILE_W, y:7 * TILE_H};
+		case PLATFORM_12:
+			return {x:1 * TILE_W, y:7 * TILE_H};
+		case PLATFORM_13:
+			return {x:2 * TILE_W, y:7 * TILE_H};
+		case PLATFORM_14:
+			return {x:3 * TILE_W, y:7 * TILE_H};
+		case PLATFORM_15:
+			return {x:4 * TILE_W, y:7 * TILE_H};
+		case PLATFORM_16:
+			return {x:5 * TILE_W, y:7 * TILE_H};
+		case PLATFORM_17:
+			return {x:6 * TILE_W, y:7 * TILE_H};
+		case PLATFORM_18:
+			return {x:0 * TILE_W, y:8 * TILE_H};
+		case PLATFORM_19:
+			return {x:1 * TILE_W, y:8 * TILE_H};
+		case PLATFORM_20:
+			return {x:2 * TILE_W, y:8 * TILE_H};
+		case PLATFORM_21:
+			return {x:3 * TILE_W, y:8 * TILE_H};
+		case PLATFORM_22:
+			return {x:4 * TILE_W, y:8 * TILE_H};
+		case PLATFORM_23:
+			return {x:5 * TILE_W, y:8 * TILE_H};
+		case PLATFORM_24:
+			return {x:6 * TILE_W, y:8 * TILE_H};
+		case PLATFORM_25:
+			return {x:0 * TILE_W, y:9 * TILE_H};
+		case PLATFORM_26:
+			return {x:1 * TILE_W, y:9 * TILE_H};
+		case PLATFORM_27:
+			return {x:2 * TILE_W, y:9 * TILE_H};
+	}
+}
+
+function drawFloorTiles() {
 	canvasContext.save();
 	canvasContext.translate(-camPanX, -camPanY);
 	
@@ -264,213 +445,6 @@ function drawTilesOnScreen() {
 				case 8:
 					canvasContext.drawImage(floorTileset, 2 * TILE_W, 2 * TILE_H, TILE_W, TILE_H, floorCol*TILE_W, floorRow*TILE_H, TILE_W, TILE_H);
 					break;
-			}
-		}
-	}
-	
-	var tileType;
-	var row, col;
-	for (row = camTopMostRow; row < camBottomMostRow; row++) {
-		for (col = camLeftMostCol; col < camRightMostCol; col++) {
-			tileType = tileTypeAtColRow(tileGrid, col, row);
-			switch(tileType) {
-//			case TILE_PATH:
-//				colorRect(col*TILE_W,row*TILE_H, TILE_W, TILE_H, 'white');
-//				break
-			case TILE_OBSTACLE_BOX:
-//				colorRect(col*TILE_W,row*TILE_H, TILE_W, TILE_H, 'black');
-				canvasContext.drawImage(wallsTileset, TILE_W, TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_OBSTACLE_LEFT_UP_DIAG:
-//				colorTriangle((col+1)*TILE_W,row*TILE_H, (col+1)*TILE_W,(row+1)*TILE_H, col*TILE_W,(row+1)*TILE_H, 'black');
-				canvasContext.drawImage(wallsTileset, 9 * TILE_W, 2 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_OBSTACLE_RIGHT_UP_DIAG:
-//				colorTriangle(col*TILE_W,row*TILE_H, (col+1)*TILE_W,(row+1)*TILE_H, col*TILE_W,(row+1)*TILE_H, 'black');
-				canvasContext.drawImage(wallsTileset, 8 * TILE_W, 2 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);				
-				break;
-			case TILE_OBSTACLE_LEFT_DOWN_DIAG:
-//				colorTriangle(col*TILE_W,row*TILE_H, (col+1)*TILE_W,row*TILE_H, (col+1)*TILE_W,(row+1)*TILE_H, 'black');
-				canvasContext.drawImage(wallsTileset, 7 * TILE_W, 0, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_OBSTACLE_RIGHT_DOWN_DIAG:
-				canvasContext.drawImage(wallsTileset, 8 * TILE_W, 0, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-//				colorTriangle(col*TILE_W,row*TILE_H, (col+1)*TILE_W,row*TILE_H, col*TILE_W,(row+1)*TILE_H, 'black');
-				break;
-			case TILE_WALL_TOP:
-				canvasContext.drawImage(wallsTileset, TILE_W, 0, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_RIGHT_EDGE:
-				canvasContext.drawImage(wallsTileset, 0, TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_OBSTACLE_BOT_LEFT_DOWN_DIAG:
-				canvasContext.drawImage(wallsTileset, 7 * TILE_W, TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_BOT_RIGHT_DIAG:
-				canvasContext.drawImage(wallsTileset, 8 * TILE_W, TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;			
-			case TILE_WALL_LEFT_EDGE:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_1:
-				canvasContext.drawImage(wallsTileset, 0, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_BOT_LEFT_LINER:
-				canvasContext.drawImage(wallsTileset, 0, 2 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_ROOF:
-				canvasContext.drawImage(wallsTileset, TILE_W, 2 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_TOP_RIGHT_LINER:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 0, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_2:
-				canvasContext.drawImage(wallsTileset, TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_3:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_4:
-				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_5:
-				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_6:
-				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_7:
-				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_8:
-				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 2 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_FRONT_9:
-				canvasContext.drawImage(wallsTileset, 7 * TILE_W, 2 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_LEFT_TOP_LINER:
-				canvasContext.drawImage(wallsTileset, 0, 0, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case TILE_WALL_LEFT_BOT_LINER:
-				canvasContext.drawImage(wallsTileset, 0, 2 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case UPPER_RIGHT_CORNER:
-				canvasContext.drawImage(wallsTileset, 8 * TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case UPPER_LEFT_CORNER:
-				canvasContext.drawImage(wallsTileset, 9 * TILE_W, 3 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case LEFT_VERTICAL_TRANSITION:
-				canvasContext.drawImage(wallsTileset, 6 * TILE_W, TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case RIGHT_VERTICAL_TRANSITION:
-				canvasContext.drawImage(wallsTileset, 9 * TILE_W, TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case VERTICAL_TO_DIAG_RIGHT:
-				canvasContext.drawImage(wallsTileset, 0, 4 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case VERTICAL_TO_DIAG_LEFT:
-				canvasContext.drawImage(wallsTileset, TILE_W, 4 * TILE_H, TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case VERTICAL_TO_RIGHT:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case VERTICAL_TO_LEFT:
-				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case HORZ_TO_VERT_LEFT_SKULL:
-				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case HORZ_TO_VERT_RIGHT_SKULL:
-				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case HORZ_TO_VERT_LEFT:
-				canvasContext.drawImage(wallsTileset, 7 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case HORZ_TO_VERT_RIGHT:
-				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 4 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_1:
-				canvasContext.drawImage(wallsTileset, 0, 5 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_2:
-				canvasContext.drawImage(wallsTileset, TILE_W, 5 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_3:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 5 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_4:
-				canvasContext.drawImage(wallsTileset, 0, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_5:
-				canvasContext.drawImage(wallsTileset, TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_6:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_7:
-				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_8:
-				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_9:
-				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_10:
-				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 6 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_11:
-				canvasContext.drawImage(wallsTileset, 0, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_12:
-				canvasContext.drawImage(wallsTileset, TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_13:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_14:
-				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_15:
-				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_16:
-				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_17:
-				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 7 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_18:
-				canvasContext.drawImage(wallsTileset, 0, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_19:
-				canvasContext.drawImage(wallsTileset, TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_20:
-				canvasContext.drawImage(wallsTileset, 2 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_21:
-				canvasContext.drawImage(wallsTileset, 3 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_22:
-				canvasContext.drawImage(wallsTileset, 4 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_23:
-				canvasContext.drawImage(wallsTileset, 5 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_24:
-				canvasContext.drawImage(wallsTileset, 6 * TILE_W, 8 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_25:
-				canvasContext.drawImage(wallsTileset,  0, 9 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_26:
-				canvasContext.drawImage(wallsTileset,  TILE_W, 9 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
-			case PLATFORM_27:
-				canvasContext.drawImage(wallsTileset,  2 * TILE_W, 9 * TILE_H,TILE_W, TILE_H, col*TILE_W, row*TILE_H, TILE_W, TILE_H);
-				break;
 			}
 		}
 	}

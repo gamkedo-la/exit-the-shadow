@@ -74,6 +74,7 @@ function startGame() {
 	loadLevel(levelOne);
 	initialiseEntityPositions();
 	generateFloorTiles();
+	generateTileEntities();
 }
 
 function updateAll() {
@@ -99,7 +100,7 @@ function drawAll() {
 	if(mainGameState){
 		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
 		
-		drawTiles(); // CAN TAKE THIS OUT AS ART IS GOING ON TOP OF IT
+		drawFloorTiles();
 
 		canvasContext.save();
 		canvasContext.translate(-camPanX, -camPanY);
@@ -111,7 +112,8 @@ function drawAll() {
 		
 		// sorted art
 		SortedDrawList = [];
-		SortedDrawList = SortedDrawList.concat(Entities, SortedArt);
+
+		SortedDrawList = SortedDrawList.concat(Entities, SortedArt, getVisibleTileEntities());
 		SortedDrawList.sort(sortByFloorPosition); // defined once above
 		for (var i = 0; i < SortedDrawList.length ; i++) {
 			if (typeof SortedDrawList[i].imgName !== 'undefined') { // sorted environment art
@@ -126,6 +128,8 @@ function drawAll() {
 		for (i = 0; i < OverlayingArt.length; i++) {
 			canvasContext.drawImage(window[OverlayingArt[i].imgName], OverlayingArt[i].x, OverlayingArt[i].y);
 		}
+
+		Player.drawGradient();
 
 		canvasContext.restore();
 		

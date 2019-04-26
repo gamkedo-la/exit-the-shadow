@@ -116,7 +116,7 @@ TILE_OBSTACLE_RIGHT_DOWN_DIAG_COLLISION_DATA = {
 TILE_WALL_TOP_COLLISION_DATA = {
 	leftWallCollider: true, rightWallCollider: true,
 	topWallCollider: true, bottomWallCollider: true,
-	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	topLeftVertex: {x: 0, y: TILE_H/2}, topRightVertex: {x: TILE_W, y: TILE_H/2},
 	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}
 },
 

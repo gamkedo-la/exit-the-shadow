@@ -4,6 +4,8 @@ const DASH_COOLDOWN = 5;
 const ATTACK_COOLDOWN = 5;
 const SHIELD_MAX_TIME = 15;
 const SHIELD_COOLDOWN = 5;
+const GRADIENT_HALF_W = 640;
+const GRADIENT_HALF_H = 620;
 
 // inherit from EntityClass
 PlayerClass.prototype = new EntityClass();
@@ -300,10 +302,34 @@ function PlayerClass() {
 			this.trail.draw(); 
 		
 		EntityClass.prototype.draw.call(this);
-		
-		//increasing the number of draws for more effect
-		for(var i = 0; i < 3; i++)
-			canvasContext.drawImage(playerGradient, this.x-640, this.y-620, 1280, 1280);
+	}
+
+	this.drawGradient = function() {
+		const gradientX = this.x-GRADIENT_HALF_W;
+		const gradientY = this.y-GRADIENT_HALF_H;
+		for(var i = 0; i < 3; i++) {
+			canvasContext.drawImage(playerGradient, gradientX, gradientY, 1280, 1280);
+		}
+
+		if(gradientX > camPanX) {
+			const leftWidth = gradientX - camPanX;
+			colorRect(camPanX, camPanY, leftWidth, canvas.height, 'black'); // canvas
+		}
+
+		if(gradientX + 1280 < camPanX + canvas.width) {
+			const rightWidth = (camPanX + canvas.width) - (gradientX + 1280);
+			colorRect(gradientX + 1279, camPanY, rightWidth + 1, canvas.height, 'black'); // canvas
+		}
+
+		if(gradientY > camPanY) {
+			const topHeight = gradientY - camPanY;
+			colorRect(camPanX, camPanY, canvas.width, topHeight, 'black'); // canvas
+		}
+
+		if(gradientY + 1280 < camPanY + canvas.height) {
+			const bottomHeight = (camPanY + canvas.height) - (gradientY + 1280);
+			colorRect(camPanX, gradientY + 1280, canvas.width, bottomHeight, 'black'); // canvas
+		}
 	}
 	
 	this.isAttacking = function() {
