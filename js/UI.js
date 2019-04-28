@@ -14,14 +14,19 @@ function drawUI() {
 }
 
 function playerLife() {
-	var x = 10, y = 8, iconSize = 50;
+	var x = 10, y = 8, iconSize = 50, padding = 5;
 
 	var oldX = x;
-	for (var i = 0; i < Player.HP; i++) {
-		canvasContext.drawImage(playerLifeIcon, x,y, iconSize,iconSize);
+	for (var i = 0; i < Player.maxHP; i++) {
+		canvasContext.drawImage(playerLifeIconBackground, x,y, iconSize,iconSize);
 		x += iconSize;
 	}
-	var padding = 10;
+	x = oldX;
+	for (i = 0; i < Player.HP; i++) {
+		canvasContext.drawImage(playerLifeIcon, x+padding,y+padding, iconSize-padding*2,iconSize-padding*2);
+		x += iconSize;
+	}
+	padding = 10;
 	x = oldX + padding;
 	y += iconSize;
 	
@@ -45,7 +50,7 @@ function bossHealthBar(boss, bossNumber) {
 	y -= (height + 24) * bossNumber;
 	canvasContext.drawImage(bossHealthBarOutline, x,y, width, height);
 	
-	colorText(boss.name, x,y-4, 'black');
+	colorText(boss.name, x,y-4, "#d0d0d0");
 	
 	healthLeft = width-4;
 	healthLeft *= boss.HP / boss.maxHP;
