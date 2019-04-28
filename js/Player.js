@@ -371,4 +371,8 @@ function PlayerClass() {
 			regainHealthMeter = regainHealthMeter % regainHealthThreshold;
 		}
 	}
+	
+	this.regainHealthFromAttack = function() {
+		regainHealthMeter++;
+	}
 }

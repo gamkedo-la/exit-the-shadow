@@ -277,6 +277,10 @@ function handleProjectileCollisions(projectile) {
 				Entities[i].forceY += projectile.velocityY;
 				projectile.immuneEntities.push(Entities[i]);
 				handleDeadEntities(); // check if anyone is dead
+				
+				if (projectile.immuneEntities[0] == Player) { // attack started by player
+					Player.regainHealthFromAttack();
+				}
 			}
 		}
 	}
