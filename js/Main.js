@@ -137,9 +137,10 @@ function drawAll() {
 		
 		colorText((mouseX+camPanX) + ', ' + (mouseY+camPanY), mouseX,mouseY, 'black');
 	} else if(helpScreen){
-		colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
+		//colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
 
 		// DISPLAY CONTROLS / ANY OTHER HELP HERE
+		helpBlock();
 
 		gamePaused = true;
 	}

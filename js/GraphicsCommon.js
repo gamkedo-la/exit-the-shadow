@@ -31,3 +31,17 @@ function colorText(text, textX,textY, fillColor) {
 	canvasContext.fillStyle = fillColor;
 	canvasContext.fillText(text, textX,textY);
 }
+
+var savedFont;
+
+function saveFont() {
+	savedFont = canvasContext.font;
+}
+
+function restoreFont() {
+	canvasContext.font = savedFont;
+}
+
+function setFont(style, fontSize, font) {
+	canvasContext.font = style + " " + fontSize + "px " + font;
+}
