@@ -29,3 +29,15 @@ function distanceBetweenEntityObjectY(entity, objectY, objectHeight) {
 	var y2 = objectY + objectHeight / 2;
 	return Math.abs(y1 - y2);
 }
+
+function lerp(from, to, lerpValue) {
+	return (from * (1.0 - lerpValue)) + (to * lerpValue);
+}
+
+function clamp(num, min, max) {
+	return num <= min ? min : num >= max ? max : num;
+}
+
+function clamp01(num) {
+	return clamp(num, 0.0, 1.0);
+}

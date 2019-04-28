@@ -53,7 +53,7 @@ function keySet(evt, player, isPressed) {
 }
 
 function keyPressed(evt) {	
-	keySet(evt, Player, true);
+	if (!helpScreen) { keySet(evt, Player, true) };
 	var helpScreenKey = KEY_H;
 	
 	if (evt.keyCode == helpScreenKey) {
@@ -61,9 +61,13 @@ function keyPressed(evt) {
 			mainGameState = true;
 			gamePaused = false;
 			helpScreen = false;
+			m_helpScreenTrasitioningOut = true;
+			currHelpScreenTransition = helpScreenTransitions.TRANSITIONING_OUT;
 		} else {
 			mainGameState = false;
+			m_helpScreenTrasitioningOut = false;
 			helpScreen = true;
+			currHelpScreenTransition = helpScreenTransitions.BACKGROUND_START;
 		}
 	}
 }
