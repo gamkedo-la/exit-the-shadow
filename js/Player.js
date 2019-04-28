@@ -42,6 +42,7 @@ function PlayerClass() {
 	this.keyHeld_Left = false;
 	this.keyHeld_Right = false;
 	this.keyHeld_Dash = false;
+	this.keyHeld_Interact = false;
 	this.keyHeld_Attack = false;
 	this.keyHeld_Shield = false;
 	
@@ -50,6 +51,7 @@ function PlayerClass() {
 	this.controlKeyRight;
 	this.controlKeyDown;
 	this.controlKeyDash;
+	this.controlKeyInteract;
 	this.controlKeyAttack;
 	this.controlKeyShield;
 	
@@ -69,12 +71,13 @@ function PlayerClass() {
 	let shieldRemaining = SHIELD_MAX_TIME;
 	let shieldCooldown = SHIELD_COOLDOWN;
 	
-	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, attackKey, shieldKey) {
+	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, interactKey, attackKey, shieldKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyLeft = leftKey;
 		this.controlKeyDown = downKey;
 		this.controlKeyRight = rightKey;
 		this.controlKeyDash = dashKey;
+		this.controlKeyInteract = interactKey;
 		this.controlKeyAttack = attackKey;
 		this.controlKeyShield = shieldKey;
 	}
@@ -238,6 +241,11 @@ function PlayerClass() {
 			else if (shieldCooldown <= 0 && this.keyHeld_Shield) {
 				shieldCooldown = 1; // prevent repeatedly shielding if keyheld
 			}
+		}
+		
+		if (this.keyHeld_Interact) {
+			// interact with nearby things here
+			console.log("interacting");
 		}
 
 		this.updateState(); // update animation state
