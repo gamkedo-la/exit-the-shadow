@@ -13,6 +13,7 @@ var bossHealthBarOutline = document.createElement("img");
 var bossHealth = document.createElement("img");
 var playerGradient = document.createElement("img");
 var healingStatue = document.createElement("img");
+var typewriter = document.createElement("img");
 //var playerShadowSprite = document.createElement("img");
 
 picsToLoad = 0;
@@ -39,6 +40,7 @@ function loadImages() {
 		{varName: bossHealth, fileName: "BossHealthBar.png"},
 		{varName: playerGradient, fileName: "gradient.png"},
 		{varName: healingStatue, fileName: "healing_statue.png"},
+		{varName: typewriter, fileName: "typewriter.png"},
 		//{varName: playerShadowSprite, fileName: "playerShadow.png"},
 	];
 	

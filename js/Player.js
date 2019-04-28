@@ -250,15 +250,27 @@ function PlayerClass() {
 		if (this.keyHeld_Interact) {
 			// interact with nearby things here
 			for (var i = 0; i < SortedArt.length; i++) {
-				if (SortedArt[i].imgName = "healingStatue") {
+				if (SortedArt[i].imgName == "healingStatue") {
 					let object = SortedArt[i];
 					let objectWidth = window[object.imgName].width;
 					let objectHeight = window[object.imgName].height;
 					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+					if (distanceX <= (objectWidth/2 + this.width/2) &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)) {
+							console.log("healing");
 							regainHealthMeter++;
+					}
+				}
+				else if (SortedArt[i].imgName == "typewriter") {
+					let object = SortedArt[i];
+					let objectWidth = window[object.imgName].width;
+					let objectHeight = window[object.imgName].height;
+					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+					if (distanceX <= (objectWidth/2 + this.width/2) &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)) {
+							console.log("load save game screen here");
 					}
 				}
 			}
