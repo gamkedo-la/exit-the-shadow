@@ -17,6 +17,7 @@ function PlayerClass() {
 	this.width = 25;
 	this.height = 50;
 	this.HP = 5;
+	this.maxHP = this.HP;
 	
 	this.collisionBoxHeight = this.width;
 	
@@ -70,6 +71,9 @@ function PlayerClass() {
 	let isShielding = false;
 	let shieldRemaining = SHIELD_MAX_TIME;
 	let shieldCooldown = SHIELD_COOLDOWN;
+	
+	let regainHealthMeter = 0;
+	let regainHealthThreshold = 10;
 	
 	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, interactKey, attackKey, shieldKey) {
 		this.controlKeyUp = upKey;
@@ -254,11 +258,13 @@ function PlayerClass() {
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-						console.log("healing");
+							regainHealthMeter++;
 					}
 				}
 			}
 		}
+		
+		this.checkForRegainHealth();
 
 		this.updateState(); // update animation state
 		EntityClass.prototype.move.call(this); // call superclass function
@@ -357,5 +363,12 @@ function PlayerClass() {
 			return true;
 		}
 		return false;
+	}
+	
+	this.checkForRegainHealth = function() {
+		if (regainHealthMeter >= regainHealthThreshold && this.HP < this.maxHP) {
+			this.HP++;
+			regainHealthMeter = regainHealthMeter % regainHealthThreshold;
+		}
 	}
 }

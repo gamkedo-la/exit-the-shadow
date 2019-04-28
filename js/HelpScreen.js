@@ -10,7 +10,7 @@ function helpBlock() {
 		var bottomBorder = canvas.height - topBorder;
 		//var boxHeight = canvas.height - (topBorder * 2);
 		var padTop = (canvas.height * padPercentSize) + textHeight;
-		var boxHeight = (textHeight * 9) + (padTop * 1.25);
+		var boxHeight = (textHeight * 10) + (padTop * 1.25);
 		colorRect(leftBorder, topBorder, boxWidth, boxHeight, 'rgba(255, 255, 255, 0.4)'); // canvas
 
 		var textColor = 'rgba(255, 0, 0, 1)';
@@ -27,6 +27,8 @@ function helpBlock() {
 		colorText("D - Move Down", padLeft, padTop + topBorder + textVPosShift, textColor);
 		textVPosShift += textHeight;
 		colorText("Space (while pressing a direction) - Dash", padLeft, padTop + topBorder + textVPosShift, textColor);
+		textVPosShift += textHeight;
+		colorText("E - Interact", padLeft, padTop + topBorder + textVPosShift, textColor);
 		textVPosShift += textHeight;
 		colorText("K - Attack facing direction", padLeft, padTop + topBorder + textVPosShift, textColor);
 		textVPosShift += textHeight;
