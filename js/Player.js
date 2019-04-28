@@ -18,6 +18,7 @@ function PlayerClass() {
 	this.height = 50;
 	this.HP = 5;
 	this.maxHP = this.HP;
+	this.HP = 1;
 	
 	this.collisionBoxHeight = this.width;
 	
@@ -72,8 +73,8 @@ function PlayerClass() {
 	let shieldRemaining = SHIELD_MAX_TIME;
 	let shieldCooldown = SHIELD_COOLDOWN;
 	
-	let regainHealthMeter = 0;
-	let regainHealthThreshold = 10;
+	this.regainHealthMeter = 0;
+	this.regainHealthThreshold = 10;
 	
 	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, interactKey, attackKey, shieldKey) {
 		this.controlKeyUp = upKey;
@@ -196,7 +197,8 @@ function PlayerClass() {
 					velocityX: velocityX,
 					velocityY: velocityY,
 					frameLength: 1,
-					immuneEntities: [Player]
+					immuneEntities: [Player],
+					isPlayerAttack: true
 				}
 				
 				Attack = new ProjectileClass(attackOptions);
@@ -256,10 +258,10 @@ function PlayerClass() {
 					let objectHeight = window[object.imgName].height;
 					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2) &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)) {
+					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
 							console.log("healing");
-							regainHealthMeter++;
+							this.regainHealthMeter++;
 					}
 				}
 				else if (SortedArt[i].imgName == "typewriter") {
@@ -268,8 +270,8 @@ function PlayerClass() {
 					let objectHeight = window[object.imgName].height;
 					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2) &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)) {
+					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
 							console.log("load save game screen here");
 					}
 				}
@@ -378,13 +380,18 @@ function PlayerClass() {
 	}
 	
 	this.checkForRegainHealth = function() {
-		if (regainHealthMeter >= regainHealthThreshold && this.HP < this.maxHP) {
-			this.HP++;
-			regainHealthMeter = regainHealthMeter % regainHealthThreshold;
+		if (this.HP < this.maxHP) {
+			if (this.regainHealthMeter >= this.regainHealthThreshold) {
+				this.HP++;
+				this.regainHealthMeter = this.regainHealthMeter % this.regainHealthThreshold;
+			}
+		}
+		else {
+			this.regainHealthMeter = 0;
 		}
 	}
 	
 	this.regainHealthFromAttack = function() {
-		regainHealthMeter++;
+		this.regainHealthMeter++;
 	}
 }

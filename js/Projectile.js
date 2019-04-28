@@ -8,6 +8,8 @@ function ProjectileClass(options) {
 	this.velocityX = options.velocityX;
 	this.velocityY = options.velocityY;
 	this.attackFinished = false;
+	
+	this.isPlayerAttack = options.isPlayerAttack || false;
 
 	let frameLength = options.frameLength;
 	let framesLeft = frameLength;

@@ -14,12 +14,24 @@ function drawUI() {
 }
 
 function playerLife() {
-	var x = 10, y = 8;
+	var x = 10, y = 8, iconSize = 50;
 
+	var oldX = x;
 	for (var i = 0; i < Player.HP; i++) {
-		canvasContext.drawImage(playerLifeIcon, x,y, 50,50);
-		x += 50;
+		canvasContext.drawImage(playerLifeIcon, x,y, iconSize,iconSize);
+		x += iconSize;
 	}
+	var padding = 10;
+	x = oldX + padding;
+	y += iconSize;
+	
+	var regainHealthBarWidth = iconSize*5 - padding*2;
+	canvasContext.drawImage(bossHealthBarOutline, x,y, regainHealthBarWidth, 15);
+	
+	x += 2;
+	var regainHealthMeterWidth = regainHealthBarWidth - 4;
+	regainHealthMeterWidth *= Player.regainHealthMeter / Player.regainHealthThreshold;
+	canvasContext.drawImage(bossHealth, x, y, regainHealthMeterWidth, 15);
 }
 
 function bossHealthBar(boss, bossNumber) {
