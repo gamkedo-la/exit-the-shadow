@@ -62,6 +62,7 @@ const PLATFORM_24 = 60;
 const PLATFORM_25 = 61;
 const PLATFORM_26 = 62;
 const PLATFORM_27 = 63;
+const OBSTACLE_BUT_NO_DRAW = 64;
 
 var TILE_COLLISION_DATA = [
 // 0	
@@ -538,5 +539,12 @@ PLATFORM_1_COLLISION_DATA = {
 	bottomLeftVertex: {x: 0, y: TILE_H - 12}, bottomRightVertex: {x: TILE_W - 6, y: TILE_H - 12}
 },
 
+// 64
+OBSTACLE_BUT_NO_DRAW_COLLISION_DATA = {
+	leftWallCollider: true, rightWallCollider: true,
+	topWallCollider: true, bottomWallCollider: true,
+	topLeftVertex: {x: 0, y: 0}, topRightVertex: {x: TILE_W, y: 0},
+	bottomLeftVertex: {x: 0, y: TILE_H}, bottomRightVertex: {x: TILE_W, y: TILE_H}		
+},
 
 ];

@@ -7,3 +7,25 @@ function distanceBetweenEntities(entity1, entity2) {
 	
 	return Math.abs(Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1))));
 }
+
+function distanceBetweenEntityObject(entity, objectX, objectY, objectWidth, objectHeight) {
+	var x1 = entity.x + entity.width / 2;
+	var y1 = entity.y + entity.height - entity.collisionBoxHeight / 2;
+	
+	var x2 = objectX + objectWidth / 2;
+	var y2 = objectY + objectHeight / 2;
+	
+	return Math.abs(Math.sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1))));
+}
+
+function distanceBetweenEntityObjectX(entity, objectX, objectWidth) {
+	var x1 = entity.x + entity.width / 2;
+	var x2 = objectX + objectWidth / 2;
+	return Math.abs(x1 - x2);
+}
+
+function distanceBetweenEntityObjectY(entity, objectY, objectHeight) {
+	var y1 = entity.y + entity.height - entity.collisionBoxHeight / 2;
+	var y2 = objectY + objectHeight / 2;
+	return Math.abs(y1 - y2);
+}

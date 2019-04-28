@@ -12,6 +12,7 @@ var bossTrailImage = document.createElement("img");
 var bossHealthBarOutline = document.createElement("img");
 var bossHealth = document.createElement("img");
 var playerGradient = document.createElement("img");
+var healingStatue = document.createElement("img");
 //var playerShadowSprite = document.createElement("img");
 
 picsToLoad = 0;
@@ -37,6 +38,7 @@ function loadImages() {
 		{varName: bossHealthBarOutline, fileName: "BossHealthBarOutline.png"},
 		{varName: bossHealth, fileName: "BossHealthBar.png"},
 		{varName: playerGradient, fileName: "gradient.png"},
+		{varName: healingStatue, fileName: "healing_statue.png"},
 		//{varName: playerShadowSprite, fileName: "playerShadow.png"},
 	];
 	

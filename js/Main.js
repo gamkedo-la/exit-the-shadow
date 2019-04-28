@@ -13,7 +13,7 @@ var GroundArt = [
 ];
 
 var SortedArt = [
-
+	{x: 3136, y: 3008, imgName: "healingStatue"}
 ];
 
 var OverlayingArt = [
