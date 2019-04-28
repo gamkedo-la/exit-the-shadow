@@ -389,6 +389,13 @@ function PlayerClass() {
 		else {
 			this.regainHealthMeter = 0;
 		}
+		
+		if (this.regainHealthMeter > 0) {
+			this.regainHealthMeter -= 0.01;
+		}
+		else {
+			this.regainHealthMeter = 0;
+		}
 	}
 	
 	this.regainHealthFromAttack = function() {
