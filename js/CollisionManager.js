@@ -55,6 +55,53 @@ function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
 	// decrement to make right and bottom collisions go all the way against the next tile
 	objectWidth--;
 	objectHeight--;
+
+	var leftTile = Math.floor(objectX / TILE_W);
+	var rightTile = Math.floor((objectX + objectWidth) / TILE_W)
+	var topTile = Math.floor(objectY / TILE_H);
+	var bottomTile = Math.floor((objectY + objectHeight) / TILE_H)
+
+	var tileType;
+	var tileCollisionData;
+	var lineVertex1;
+	var lineVertex2;
+
+	var row, col;
+	for (row = topTile; row <= bottomTile; row++) {
+		for (col = leftTile; col <= rightTile; col++) {
+			tileType = tileTypeAtColRow(tileGrid, col, row);
+			tileXPos = col*TILE_W;
+			tileYPos = row*TILE_W;
+			
+			tileCollisionData = TILE_COLLISION_DATA[tileType];
+
+			for(let i = 0; i < tileCollisionData.points.length; i++) {
+				if(i === 0) {
+					lineVertex1 = tileCollisionData.points[tileCollisionData.points.length - 1];
+					lineVertex2 = tileCollisionData.points[i];
+				} else {
+					lineVertex1 = tileCollisionData.points[i - 1];
+					lineVertex2 = tileCollisionData.points[i];	
+				}
+				
+				if (lineRectangleCollider(
+					lineVertex1.x + col * TILE_W, lineVertex1.y + row * TILE_H, 
+					lineVertex2.x + col * TILE_W, lineVertex2.y + row * TILE_H,
+					objectX, objectY, objectWidth, objectHeight)) {
+					
+					return true;
+				}
+			}
+		}
+	}
+
+	return false;
+}
+
+/*function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
+	// decrement to make right and bottom collisions go all the way against the next tile
+	objectWidth--;
+	objectHeight--;
 	
 	var leftTile = Math.floor(objectX / TILE_W);
 	var rightTile = Math.floor((objectX + objectWidth) / TILE_W)
@@ -127,7 +174,7 @@ function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
 		}
 	}
 	return false;
-}
+}*/
 
 function resolveWorldCollisions(object, prevX, prevY, speedX, speedY) {
 	var collision;
