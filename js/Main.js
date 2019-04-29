@@ -9,12 +9,15 @@ var Entities = [
 ];
 
 var GroundArt = [
-	//{x: 750, y: 3000, imgName: "platform"}
+	{x: 3736, y: 2400, imgName: "pathway"},
+	{x: 3040, y: 2016, imgName: "platform"},
 ];
 
 var SortedArt = [
 	{x: 3136, y: 3008, imgName: "healingStatue"},
 	{x: 3712, y: 3040, imgName: "typewriter"},
+	{x: 3680, y: 2144, imgName: "entrance"},
+	{x: 3296, y: 2920, imgName: "gateway"},
 ];
 
 var OverlayingArt = [
@@ -68,7 +71,7 @@ function startGame() {
 	
 	// fill in height (/2) for art that needs sorting
 	SortedArt.forEach(function(art) {
-		art.height = window[art.imgName].height/2;
+		art.height = window[art.imgName].height;
 	});
 
 	setUpInput();

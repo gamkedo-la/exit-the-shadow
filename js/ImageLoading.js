@@ -15,6 +15,9 @@ var bossHealth = document.createElement("img");
 var playerGradient = document.createElement("img");
 var healingStatue = document.createElement("img");
 var typewriter = document.createElement("img");
+var entrance = document.createElement("img");
+var pathway = document.createElement("img");
+var gateway = document.createElement("img");
 //var playerShadowSprite = document.createElement("img");
 
 picsToLoad = 0;
@@ -43,6 +46,9 @@ function loadImages() {
 		{varName: playerGradient, fileName: "gradient.png"},
 		{varName: healingStatue, fileName: "healing_statue.png"},
 		{varName: typewriter, fileName: "typewriter.png"},
+		{varName: entrance, fileName: "entrance.png"},
+		{varName: pathway, fileName: "pathway.png"},
+		{varName: gateway, fileName: "gateway.png"},
 		//{varName: playerShadowSprite, fileName: "playerShadow.png"},
 	];
 	
