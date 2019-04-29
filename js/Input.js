@@ -53,7 +53,7 @@ function keySet(evt, player, isPressed) {
 }
 
 function keyPressed(evt) {	
-	if (!helpScreen) { keySet(evt, Player, true) };
+	keySet(evt, Player, true);
 	var helpScreenKey = KEY_H;
 	
 	if (evt.keyCode == helpScreenKey) {

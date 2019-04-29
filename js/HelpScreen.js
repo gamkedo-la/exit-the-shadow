@@ -20,7 +20,7 @@ var helpScreenLastTime = dt.getTime() / 1000.0;
 
 function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _textHeight, _padTop)
 {
-	var textColor = "rgba(255, 0, 0, " + _textAlpha + ")";
+	var textColor = "rgba(128, 30, 30, " + _textAlpha + ")";
 	var textVPosShift = 0;
 	var padLeft = _leftBorder + (canvas.width * _padPercentSize);
 
@@ -56,7 +56,7 @@ function helpBlock()
 	var maxBackgroundRectAlpha = 0.4;
 	var maxTextAlpha = 1.0;
 
-	var percentSize = 0.10;
+	var percentSize = 0.12;
 	var leftBorder = canvas.width * percentSize;
 	var rightBorder = canvas.width - leftBorder;
 	var boxWidth = canvas.width - (leftBorder * 2);

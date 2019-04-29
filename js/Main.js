@@ -85,6 +85,13 @@ function updateAll() {
 		moveAll();
 		camScreenshake();
 	}
+	else {
+		canvasContext.save();
+		canvasContext.font = "30px Arial";
+		canvasContext.textAlign = "center";
+		colorText("Paused", canvas.width/2, 50, 'grey');
+		canvasContext.restore();
+	}
 }
 
 function moveAll() {
