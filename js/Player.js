@@ -7,6 +7,35 @@ const SHIELD_COOLDOWN = 5;
 const GRADIENT_HALF_W = 640;
 const GRADIENT_HALF_H = 620;
 
+function deathTextDisplay()
+{
+	var textColor = "rgba(255, 255, 255, " + 0.3 + ")";
+
+	saveFont();
+	var txtHeight = 40;
+	setFont("bold", txtHeight, "Arial");
+
+	var percentSize = 0.2;
+	var textToDisplay = "no more are you";
+	var txtWidth = textWidth(textToDisplay);
+	var boxWidth = txtWidth * (1 + percentSize);
+	var boxHeight = txtHeight * (1 + percentSize);
+	var halfWidthCanvas = (canvas.width * 0.5);
+	var halfHeightCanvas = (canvas.height * 0.5);
+	var boxXPos = halfWidthCanvas - (boxWidth * 0.5);
+	var boxYPos = halfHeightCanvas - (boxHeight * 0.5);
+	var txtXPos = halfWidthCanvas - (txtWidth * 0.5);
+	var txtYPos = halfHeightCanvas;
+	var bLine = canvasContext.textBaseline;
+
+	colorRect(boxXPos, boxYPos, boxWidth, boxHeight, "rgba(128, 30, 30," + 0.7 + ")");
+	canvasContext.textBaseline = "middle";
+	colorText(textToDisplay, txtXPos, txtYPos, textColor);
+	canvasContext.textBaseline = bLine;
+
+	restoreFont();
+}
+
 // inherit from EntityClass
 PlayerClass.prototype = new EntityClass();
 PlayerClass.prototype.constructor = PlayerClass;
@@ -400,5 +429,16 @@ function PlayerClass() {
 	
 	this.regainHealthFromAttack = function() {
 		this.regainHealthMeter++;
+	}
+
+	this.deathHandle = function ()
+	{
+		if (this.isDead)
+		{
+			deathTextDisplay()
+			gamePaused = true;
+			return true;
+		}
+		return false;
 	}
 }

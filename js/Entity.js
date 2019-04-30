@@ -145,5 +145,10 @@ EntityClass.prototype = {
 			return true;
 		}
 		return false;
+	},
+
+	deathHandle: function ()
+	{
+		return this.isDead;
 	}
 }

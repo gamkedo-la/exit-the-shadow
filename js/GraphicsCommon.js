@@ -27,9 +27,13 @@ function colorCircle(centerX, centerY, radius, fillColor) {
 	canvasContext.fill();
 }
 
-function colorText(text, textX,textY, fillColor) {
+function colorText(text, textX, textY, fillColor) {
 	canvasContext.fillStyle = fillColor;
 	canvasContext.fillText(text, textX,textY);
+}
+
+function textWidth(_text) {
+	return canvasContext.measureText(_text).width;
 }
 
 var savedFont;

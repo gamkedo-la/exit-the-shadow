@@ -177,8 +177,8 @@ function animateAll() {
 }
 
 function handleDeadEntities() {
-	for (var i = 0; i < Entities.length; i++) {
-		if (Entities[i].isDead) {
+	for (var i = Entities.length - 1; i >= 0; --i) {
+		if (Entities[i].deathHandle()) {
 			Entities.splice(i, 1); // remove dead entity
 		}
 	}
