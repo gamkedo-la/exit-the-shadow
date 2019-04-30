@@ -73,23 +73,23 @@ function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
 			tileXPos = col*TILE_W;
 			tileYPos = row*TILE_W;
 			
-			tileCollisionData = TILE_COLLISION_DATA[tileType];
+			tileCollisionData = collisionPointsForTileType(tileType);
 
-			for(let i = 0; i < tileCollisionData.points.length; i++) {
+			for(let i = 0; i < tileCollisionData.length; i++) {
 				if(i === 0) {
-					lineVertex1 = tileCollisionData.points[tileCollisionData.points.length - 1];
-					lineVertex2 = tileCollisionData.points[i];
+					lineVertex1 = tileCollisionData[tileCollisionData.length - 1];
+					lineVertex2 = tileCollisionData[i];
 				} else {
-					lineVertex1 = tileCollisionData.points[i - 1];
-					lineVertex2 = tileCollisionData.points[i];	
+					lineVertex1 = tileCollisionData[i - 1];
+					lineVertex2 = tileCollisionData[i];	
 				}
-				
+
 				if (lineRectangleCollider(
 					lineVertex1.x + col * TILE_W, lineVertex1.y + row * TILE_H, 
 					lineVertex2.x + col * TILE_W, lineVertex2.y + row * TILE_H,
 					objectX, objectY, objectWidth, objectHeight)) {
-					
-					return true;
+
+						return true;
 				}
 			}
 		}
@@ -98,85 +98,8 @@ function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
 	return false;
 }
 
-/*function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
-	// decrement to make right and bottom collisions go all the way against the next tile
-	objectWidth--;
-	objectHeight--;
-	
-	var leftTile = Math.floor(objectX / TILE_W);
-	var rightTile = Math.floor((objectX + objectWidth) / TILE_W)
-	var topTile = Math.floor(objectY / TILE_H);
-	var bottomTile = Math.floor((objectY + objectHeight) / TILE_H)
-	
-	var tileXPos, tileYPos;
-	var tileType;
-	var tileCollisionData;
-	var lineVertex1;
-	var lineVertex2;
-	
-	var row, col;
-	for (row = topTile; row <= bottomTile; row++) {
-		for (col = leftTile; col <= rightTile; col++) {
-			tileType = tileTypeAtColRow(tileGrid, col, row);
-			tileXPos = col*TILE_W;
-			tileYPos = row*TILE_W;
-			
-			tileCollisionData = TILE_COLLISION_DATA[tileType];
-			
-			if (tileCollisionData.leftWallCollider) {
-				lineVertex1 = tileCollisionData.topLeftVertex;
-				lineVertex2 = tileCollisionData.bottomLeftVertex;
-				
-				if (lineRectangleCollider(
-					lineVertex1.x + col * TILE_W, lineVertex1.y + row * TILE_H, 
-					lineVertex2.x + col * TILE_W, lineVertex2.y + row * TILE_H,
-					objectX, objectY, objectWidth, objectHeight)) {
-					return true;
-				}
-			}
-			
-			if (tileCollisionData.rightWallCollider) {
-				lineVertex1 = tileCollisionData.topRightVertex;
-				lineVertex2 = tileCollisionData.bottomRightVertex;
-				
-				if (lineRectangleCollider(
-					lineVertex1.x + col * TILE_W, lineVertex1.y + row * TILE_H, 
-					lineVertex2.x + col * TILE_W, lineVertex2.y + row * TILE_H,
-					objectX, objectY, objectWidth, objectHeight)) {
-					
-					return true;
-				}
-			}
-			if (tileCollisionData.topWallCollider) {
-				lineVertex1 = tileCollisionData.topLeftVertex;
-				lineVertex2 = tileCollisionData.topRightVertex;
-				
-				if (lineRectangleCollider(
-					lineVertex1.x + col * TILE_W, lineVertex1.y + row * TILE_H, 
-					lineVertex2.x + col * TILE_W, lineVertex2.y + row * TILE_H,
-					objectX, objectY, objectWidth, objectHeight)) {
-					
-					return true;
-				}
-			}
-			if (tileCollisionData.bottomWallCollider) {
-				lineVertex1 = tileCollisionData.bottomLeftVertex;
-				lineVertex2 = tileCollisionData.bottomRightVertex;
-				
-				if (lineRectangleCollider(
-					lineVertex1.x + col * TILE_W, lineVertex1.y + row * TILE_H, 
-					lineVertex2.x + col * TILE_W, lineVertex2.y + row * TILE_H,
-					objectX, objectY, objectWidth, objectHeight)) {
-					
-					return true;
-				}
-			}
-		}
-	}
-	return false;
-}*/
-
 function resolveWorldCollisions(object, prevX, prevY, speedX, speedY) {
+	const delta = 16;
 	var collision;
 	
 	if (speedX != 0 && speedY != 0) { // moving diagonally
@@ -187,30 +110,30 @@ function resolveWorldCollisions(object, prevX, prevY, speedX, speedY) {
 	if (speedX != 0) { // moving horizontally
 		/* incrementing/decrementing by 2 instead of 1 here prevents the bottom 
 		right corners of tiles causing collision when they shouldn't */
-		collision = detectWorldCollisions(object.nextX, collisionBoxY(object) - 2, object.width, object.collisionBoxHeight); // check if moving up solves it (slope)
+		collision = detectWorldCollisions(object.nextX, collisionBoxY(object) - delta, object.width, object.collisionBoxHeight); // check if moving up solves it (slope)
 		if (!collision) {
 			object.nextY--;
 			return;
 		}
 			
-		collision = detectWorldCollisions(object.nextX, collisionBoxY(object) + 2, object.width, object.collisionBoxHeight); // check if moving down solves it (slope)
+		collision = detectWorldCollisions(object.nextX, collisionBoxY(object) + delta, object.width, object.collisionBoxHeight); // check if moving down solves it (slope)
 		if (!collision) {
 			object.nextY++;
 			return;
 		}
-			
+
 		object.nextX = prevX; // otherwise move back to previous location
 		return;
 	}
 		
 	if (speedY != 0) { // moving vertically
-		collision = detectWorldCollisions(object.nextX - 2, collisionBoxY(object), object.width, object.collisionBoxHeight); // check if moving left solves it (slope)
+		collision = detectWorldCollisions(object.nextX - delta, collisionBoxY(object), object.width, object.collisionBoxHeight); // check if moving left solves it (slope)
 		if (!collision) {
 			object.nextX--;
 			return;
 		}
 		
-		collision = detectWorldCollisions(object.nextX + 2, collisionBoxY(object), object.width, object.collisionBoxHeight); // check if moving right solves it (slope)
+		collision = detectWorldCollisions(object.nextX + delta, collisionBoxY(object), object.width, object.collisionBoxHeight); // check if moving right solves it (slope)
 		if (!collision) {
 			object.nextX++;
 			return;
