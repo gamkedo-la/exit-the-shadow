@@ -257,6 +257,8 @@ function TileEntity(type, col, row) {
 	this.y = row * TILE_H;
 	this.width = TILE_W;
 	this.height = TILE_H;
+	this.centerX = this.x + TILE_W / 2;
+	this.centerY = this.y + TILE_H / 2;
 	
 	const atlasPos = getAtlasPosForType(type);
 	

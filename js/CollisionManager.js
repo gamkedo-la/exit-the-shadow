@@ -57,8 +57,20 @@ function detectWorldCollisions(objectX, objectY, objectWidth, objectHeight) {
 	var lineVertex1;
 	var lineVertex2;
 
+	const objectCenterX = objectX + objectWidth / 2;
+	const objectCenterY = objectY + objectHeight / 2;
+
+	let k = 0;
 	for(let j = 0; j < visibleTileEntities.length; j++) {
 		thisTile = visibleTileEntities[j];
+
+		//Bail out early if too far away to collide with this tile
+		if(Math.abs(objectCenterX - thisTile.centerX) > 2 * TILE_W) {
+			continue;
+		} else if(Math.abs(objectCenterY - thisTile.centerY) > 2 * TILE_H) {
+			continue;
+		}
+
 		tileCollisionData = thisTile.collisionData;
 
 		for(let i = 0; i < tileCollisionData.length; i++) {
