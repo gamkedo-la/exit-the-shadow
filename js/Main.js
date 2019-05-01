@@ -3,6 +3,7 @@ var Player = new PlayerClass();
 var mainGameState = true;
 var helpScreen = false;
 var camShakeOn = false;
+var gameRestartPending = false;
 
 var Entities = [
 	Player
@@ -65,6 +66,24 @@ function resizeCanvas() {
     canvas.height = window.innerHeight;
 }
 
+function resetPlayer() {
+	Player.resetStats();
+	Entities = [Player];
+}
+
+function startWorld() {
+	loadLevel(levelOne);
+	initialiseEntityPositions();
+	generateFloorTiles();
+	generateTileEntities();
+}
+
+function restartGame() {
+	gameRestartPending = false;
+	resetPlayer();
+	startWorld();
+}
+
 function startGame() {
 	var framesPerSecond = 30;
 	setInterval(updateAll, 1000/framesPerSecond);
@@ -75,10 +94,7 @@ function startGame() {
 	});
 
 	setUpInput();
-	loadLevel(levelOne);
-	initialiseEntityPositions();
-	generateFloorTiles();
-	generateTileEntities();
+	startWorld();
 }
 
 function updateAll() {
@@ -181,5 +197,9 @@ function handleDeadEntities() {
 		if (Entities[i].deathHandle()) {
 			Entities.splice(i, 1); // remove dead entity
 		}
+	}
+
+	if (gameRestartPending) {
+		restartGame();
 	}
 }

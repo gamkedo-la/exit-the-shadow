@@ -115,6 +115,12 @@ function PlayerClass() {
 		this.controlKeyAttack = attackKey;
 		this.controlKeyShield = shieldKey;
 	}
+
+	this.resetStats = function () {
+		this.HP = 5;
+		this.maxHP = this.HP;
+		this.HP = 1;
+	}
 	
 	this.move = function () {
 
@@ -436,7 +442,7 @@ function PlayerClass() {
 		if (this.isDead)
 		{
 			deathTextDisplay()
-			gamePaused = true;
+			gameRestartPending = true;
 			return true;
 		}
 		return false;

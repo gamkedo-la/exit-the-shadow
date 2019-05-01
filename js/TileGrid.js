@@ -157,6 +157,12 @@ function tileTypeAtColRow(array, col, row) {
 	}
 }
 
+function resetWorld() {
+	tileGrid = [];
+	floorTiles = [];
+	tileEntites = [];
+}
+
 function loadLevel(level) {
 	tileGrid = level.slice();
 }
