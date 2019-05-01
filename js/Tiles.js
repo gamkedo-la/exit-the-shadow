@@ -69,6 +69,11 @@ function collisionPointsForTileType(type) {
 		case TILE_PATH://0
 		case PLATFORM_5://41
 		case PLATFORM_12://48
+		case PLATFORM_13://49
+		case PLATFORM_14://50
+		case PLATFORM_15://51
+		case PLATFORM_16://52
+		case PLATFORM_17://53
 			return [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}];
 		case TILE_OBSTACLE_BOX://1
 		case TILE_WALL_RIGHT_EDGE://7
@@ -137,7 +142,8 @@ function collisionPointsForTileType(type) {
 		case PLATFORM_16://52
 			return [{x: 0, y: TILE_H - 16}, {x: 0, y: TILE_H}, {x: TILE_W - 3, y: TILE_H}, {x: TILE_W, y: TILE_H}];
 		case PLATFORM_17://53
-			return [{x: 0, y: 0}, {x: 0, y: 0}, {x: TILE_W - 11, y: 18}, {x: TILE_W - 11, y: 6}];
+			return [{x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}, {x: 0, y: 0}];
+//			return [{x: 0, y: 0}, {x: 0, y: 0}, {x: TILE_W - 11, y: 18}, {x: TILE_W - 11, y: 6}];
 		case PLATFORM_18://54
 			return [{x: 0, y: 0}, {x: 0, y: TILE_H}, {x: TILE_W, y: TILE_H}, {x: TILE_W, y: 8}];
 		case PLATFORM_19://55

@@ -250,6 +250,7 @@ function getVisibleTileEntities() {
 
 function TileEntity(type, col, row) {
 	this.type = type;
+	this.collisionData = collisionPointsForTileType(type);
 	this.col = col;
 	this.row = row;
 	this.x = col * TILE_W;
@@ -258,6 +259,7 @@ function TileEntity(type, col, row) {
 	this.height = TILE_H;
 	
 	const atlasPos = getAtlasPosForType(type);
+	
 	this.draw = function() {
 		if(this.type == TILE_PATH || this.type == OBSTACLE_BUT_NO_DRAW) return;
 

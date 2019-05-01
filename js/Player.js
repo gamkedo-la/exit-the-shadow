@@ -317,8 +317,25 @@ function PlayerClass() {
 
 		this.updateState(); // update animation state
 		EntityClass.prototype.move.call(this); // call superclass function
+
+		//clamp player position to on the map
+		this.clampPositionToScreen();
 		
 		cameraFollow();
+	}
+
+	this.clampPositionToScreen = function() {
+		if(this.x < camPanX) {
+			this.x = camPanX;
+		} else if(this.x > camPanX + canvas.width - this.width) {
+			this.x = camPanX + canvas.width - this.width;
+		}
+
+		if(this.y < camPanY) {
+			this.y = camPanY;
+		} else if(this.y > camPanY + canvas.height - this.height) {
+			this.y = camPanY + canvas.height - this.height;
+		}
 	}
 	
 	this.calculateDashDirection = function(movementDirection) {

@@ -4,6 +4,7 @@ var mainGameState = true;
 var helpScreen = false;
 var camShakeOn = false;
 var gameRestartPending = false;
+var visibleTileEntities = [];
 
 var Entities = [
 	Player
@@ -127,6 +128,7 @@ function drawGame() {
 	colorRect(0, 0, canvas.width, canvas.height, 'white'); // canvas
 
 	drawFloorTiles();
+	visibleTileEntities = getVisibleTileEntities();
 
 	canvasContext.save();
 	canvasContext.translate(-camPanX, -camPanY);
@@ -140,7 +142,7 @@ function drawGame() {
 	// sorted art
 	SortedDrawList = [];
 
-	SortedDrawList = SortedDrawList.concat(Entities, SortedArt, getVisibleTileEntities());
+	SortedDrawList = SortedDrawList.concat(Entities, SortedArt, visibleTileEntities);
 	SortedDrawList.sort(sortByFloorPosition); // defined once above
 	for (var i = 0; i < SortedDrawList.length; i++)
 	{
