@@ -18,27 +18,61 @@ let textFontFace = "";
 let textFontFaceCredits = "";
 let textColour = "" ;
 
-let classListMenu = ["new*game", "continue", "settings" , "credits"];
+let classListMenu = ["New Game", "Continue", "Settings" , "Help", "Credits"];
 let classListSettings = ["volume", "controls", "back"];
 let classListHelp= ["gameplay","gamepad","back"];
 let classListPaused= ['save' , 'audio',  'back'];
 let classListCredits= ["back"];
 
+let menuPageText = [classListMenu, classListLoad, classListSettings, gameplayList, classListCredits, classListLevels, classListPaused];
 
 this.menuMouse = function(){
 
 }
 
 this.update = function(){
+    if (this.cursor1 < 0){
+        this.cursor1 = menuPageText[currentPage].length -1;
+    }
 
+    if (this.cursor1 > menuPageText[currentPage].length){
+        this.cursor1 = 0;
+    }
+    this.draw();
 }
 
 this.checkState = function(){
     if(currentPage == HELP_PAGE){
-
+        currentPage = MENU_PAGE;
+        this.cursor = 0;
+        return;
     }  
 }
 
+switch(menuPageText[currentPage][this.cursor1]) {
+
+ //MENU PAGE
+ case "New Game":
+    gameIsStarted = true;
+    this.cursor1 = 0;
+    break;
+case "Continue":
+    loadGame();
+    this.cursor1 = 0;
+    break;
+case "Settings":
+    this.cursor1 = 0;
+    currentPage = SETTINGS_PAGE;
+    break;
+case "Help":
+    this.cursor1 = 0;
+    currentPage  = HELP_PAGE;
+    break;
+case "Credits":
+    this.cursor1 = 0;
+    currentPage  = CREDITS_PAGE;
+    break;
+}
 
 this.redraw = function(){
 canvasContext,save;
