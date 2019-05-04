@@ -3,6 +3,7 @@ var Player = new PlayerClass();
 var mainGameState = true;
 var helpScreen = false;
 var camShakeOn = false;
+var deathScreenTime = 0;
 var gameRestartPending = false;
 var visibleTileEntities = [];
 
@@ -104,6 +105,16 @@ function updateAll() {
 		drawAll();
 		moveAll();
 		camScreenshake();
+		
+		// death screen
+		if (gameRestartPending) {
+			deathTextDisplay();
+			deathScreenTime++;
+			if (deathScreenTime > 100) {
+				deathScreenTime = 0;
+				restartGame();
+			}
+		}
 	}
 	else {
 		canvasContext.save();
@@ -173,18 +184,13 @@ function drawGame() {
 
 function drawAll() {
 	if(mainGameState) {
-
 		drawGame();
 		if (m_helpScreenTrasitioningOut) { helpBlock();}
 
 	} else if (helpScreen) {
-		//colorRect(0,0, canvas.width,canvas.height, 'white'); // canvas
-
 		// DISPLAY CONTROLS / ANY OTHER HELP HERE
 		drawGame();
 		helpBlock();
-
-		//gamePaused = true;
 	}
 }
 
@@ -199,9 +205,5 @@ function handleDeadEntities() {
 		if (Entities[i].deathHandle()) {
 			Entities.splice(i, 1); // remove dead entity
 		}
-	}
-
-	if (gameRestartPending) {
-		restartGame();
 	}
 }

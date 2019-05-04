@@ -459,7 +459,6 @@ function PlayerClass() {
 	{
 		if (this.isDead)
 		{
-			deathTextDisplay()
 			gameRestartPending = true;
 			return true;
 		}

@@ -161,6 +161,9 @@ function EvilPlayerBoss() {
 		if (phase == PHASE_2) {
 			// extra phase 2 behaviours go here
 		}
+		if (phase == PLAYER_DEAD) {
+			// move back to original position
+		}
 		
 		this.updateBehaviour();
 		this.updateState();
@@ -423,6 +426,7 @@ function EvilPlayerBoss() {
 		}
 		
 		if (!playerAlive) {
+			isAttacking = false;
 			phase = PLAYER_DEAD;
 		}
 	}
