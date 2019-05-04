@@ -266,6 +266,7 @@ function EvilPlayerBoss() {
 			
 			Attack = new ProjectileClass(attackOptions);
 			sfx[ATTACK_SFX].play();
+			isAttacking = true;
 			
 			attackCooldown = 30;
 			partOfSameComboAsNextHit = true;
