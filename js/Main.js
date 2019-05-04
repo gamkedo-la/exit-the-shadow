@@ -110,7 +110,7 @@ function updateAll() {
 		if (gameRestartPending) {
 			deathTextDisplay();
 			deathScreenTime++;
-			if (deathScreenTime > 100) {
+			if (deathScreenTime > 150) {
 				deathScreenTime = 0;
 				restartGame();
 			}

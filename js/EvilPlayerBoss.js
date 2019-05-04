@@ -67,6 +67,8 @@ function EvilPlayerBoss() {
 	let shieldCooldown = 0;
 	let isShielding = false;
 	let shield = false;
+	
+	let timeSincePlayerDeath = 0;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -162,7 +164,33 @@ function EvilPlayerBoss() {
 			// extra phase 2 behaviours go here
 		}
 		if (phase == PLAYER_DEAD) {
-			// move back to original position
+			timeSincePlayerDeath++;
+			if (timeSincePlayerDeath > 50) {
+				// move back to original position
+				if (Math.abs(this.startY - this.y) > 2) {
+					if (this.startY < this.y) {
+						this.movementDirection[UP] = true;
+					}
+	
+					if (this.startY > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+	
+				if (Math.abs(this.startX - this.x) > 2) {
+					if (this.startX > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
+
+					if (this.startX < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
+			
+				if (this.startX - this.x <= 2 && this.startY - this.y <= 2) {
+					this.directionFacing = DOWN;
+				}
+			}
 		}
 		
 		this.updateBehaviour();
@@ -428,6 +456,7 @@ function EvilPlayerBoss() {
 		if (!playerAlive) {
 			isAttacking = false;
 			phase = PLAYER_DEAD;
+			timeSincePlayerDeath = 0;
 		}
 	}
 	

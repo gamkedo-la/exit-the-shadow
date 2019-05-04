@@ -13,6 +13,8 @@ const UP_RIGHT = 7;
 
 // add new variables in here
 function EntityClass() {
+	this.startX;
+	this.startY;
 	this.x;
 	this.y;
 	this.nextX;
@@ -45,8 +47,8 @@ function EntityClass() {
 // add new functions in here
 EntityClass.prototype = {
 	initialisePosition: function(x, y) {
-		this.x = this.nextX = x - this.width/2;
-		this.y = this.nextY = y - this.height/2;
+		this.x = this.nextX = this.startX = x - this.width/2;
+		this.y = this.nextY = this.startY = y - this.height/2;
 	},
 	// call this at the end of the move function for your specific entity - will handle collisions and movement
 	move: function () {
