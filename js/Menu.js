@@ -24,10 +24,15 @@ let classListHelp= ["gameplay","gamepad","back"];
 let classListPaused= ['save' , 'audio',  'back'];
 let classListCredits= ["back"];
 
-let menuPageText = [classListMenu, classListLoad, classListSettings, gameplayList, classListCredits, classListLevels, classListPaused];
+let menuPageText = [classListMenu, classListSettings, classListHelp, classListCredits, classListPaused];
 
 this.menuMouse = function(){
-
+    for (let i=0; i<menuPageText[currentPage].length; i++){
+        if(mouseX > itemsX && mouseX < itemsX + itemsWidth && mouseY > topItemY + (i*rowHeight)-20 &&
+         mouseY < topItemY + (i+1) * rowHeight - 20){
+            this.cursor1= i;
+        }
+    }
 }
 
 this.update = function(){
@@ -89,7 +94,7 @@ this.draw = function(){
           currentPage = MENU_PAGE;
         }
 
-        this.redraw;
+        this.redraw();
 
         canvasContext.drawImage(titlePic, 0,0);
         if(currentPage != CREDITS_PAGE && currentPage != HELP_PAGE) {
@@ -99,9 +104,11 @@ this.draw = function(){
     
     else {return;};
 
+
     for (let i = 0; i<menuPageText().length; i++)
     {
-        drawText(menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE), topItemY+rowHeight*i - (currentPage ==HELP_PAGE);
+        drawText(menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE ? 275 : 0), topItemY+rowHeight*i - (currentPage ==HELP_PAGE ? 325 : 0),
+        (currentPage== HELP_PAGE ? "purple" : textColour), (currentPage == HELP_PAGE ? "25px" : textFontFace), 'left', 'top';
 
         //Draw cursor
         if (curentPage !=HELP_PAGE){
@@ -111,6 +118,6 @@ this.draw = function(){
     }
 }
 
-
+console.log("Menu is running");
 
 })();
