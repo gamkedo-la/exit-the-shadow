@@ -18,10 +18,10 @@ var GroundArt = [
 
 var SortedArt = [
 	{x: 3136, y: 3008, imgName: "healingStatue"},
-	{x: 3680, y: 3040, imgName: "typewriter"},
-	{x: 3744, y: 3040, imgName: "bed"},
-	{x: 3704, y: 3055, imgName: "plant"},
-	{x: 3724, y: 3040, imgName: "table"},
+	{x: 3652, y: 3040, imgName: "typewriter"},
+	{x: 3738, y: 3040, imgName: "bed"},
+	{x: 3686, y: 3055, imgName: "plant"},
+	{x: 3710, y: 3030, imgName: "table"},
 	{x: 3680, y: 2144, imgName: "entrance"},
 	{x: 3296, y: 2920, imgName: "gateway"},
 ];
