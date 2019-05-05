@@ -18,12 +18,16 @@ var GroundArt = [
 
 var SortedArt = [
 	{x: 3136, y: 3008, imgName: "healingStatue"},
-	{x: 3712, y: 3040, imgName: "typewriter"},
+	{x: 3680, y: 3040, imgName: "typewriter"},
+	{x: 3744, y: 3040, imgName: "bed"},
+	{x: 3704, y: 3055, imgName: "plant"},
+	{x: 3724, y: 3040, imgName: "table"},
 	{x: 3680, y: 2144, imgName: "entrance"},
 	{x: 3296, y: 2920, imgName: "gateway"},
 ];
 
 var OverlayingArt = [
+	{x: 3750, y: 3018, imgName: "painting"},
 ];
 
 var SortedDrawList = [];

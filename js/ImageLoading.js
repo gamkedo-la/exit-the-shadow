@@ -15,6 +15,10 @@ var bossHealth = document.createElement("img");
 var playerGradient = document.createElement("img");
 var healingStatue = document.createElement("img");
 var typewriter = document.createElement("img");
+var bed = document.createElement("img");
+var painting = document.createElement("img");
+var plant = document.createElement("img");
+var table = document.createElement("img");
 var entrance = document.createElement("img");
 var pathway = document.createElement("img");
 var gateway = document.createElement("img");
@@ -45,7 +49,11 @@ function loadImages() {
 		{varName: bossHealth, fileName: "BossHealthBar.png"},
 		{varName: playerGradient, fileName: "gradient.png"},
 		{varName: healingStatue, fileName: "healing_statue.png"},
-		{varName: typewriter, fileName: "typewriter.png"},
+		{varName: typewriter, fileName: "tw_room_typewriter.png"},
+		{varName: bed, fileName: "tw_room_bed.png"},
+		{varName: painting, fileName: "tw_room_painting.png"},
+		{varName: plant, fileName: "tw_room_plant.png"},
+		{varName: table, fileName: "tw_room_table.png"},
 		{varName: entrance, fileName: "entrance.png"},
 		{varName: pathway, fileName: "pathway.png"},
 		{varName: gateway, fileName: "gateway.png"},
