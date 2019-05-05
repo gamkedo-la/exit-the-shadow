@@ -120,6 +120,7 @@ function PlayerClass() {
 		this.HP = 5;
 		this.maxHP = this.HP;
 		this.HP = 1;
+		this.regainHealthMeter = 0;
 		this.isDead = false;
 	}
 	

@@ -4,10 +4,11 @@ EvilPlayerBoss.prototype.constructor = EvilPlayerBoss;
 
 function EvilPlayerBoss() {
 	// PHASES
-	const NOT_IN_BATTLE = 0;
-	const PHASE_1 = 1;
-	const PHASE_2 = 2;
-	const PLAYER_DEAD = 3;
+	const PRE_NOT_IN_BATTLE = 0;
+	const NOT_IN_BATTLE = 1;
+	const PHASE_1 = 2;
+	const PHASE_2 = 3;
+	const PLAYER_DEAD = 4;
 	
 	// BEHAVIOURS - ALTER AS NEEDED
 	const IDLE = 0
@@ -16,6 +17,7 @@ function EvilPlayerBoss() {
 	const SHIELD = 3;
 	const DASH_TOWARDS = 4;
 	const DASH_AWAY = 5;
+	const TELEPORT_BEHIND_PLAYER = 6;
 	
 	this.width = 25;
 	this.height = 50;
@@ -35,7 +37,9 @@ function EvilPlayerBoss() {
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.1},
 		dash: {startFrame: 8, endFrame: 9, animationSpeed: 1},
 		attack: {startFrame: 10, endFrame: 10, animationSpeed: 1},
-		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1}
+		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1},
+		teleportOut: {startFrame: 12, endFrame: 16, animationSpeed: 2},
+		teleportIn: {startFrame: 17, endFrame: 21, animationSpeed: 1}
 	}
 	
 	let spritePadding = 50;
@@ -46,7 +50,7 @@ function EvilPlayerBoss() {
 	// motion blur trail effect
 	this.trail = new TrailFX(bossTrailImage);
 
-	let phase = NOT_IN_BATTLE;
+	let phase = PRE_NOT_IN_BATTLE;
 	let behaviour = FOLLOW;
 	
 	let isDashing = false;
@@ -69,9 +73,31 @@ function EvilPlayerBoss() {
 	let shield = false;
 	
 	let timeSincePlayerDeath = 0;
+	
+	let teleportTime = 0;
+	let isTeleportingOut = false;
+	let isTeleportingIn = false;
+	let timeSinceLastTeleport = 0;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
+		if (phase == PRE_NOT_IN_BATTLE) {
+			if (Player.y < 1900) {
+				teleportTime++;
+				if (teleportTime < 5) {
+					isTeleportingOut = true;
+				}
+				else if (teleportTime < 30) {
+					isTeleportingOut = false;
+					this.startX = this.x = this.nextX = 3443.5;
+					this.startY = this.y = this.nextY = 1063;
+				}
+				else {
+					teleportTime = 0;
+					this.progressPhase();
+				}
+			}
+		}
 		if (phase == NOT_IN_BATTLE) {
 			if (distanceBetweenEntities(this, Player) < 150) {
 				this.progressPhase();
@@ -152,16 +178,36 @@ function EvilPlayerBoss() {
 				
 				this.handleDash(movementDirection, 100);
 			}
+			else if (behaviour == TELEPORT_BEHIND_PLAYER) {
+				teleportTime++;
+				if (teleportTime < 5) {
+					isTeleportingOut = true;
+				}
+				else if (teleportTime < 50) {
+					isTeleportingOut = false;
+					this.x = this.nextX = -100;
+					this.y = this.nextY = -100;
+				}
+				else if (teleportTime < 55) {
+					isTeleportingIn = true;
+					this.x = this.nextX = Player.x;
+					this.y = this.nextY = Player.y + 50;
+				}
+				else {
+					this.directionFacing = UP;
+					isTeleportingIn = false
+					timeSinceLastTeleport = 0;
+				}
+			}
 			this.updateAttack();
 			this.updateShield();
 			this.updateDashCooldown();
 			
+			timeSinceLastTeleport++;
+			
 			if (this.HP <= this.maxHP / 2) {
 				this.progressPhase();
 			}
-		}
-		if (phase == PHASE_2) {
-			// extra phase 2 behaviours go here
 		}
 		if (phase == PLAYER_DEAD) {
 			timeSincePlayerDeath++;
@@ -205,6 +251,12 @@ function EvilPlayerBoss() {
 		else if (isShielding) {
 			this.AnimatedSprite.changeState("shield");
 		}
+		else if (isTeleportingOut) {
+			this.AnimatedSprite.changeState("teleportOut");
+		}
+		else if (isTeleportingIn) {
+			this.AnimatedSprite.changeState("teleportIn");
+		}
 		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
 			this.AnimatedSprite.changeState("walk");
 		}
@@ -223,7 +275,10 @@ function EvilPlayerBoss() {
 	}
 	
 	this.progressPhase = function() {
-		if (phase == NOT_IN_BATTLE) {
+		if (phase == PRE_NOT_IN_BATTLE) {
+			phase = NOT_IN_BATTLE;
+		}
+		else if (phase == NOT_IN_BATTLE) {
 			phase = PHASE_1;
 			this.isActive = true;
 		}
@@ -235,7 +290,7 @@ function EvilPlayerBoss() {
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
-		if (isDashing || isShielding) {
+		if (isDashing || isShielding || isTeleportingIn || isTeleportingOut) {
 			return; // to prevent going into a different behaviour mid dash or mid shield
 		}
 		else if (dashAway) {
@@ -249,6 +304,13 @@ function EvilPlayerBoss() {
 		else if (this.playerIsInAttackRange(false)) {
 			this.directionFacing = this.playerIsInAttackRange(true);
 			behaviour = SIMPLE_ATTACK;
+		}
+		else if (timeSinceLastTeleport > 300 && phase == PHASE_2) {
+			if (teleportTime > 55) {
+				teleportTime = 0;
+			}
+			partOfSameComboAsNextHit = true;
+			behaviour = TELEPORT_BEHIND_PLAYER;
 		}
 		else if (distFromPlayer > 200) {
 			partOfSameComboAsNextHit = true;
