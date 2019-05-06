@@ -5,6 +5,8 @@ var helpScreen = false;
 var camShakeOn = false;
 var deathScreenTime = 0;
 var gameRestartPending = false;
+var gameIsRunning = false;
+var gameIsStarted = false;
 var visibleTileEntities = [];
 
 var Entities = [
@@ -48,6 +50,7 @@ window.onload = function() {
 	window.addEventListener("resize", resizeCanvas);
 	window.addEventListener('focus', function () {
 		gamePaused = false;
+		gameIsStarted = false;
 		}
 	);
     window.addEventListener('blur', function() {
@@ -104,6 +107,10 @@ function startGame() {
 }
 
 function updateAll() {
+	if (gameIsStarted == false || (gamePaused && gameIsRunning)) {
+		//Menu.update();
+		//return;
+	}	
 	if (gamePaused == false) { //Updates only if the game is not paused
 		animateAll();
 		drawAll();
@@ -130,6 +137,7 @@ function updateAll() {
 }
 
 function moveAll() {
+	gameIsRunning = true;
 	for (var i = 0; i < Entities.length ; i++) {
 		Entities[i].move();
 	}

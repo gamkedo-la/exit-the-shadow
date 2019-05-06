@@ -12,6 +12,7 @@ let topItemY = 390;
 let itemsWidth = 650;
 let rowHeight = 35;
 
+let cursor1 = 0;
 let currentPage = 0;
 
 let textFontFace = "";
@@ -79,11 +80,11 @@ case "Credits":
     break;
 }
 
-this.redraw = function(){
+this.redraw = function(){ /*
 canvasContext,save;
 canvasContext.setTransform(1, 0, 0, 0, 1, 0, 0, 0);
 canvasContext.clearReact(0, 0, canvas.width, canvas.height);
-canvasContext.restore;
+canvasContext.restore;*/
 }
 
 this.draw = function(){
@@ -98,26 +99,33 @@ this.draw = function(){
 
         canvasContext.drawImage(titlePic, 0,0);
         if(currentPage != CREDITS_PAGE && currentPage != HELP_PAGE) {
-            canvasContext.drawImage(logoPic, canvas.width/2);
+            canvasContext.drawImage(logoPic, canvas.width/2,30, 300,300);
         }
     }
     
     else {return;};
 
 
-    for (let i = 0; i<menuPageText().length; i++)
+    for (let i = 0; i<menuPageText[currentPage].length; i++)
     {
-        drawText(menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE ? 275 : 0), topItemY+rowHeight*i - (currentPage ==HELP_PAGE ? 325 : 0),
+        colorText(menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE ? 275 : 0), topItemY+rowHeight*i - (currentPage ==HELP_PAGE ? 325 : 0),
         (currentPage== HELP_PAGE ? "purple" : textColour), (currentPage == HELP_PAGE ? "25px" : textFontFace), 'left', 'top';
 
         //Draw cursor
-        if (curentPage !=HELP_PAGE){
-            canvas.canvasContext(arrowPic, itemsX, topItemY + (this.cursor1 * rowHeight));
+        if (currentPage !=HELP_PAGE){
+            canvasContext.drawImage(arrowPic, itemsX, topItemY + (this.cursor1 * rowHeight));
         }
 
     }
 }
 
-console.log("Menu is running");
+
+if(gameIsRunning){
+    console.log("Menu is running");
+}
+if(gameIsStarted){
+    console.log("Menu is started");
+}
+
 
 })();
