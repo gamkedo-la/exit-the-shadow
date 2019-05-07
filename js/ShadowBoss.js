@@ -99,8 +99,6 @@ function ShadowBoss() {
 			showBossDefeated = function() {
 					// show death message on screen
 					deathTextDisplay("SHADOW DEFEATED", 'grey', 'black');
-
-					// maybe we could play a sound here as well?
 			}
 		}
 		return this.isDead;

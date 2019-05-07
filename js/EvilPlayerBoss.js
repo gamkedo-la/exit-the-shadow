@@ -548,4 +548,17 @@ function EvilPlayerBoss() {
 			return RIGHT;
 		}
 	}
+	
+	this.deathHandle = function()
+	{
+		if(this.isDead) 
+		{
+			bossIsDefeated = true;
+			showBossDefeated = function() {
+					// show death message on screen
+					deathTextDisplay("DARK REFLECTION SUBDUED", 'grey', 'black');
+			}
+		}
+		return this.isDead;
+	}	
 }

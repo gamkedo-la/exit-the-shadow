@@ -83,4 +83,17 @@ function BeastBoss() {
 			phase = phase_2;
 		}
 	}
+
+	this.deathHandle = function()
+	{
+		if(this.isDead) 
+		{
+			bossIsDefeated = true;
+			showBossDefeated = function() {
+					// show death message on screen
+					deathTextDisplay("BEAST SLAUGHTERED ", 'grey', 'black');
+			}
+		}
+		return this.isDead;
+	}	
 }
