@@ -18,7 +18,6 @@ function ShadowBoss() {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	
 	this.moveSpeed = 2;
 	this.HP = 20;
 	this.maxHP = this.HP;
@@ -91,4 +90,19 @@ function ShadowBoss() {
 			phase = phase_2;
 		}
 	}
+
+	this.deathHandle = function()
+	{
+		if(this.isDead) 
+		{
+			bossIsDefeated = true;
+			showBossDefeated = function() {
+					// show death message on screen
+					deathTextDisplay("SHADOW DEFEATED", 'grey', 'black');
+
+					// maybe we could play a sound here as well?
+			}
+		}
+		return this.isDead;
+	}	
 }

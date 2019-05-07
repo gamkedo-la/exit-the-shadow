@@ -49,3 +49,31 @@ function restoreFont() {
 function setFont(style, fontSize, font) {
 	canvasContext.font = style + " " + fontSize + "px " + font;
 }
+
+function deathTextDisplay(textToDisplay = "no more are you", 
+							textColor = "rgba(255, 255, 255, " + 0.3 + ")",
+							bgColor = "rgba(128, 30, 30," + 0.7 + ")")
+{
+	saveFont();
+	var txtHeight = 40;
+	setFont("bold", txtHeight, "Arial");
+
+	var percentSize = 0.2;
+	var txtWidth = textWidth(textToDisplay);
+	var boxWidth = txtWidth * (1 + percentSize);
+	var boxHeight = txtHeight * (1 + percentSize);
+	var halfWidthCanvas = (canvas.width * 0.5);
+	var halfHeightCanvas = (canvas.height * 0.5);
+	var boxXPos = halfWidthCanvas - (boxWidth * 0.5);
+	var boxYPos = halfHeightCanvas - (boxHeight * 0.5);
+	var txtXPos = halfWidthCanvas - (txtWidth * 0.5);
+	var txtYPos = halfHeightCanvas;
+	var bLine = canvasContext.textBaseline;
+
+	colorRect(boxXPos, boxYPos, boxWidth, boxHeight, bgColor);
+	canvasContext.textBaseline = "middle";
+	colorText(textToDisplay, txtXPos, txtYPos, textColor);
+	canvasContext.textBaseline = bLine;
+
+	restoreFont();
+}

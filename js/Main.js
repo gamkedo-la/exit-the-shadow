@@ -8,6 +8,9 @@ var gameRestartPending = false;
 var gameIsRunning = false;
 var gameIsStarted = false;
 var visibleTileEntities = [];
+var bossIsDefeated = false;
+var showBossDefeated = function() {}
+var bossDefeatedScreenTime = 0;
 
 var Entities = [
 	Player
@@ -124,6 +127,17 @@ function updateAll() {
 			if (deathScreenTime > 150) {
 				deathScreenTime = 0;
 				restartGame();
+			}
+		}
+
+		// show boss deafeated text
+		if(bossIsDefeated)
+		{
+			showBossDefeated();
+			bossDefeatedScreenTime++;
+			if(bossDefeatedScreenTime > 90) {
+				bossDefeatedScreenTime = 0;
+				bossIsDefeated = false;
 			}
 		}
 	}
