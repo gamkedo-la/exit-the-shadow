@@ -95,10 +95,19 @@ function ShadowBoss() {
 	{
 		if(this.isDead) 
 		{
-			bossIsDefeated = true;
-			showBossDefeated = function() {
-					// show death message on screen
-					deathTextDisplay("SHADOW DEFEATED", 'grey', 'black');
+			var shadowCount = 0;
+			for(var i = 0; i < Entities.length; i++) {
+				if(Entities[i].name == "Shadow") {
+					shadowCount++;
+				}
+			}
+
+			if(shadowCount == 1) {
+				bossIsDefeated = true;
+				showBossDefeated = function() {
+						// show death message on screen
+						deathTextDisplay("SHADOW DEFEATED", 'grey', 'black');
+				}
 			}
 		}
 		return this.isDead;
