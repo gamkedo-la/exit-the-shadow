@@ -11,6 +11,7 @@ var visibleTileEntities = [];
 var bossIsDefeated = false;
 var showBossDefeated = function() {}
 var bossDefeatedScreenTime = 0;
+var frameCounter = 0;
 
 var Entities = [
 	Player
@@ -110,6 +111,9 @@ function startGame() {
 }
 
 function updateAll() {
+
+	frameCounter++;
+
 	if (gameIsStarted == false || (gamePaused && gameIsRunning)) {
 		//Menu.update();
 		//return;
@@ -186,6 +190,16 @@ function drawGame() {
 		if (typeof SortedDrawList[i].imgName !== 'undefined')
 		{ // sorted environment art
 			canvasContext.drawImage(window[SortedDrawList[i].imgName], SortedDrawList[i].x, SortedDrawList[i].y);
+
+			// candles glow and flicker
+			if (SortedDrawList[i].imgName=="table") {
+				canvasContext.drawImage(
+					glowPic,0,0,100,100,
+					SortedDrawList[i].x-42, SortedDrawList[i].y-50,
+					100-Math.sin(frameCounter*1.331),
+					100-Math.sin(frameCounter/2.012)*2.5);
+			}
+
 		}
 		else
 		{ // entities

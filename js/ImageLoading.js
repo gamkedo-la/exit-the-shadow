@@ -25,6 +25,7 @@ var gateway = document.createElement("img");
 var titlePic = document.createElement("img"); 
 var logoPic = document.createElement("img");
 var arrowPic = document.createElement("img");
+var glowPic = document.createElement("img");
 //var playerShadowSprite = document.createElement("img");
 
 picsToLoad = 0;
@@ -63,6 +64,7 @@ function loadImages() {
 		{varName: entrance, fileName: "entrance.png"},
 		{varName: pathway, fileName: "pathway.png"},
 		{varName: gateway, fileName: "gateway.png"},
+		{varName: glowPic, fileName: "glow.png"},
 		//{varName: playerShadowSprite, fileName: "playerShadow.png"},
 	];
 	
