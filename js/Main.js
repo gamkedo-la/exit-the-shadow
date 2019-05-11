@@ -27,8 +27,14 @@ var SortedArt = [
 	{x: 3652, y: 3040, imgName: "typewriter"},
 	{x: 3738, y: 3040, imgName: "bed"},
 	{x: 3686, y: 3055, imgName: "plant"},
+	{x: 1900, y: 2900, imgName: "plant"},
+	{x: 1931, y: 2896, imgName: "plant"},
+	{x: 1899, y: 2882, imgName: "plant"},
+	{x: 1936, y: 2923, imgName: "plant"},
+	{x: 1894, y: 2931, imgName: "plant"},
 	{x: 3710, y: 3030, imgName: "table"},
 	{x: 3680, y: 2144, imgName: "entrance"},
+	{x: 2144, y: 2580, imgName: "entrance"},
 	{x: 3296, y: 2920, imgName: "gateway"},
 ];
 
