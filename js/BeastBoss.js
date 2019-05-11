@@ -88,10 +88,15 @@ function BeastBoss() {
 	{
 		if(this.isDead) 
 		{
+			// Add boss name to player's boss-list.
+			Player.bossesKilled.push(this.name);
+			
 			bossIsDefeated = true;
 			showBossDefeated = function() {
 					// show death message on screen
 					deathTextDisplay("BEAST SLAUGHTERED ", 'grey', 'black');
+
+					
 			}
 		}
 		return this.isDead;

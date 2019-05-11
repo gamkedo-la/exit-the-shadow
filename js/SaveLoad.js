@@ -11,18 +11,23 @@ function SaveData(name, positionX, positionY, health, bossesKilled, deaths, time
 }
 
 function saveGame() {
-    var bossesKilled = new Array();
-    bossesKilled.push("Beast");
-    var save = new SaveData("save1", Player.x, Player.y, Player.HP, bossesKilled, 0, 300);
+    var save = new SaveData("save1", Player.x, Player.y, Player.HP, Player.bossesKilled, 0, 300);
     var savesArray = new Array();
     savesArray.push(save);
-    // savesArray.push(save2);
 
     localStorage.setItem('exit-the-shadow-saves', JSON.stringify(savesArray));
 
+    // debug
+    console.log("Saving");
+    console.log(save);
 }
 
 function loadGame() {
+    if(listSaves == null) {
+        // No saves available
+        return;
+    }
+    
     var saveGames = JSON.parse(localStorage.getItem('exit-the-shadow-saves'));
 
     saveGames.forEach(save => {
@@ -33,10 +38,16 @@ function loadGame() {
 }
 
 function restoreValues(save) {
+
+    // Set player position and health
     Player.HP = save.health;
     Player.x = save.positionX;
     Player.y = save.positionY;
 
+    // Restore bossesKilled so that we don't 'loose' progress next save
+    Player.bossesKilled = save.bossesKilled;
+
+    // Kill off bosses already defeated.
     for(var i=0; i<Entities.length;i++) {
         var entity = Entities[i];
         
@@ -51,5 +62,5 @@ function restoreValues(save) {
 function listSaves() {
     // get array of serialized save game data
     var saveGames = localStorage.getItem('exit-the-shadow-saves');
-    console.log(JSON.parse(saveGames));
+    return saveGames;
 }

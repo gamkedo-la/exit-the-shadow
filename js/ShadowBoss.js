@@ -102,12 +102,18 @@ function ShadowBoss() {
 				}
 			}
 
+			// make sure this is the last shadow
 			if(shadowCount == 1) {
+				// Add boss name to player's boss-list.
+				Player.bossesKilled.push(this.name);
+
 				bossIsDefeated = true;
 				showBossDefeated = function() {
 						// show death message on screen
 						deathTextDisplay("SHADOW DEFEATED", 'grey', 'black');
+
 				}
+				
 			}
 		}
 		return this.isDead;
