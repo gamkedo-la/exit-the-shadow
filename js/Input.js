@@ -49,6 +49,14 @@ function keySet(evt, player, isPressed) {
 		player.keyHeld_Shield = isPressed;
 	}
 	
+	// // SAVE/LOAD DEBUG
+	// if(evt.keyCode == 66){ // b = save
+	// 	saveGame();
+	// }
+	// if(evt.keyCode == 78) { // n = load
+	// 	loadGame();
+	// }
+
 	evt.preventDefault();
 }
 

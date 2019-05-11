@@ -23,6 +23,9 @@ function PlayerClass() {
 	this.collisionBoxHeight = this.width;
 	
 	this.moveSpeed = 5;
+	
+	// string array with names of bosses killed. used by save game system
+	this.bossesKilled = new Array();
 
 	// motion blur trail effect
 	this.trail = new TrailFX(trailImage);
