@@ -24,7 +24,6 @@ function ShadowBoss(id) {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	this.moveSpeed = 2;
 	this.HP = 20;
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
@@ -57,46 +56,52 @@ function ShadowBoss(id) {
 			switch(behaviour) {
 			case FOLLOW:
 				// get center of player and us
-				playerX = Player.x + Player.width / 2;
-				playerY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
+				destinationX = Player.x + Player.width / 2;
+				destinationY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
 				
 				bossX = this.x + this.width / 2;
 				bossY = collisionBoxY(this) + this.collisionBoxHeight / 2;
 				
+				
 				// decide where around the player to move to
 				switch(this.id) {
 				case LEFT_SHADOW:
-					playerX -= spaceBetweenPlayer;
-					playerY += spaceBetweenPlayer;
+					destinationX -= spaceBetweenPlayer;
+					destinationY += spaceBetweenPlayer;
 					break;
 					
 				case MIDDLE_SHADOW:
-					playerY -= spaceBetweenPlayer;
+					destinationY -= spaceBetweenPlayer;
 					break;
 					
 				case RIGHT_SHADOW:
-					playerX += spaceBetweenPlayer;
-					playerY += spaceBetweenPlayer;
+					destinationX += spaceBetweenPlayer;
+					destinationY += spaceBetweenPlayer;
 					break;
 				}
 				
+				// move faster if further away
+				var distanceFromDestination = distanceBetweenEntityObject(this, destinationX, destinationY, 1, 1);
+				var distFromPlayer = distanceBetweenEntities(this, Player);
+				this.moveSpeed = (distFromPlayer + distanceFromDestination) / 100;
+				
 				// move towards this location
-				if (Math.abs(playerY - bossY) > 2) {
-					if (playerY < bossY) {
+				if (Math.abs(destinationY - bossY) > 2) {
+					if (destinationY < bossY) {
 						this.movementDirection[UP] = true;
 					}
 		
-					if (playerY > bossY) {
+					if (destinationY > bossY) {
 						this.movementDirection[DOWN] = true;
 					}
 				}
 		
-				if (Math.abs(playerX - bossX) > 2) {
-					if (playerX > bossX) {
+				if (Math.abs(destinationX - bossX) > 2) {
+					if (destinationX > bossX) {
 						this.movementDirection[RIGHT] = true;
 					}
 
-					if (playerX < bossX) {
+					if (destinationX < bossX) {
 						this.movementDirection[LEFT] = true;
 					}
 				}
@@ -146,9 +151,11 @@ function ShadowBoss(id) {
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
-		
-		if (distFromPlayer > spaceBetweenPlayer) {
+		if (distFromPlayer > 2) {
 			behaviour = FOLLOW;
+		}
+		else {
+			behaviour = IDLE;
 		}
 	}
 
