@@ -25,7 +25,7 @@ function ShadowBoss(id) {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	this.HP = 20;
+	this.HP = 30;
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
@@ -53,7 +53,8 @@ function ShadowBoss(id) {
 	let isChargingAttack = false;
 	let isAttacking = false;
 	let maxAttackCooldown = 150;
-	let attackCooldown = Math.round(Math.random()*maxAttackCooldown);
+	let minAttackCooldown = 50;
+	let attackCooldown = Math.round(Math.random()*(maxAttackCooldown-minAttackCooldown)) + minAttackCooldown;
 	let attackWidth = 64;
 	let attackHeight = 64;
 	let attackDestinationX;
@@ -147,18 +148,10 @@ function ShadowBoss(id) {
 					attackChargeTime = 0;
 					this.initiateAttack();
 				}
-				else if (attackTime < 90) {
-					attackChargeTime++;
-					this.chargeAttackTowardsAttackDestination();
-				}
-				else if (attackTime < 91) {
-					attackChargeTime = 0;
-					this.initiateAttack();
-				}
 				else {
 					isAttacking = false;
 					attackTime = 0
-					attackCooldown = Math.round(Math.random()*maxAttackCooldown);
+					attackCooldown = Math.round(Math.random()*(maxAttackCooldown-minAttackCooldown)) + minAttackCooldown;
 				}
 				break;
 			}
