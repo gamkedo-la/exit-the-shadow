@@ -12,6 +12,7 @@ function ShadowBoss(id) {
 	const NOT_IN_BATTLE = 0;
 	const PHASE_1 = 1;
 	const PHASE_2 = 2;
+	const PLAYER_DEAD = 3;
 	
 	// BEHAVIOURS - ALTER AS NEEDED
 	const IDLE = 0
@@ -43,7 +44,22 @@ function ShadowBoss(id) {
 	let behaviour = IDLE;
 	let phase = NOT_IN_BATTLE;
 	
-	let spaceBetweenPlayer = 150;
+	let spaceToLeaveBetweenPlayer = 150;
+	let distanceFromDestinationX;
+	let distanceFromDestinationY;
+	
+	let Attack = null;
+	let attackTime = 0;
+	let isChargingAttack = false;
+	let isAttacking = false;
+	let maxAttackCooldown = 100;
+	let attackCooldown = Math.round(Math.random()*maxAttackCooldown);
+	let attackWidth = 60;
+	let attackHeight = 60;
+	let attackDestinationX;
+	let attackDestinationY;
+	
+	let timeSincePlayerDeath = 0;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -66,27 +82,30 @@ function ShadowBoss(id) {
 				// decide where around the player to move to
 				switch(this.id) {
 				case LEFT_SHADOW:
-					destinationX -= spaceBetweenPlayer;
-					destinationY += spaceBetweenPlayer;
+					destinationX -= spaceToLeaveBetweenPlayer;
+					destinationY += spaceToLeaveBetweenPlayer;
 					break;
 					
 				case MIDDLE_SHADOW:
-					destinationY -= spaceBetweenPlayer;
+					destinationY -= spaceToLeaveBetweenPlayer;
 					break;
 					
 				case RIGHT_SHADOW:
-					destinationX += spaceBetweenPlayer;
-					destinationY += spaceBetweenPlayer;
+					destinationX += spaceToLeaveBetweenPlayer;
+					destinationY += spaceToLeaveBetweenPlayer;
 					break;
 				}
 				
 				// move faster if further away
-				var distanceFromDestination = distanceBetweenEntityObject(this, destinationX, destinationY, 1, 1);
 				var distFromPlayer = distanceBetweenEntities(this, Player);
-				this.moveSpeed = (distFromPlayer + distanceFromDestination) / 100;
+				if (distFromPlayer < 100) {
+					distFromPlayer = 250;
+				}
+				this.moveSpeed = distFromPlayer / 75;
 				
 				// move towards this location
-				if (Math.abs(destinationY - bossY) > 2) {
+				distanceFromDestinationY = Math.abs(destinationY - bossY);
+				if (distanceFromDestinationY > 2) {
 					if (destinationY < bossY) {
 						this.movementDirection[UP] = true;
 					}
@@ -95,8 +114,9 @@ function ShadowBoss(id) {
 						this.movementDirection[DOWN] = true;
 					}
 				}
-		
-				if (Math.abs(destinationX - bossX) > 2) {
+				
+				distanceFromDestinationX = Math.abs(destinationX - bossX);
+				if (distanceFromDestinationX > 2) {
 					if (destinationX > bossX) {
 						this.movementDirection[RIGHT] = true;
 					}
@@ -108,12 +128,68 @@ function ShadowBoss(id) {
 				break;
 
 			case ATTACK:
-				// BEHAVIOUR GOES HERE
+				attackTime++;
+				isAttacking = true;
+				if (attackTime < 30) {
+					this.chargeAttackTowardsAttackDestination();
+				}
+				else if (attackTime < 31) {
+					this.initiateAttack();
+				}
+				else if (attackTime < 60) {
+					this.chargeAttackTowardsAttackDestination();
+				}
+				else if (attackTime < 61) {
+					this.initiateAttack();
+				}
+				else if (attackTime < 90) {
+					this.chargeAttackTowardsAttackDestination();
+				}
+				else if (attackTime < 91) {
+					this.initiateAttack();
+				}
+				else {
+					this.isAttacking = false;
+					this.attackTime = 0
+					this.attackCooldown = Math.round(Math.random()*maxAttackCooldown);
+				}
 				break;
 			}
 			
+			this.updateAttack();
+			this.checkIfPlayerIsDead();
+			
 			if (this.HP <= this.maxHP / 2) {
 				this.progressPhase();
+			}
+		}
+		else if (phase == PLAYER_DEAD) {
+			timeSincePlayerDeath++;
+			if (timeSincePlayerDeath > 50) {
+				// move back to original position
+				if (Math.abs(this.startY - this.y) > 2) {
+					if (this.startY < this.y) {
+						this.movementDirection[UP] = true;
+					}
+
+					if (this.startY > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+
+				if (Math.abs(this.startX - this.x) > 2) {
+					if (this.startX > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
+
+					if (this.startX < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
+		
+				if (this.startX - this.x <= 2 && this.startY - this.y <= 2) {
+					this.directionFacing = DOWN;
+				}
 			}
 		}
 		
@@ -144,18 +220,130 @@ function ShadowBoss(id) {
 			this.isActive = true;
 		}
 		else if (phase == PHASE_1) {
-			phase = phase_2;
+			phase = PHASE_2;
 		}
 	}
 	
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
-		if (distFromPlayer > 2) {
+		if (isAttacking || isChargingAttack) { // prevent changing behaviour mid attack
+			return;
+		}
+		if (distanceFromDestinationX < 5 && distanceFromDestinationY < 5 && attackCooldown <= 0) {
+			if (attackTime == 0) {
+				this.setAttackDestination();
+			}
+			behaviour = ATTACK;
+		}
+		else if (distFromPlayer > 2) {
 			behaviour = FOLLOW;
 		}
 		else {
 			behaviour = IDLE;
+		}
+	}
+	
+	this.setAttackDestination = function() {
+		attackDestinationX = Player.x + (relativeDistanceBetweenEntitiesX(this, Player) * 5);
+		attackDestinationY = Player.y + (relativeDistanceBetweenEntitiesY(this, Player) * 5);
+	}
+	
+	this.chargeAttackTowardsAttackDestination = function() {
+		this.movementSpeed = 2;
+		if (Math.abs(attackDestinationY - this.y) > 2) {
+			if (attackDestinationY < this.y) {
+				this.movementDirection[UP] = true;
+			}
+
+			if (attackDestinationY > this.y) {
+				this.movementDirection[DOWN] = true;
+			}
+		}
+
+		if (Math.abs(attackDestinationX - this.x) > 2) {
+			if (attackDestinationX > this.x) {
+				this.movementDirection[RIGHT] = true;
+			}
+
+			if (attackDestinationX < this.x) {
+				this.movementDirection[LEFT] = true;
+			}
+		}
+	}
+	
+	this.initiateAttack = function() {
+		if (Attack == null) {
+			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+			let velocityX = 0, velocityY = 0;
+			
+			switch(this.directionFacing) {
+			case UP:
+				centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
+				velocityY = -1;
+				break;
+			case DOWN:
+				centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
+				velocityY = 1;
+				break;
+			case LEFT:
+				centerX -= ((this.width / 2) + (attackWidth / 2));
+				velocityX = -1;
+				break;
+			case RIGHT:
+				centerX += ((this.width / 2) + (attackWidth / 2));
+				velocityX = 1;
+				break;
+			}
+			
+			let immuneEntities = [];
+			for (var i = 0; i < Entities.length; i++) {
+				if (Entities[i].name == this.name) {
+					immuneEntities.push(Entities[i]);
+				}
+			}
+			
+			let attackOptions = {
+				centerX: centerX,
+				centerY: centerY,
+				width: attackWidth,
+				height: attackHeight,
+				damage: 1,
+				velocityX: velocityX,
+				velocityY: velocityY,
+				frameLength: 1,
+				immuneEntities: immuneEntities
+			}
+			
+			Attack = new ProjectileClass(attackOptions);
+			sfx[ATTACK_SFX].play();
+		}
+	}
+	
+	this.updateAttack = function() {
+		if (Attack != null) {
+			Attack.update();
+			if (Attack.attackFinished) {
+				Attack = null;
+			}
+		}
+		
+		attackCooldown--;
+	}
+	
+	this.checkIfPlayerIsDead = function() {
+		var playerAlive = false;
+		for (var i = 0; i < Entities.length; i++) {
+			if (Entities[i] instanceof PlayerClass) {
+				playerAlive = true;
+				break;
+			}
+		}
+		
+		if (!playerAlive) {
+			isAttacking = false;
+			phase = PLAYER_DEAD;
+			timeSincePlayerDeath = 0;
 		}
 	}
 

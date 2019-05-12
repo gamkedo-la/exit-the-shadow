@@ -394,7 +394,8 @@ function EvilPlayerBoss() {
 				damage: 1,
 				velocityX: velocityX,
 				velocityY: velocityY,
-				frameLength: 1
+				frameLength: 1,
+				immuneEntities: [this]
 			}
 			
 			Attack = new ProjectileClass(attackOptions);
