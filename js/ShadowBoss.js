@@ -33,7 +33,9 @@ function ShadowBoss(id) {
 	this.isActive = false;
 	
 	this.states = {
-		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1}
+		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
+		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.1},
+		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1}
 	}
 	
 	let spritePadding = 64;
@@ -136,17 +138,21 @@ function ShadowBoss(id) {
 					attackChargeTime++;
 					this.chargeAttackTowardsAttackDestination();
 				}
-				else if (attackTime < 31) {
-					attackChargeTime = 0;
-					this.initiateAttack();
+				else if (attackTime < 40) {
+					if (attackTime == 30) {
+						attackChargeTime = 0;
+						this.initiateAttack();
+					}
 				}
-				else if (attackTime < 60) {
+				else if (attackTime < 70) {
 					attackChargeTime++;
 					this.chargeAttackTowardsAttackDestination();
 				}
-				else if (attackTime < 61) {
-					attackChargeTime = 0;
-					this.initiateAttack();
+				else if (attackTime < 80) {
+					if (attackTime == 70) {
+						attackChargeTime = 0;
+						this.initiateAttack();
+					}
 				}
 				else {
 					isAttacking = false;
@@ -199,7 +205,15 @@ function ShadowBoss(id) {
 	}
 	
 	this.updateState = function() {
-		// CHANGE ANIMATION STATES HERE
+		if (isAttacking) {
+			this.AnimatedSprite.changeState("attack");
+		}
+		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
+			this.AnimatedSprite.changeState("walk");
+		}
+		else {
+			this.AnimatedSprite.changeState("idle");
+		}
 	}
 	
 	this.draw = function() {
@@ -230,7 +244,7 @@ function ShadowBoss(id) {
 		if (isAttacking || isChargingAttack) { // prevent changing behaviour mid attack
 			return;
 		}
-		if (distFromPlayer < 200 && attackCooldown <= 0) {
+		if (distFromPlayer < 250 && attackCooldown <= 0) {
 			if (attackTime == 0) {
 				this.setAttackDestination();
 			}
