@@ -30,6 +30,10 @@ function distanceBetweenEntityObjectY(entity, objectY, objectHeight) {
 	return Math.abs(y1 - y2);
 }
 
+function collisionBoxY(object) {
+	return object.nextY + (object.height - object.collisionBoxHeight);
+}
+
 function lerp(from, to, lerpValue) {
 	return (from * (1.0 - lerpValue)) + (to * lerpValue);
 }

@@ -56,9 +56,14 @@ function ShadowBoss(id) {
 		else if (phase == PHASE_1 || phase == PHASE_2) {
 			switch(behaviour) {
 			case FOLLOW:
-				playerX = Player.x;
-				playerY = Player.y;
+				// get center of player and us
+				playerX = Player.x + Player.width / 2;
+				playerY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
 				
+				bossX = this.x + this.width / 2;
+				bossY = collisionBoxY(this) + this.collisionBoxHeight / 2;
+				
+				// decide where around the player to move to
 				switch(this.id) {
 				case LEFT_SHADOW:
 					playerX -= spaceBetweenPlayer;
@@ -75,22 +80,23 @@ function ShadowBoss(id) {
 					break;
 				}
 				
-				if (Math.abs(playerY - this.y) > 2) {
-					if (playerY < this.y) {
+				// move towards this location
+				if (Math.abs(playerY - bossY) > 2) {
+					if (playerY < bossY) {
 						this.movementDirection[UP] = true;
 					}
 		
-					if (playerY > this.y) {
+					if (playerY > bossY) {
 						this.movementDirection[DOWN] = true;
 					}
 				}
 		
-				if (Math.abs(playerX - this.x) > 2) {
-					if (playerX > this.x) {
+				if (Math.abs(playerX - bossX) > 2) {
+					if (playerX > bossX) {
 						this.movementDirection[RIGHT] = true;
 					}
 
-					if (playerX < this.x) {
+					if (playerX < bossX) {
 						this.movementDirection[LEFT] = true;
 					}
 				}
@@ -140,7 +146,8 @@ function ShadowBoss(id) {
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
-		if (distFromPlayer > 5) {
+		
+		if (distFromPlayer > spaceBetweenPlayer) {
 			behaviour = FOLLOW;
 		}
 	}

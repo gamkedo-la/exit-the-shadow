@@ -141,10 +141,6 @@ function resolveWorldCollisions(object, prevX, prevY, speedX, speedY) {
 	}
 }
 
-function collisionBoxY(object) {
-	return object.nextY + (object.height - object.collisionBoxHeight);
-}
-
 function lineRectangleCollider(x1,y1, x2,y2, rx,ry, rw,rh) {
 	  var left =   lineLineCollider(x1,y1,x2,y2, rx,ry,rx, ry+rh);
 	  var right =  lineLineCollider(x1,y1,x2,y2, rx+rw,ry, rx+rw,ry+rh);
