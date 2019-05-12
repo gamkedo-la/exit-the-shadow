@@ -52,12 +52,13 @@ function ShadowBoss(id) {
 	let attackTime = 0;
 	let isChargingAttack = false;
 	let isAttacking = false;
-	let maxAttackCooldown = 100;
+	let maxAttackCooldown = 150;
 	let attackCooldown = Math.round(Math.random()*maxAttackCooldown);
-	let attackWidth = 60;
-	let attackHeight = 60;
+	let attackWidth = 64;
+	let attackHeight = 64;
 	let attackDestinationX;
 	let attackDestinationY;
+	let attackChargeTime = 0;
 	
 	let timeSincePlayerDeath = 0;
 		
@@ -131,21 +132,27 @@ function ShadowBoss(id) {
 				attackTime++;
 				isAttacking = true;
 				if (attackTime < 30) {
+					attackChargeTime++;
 					this.chargeAttackTowardsAttackDestination();
 				}
 				else if (attackTime < 31) {
+					attackChargeTime = 0;
 					this.initiateAttack();
 				}
 				else if (attackTime < 60) {
+					attackChargeTime++;
 					this.chargeAttackTowardsAttackDestination();
 				}
 				else if (attackTime < 61) {
+					attackChargeTime = 0;
 					this.initiateAttack();
 				}
 				else if (attackTime < 90) {
+					attackChargeTime++;
 					this.chargeAttackTowardsAttackDestination();
 				}
 				else if (attackTime < 91) {
+					attackChargeTime = 0;
 					this.initiateAttack();
 				}
 				else {
@@ -230,8 +237,7 @@ function ShadowBoss(id) {
 		if (isAttacking || isChargingAttack) { // prevent changing behaviour mid attack
 			return;
 		}
-		if (distanceFromDestinationX < 5 && distanceFromDestinationY < 5 && attackCooldown <= 0) {
-			console.log(attackCooldown);
+		if (distFromPlayer < 200 && attackCooldown <= 0) {
 			if (attackTime == 0) {
 				this.setAttackDestination();
 			}
@@ -251,7 +257,7 @@ function ShadowBoss(id) {
 	}
 	
 	this.chargeAttackTowardsAttackDestination = function() {
-		this.movementSpeed = 2;
+		this.moveSpeed = attackChargeTime / 4;
 		if (Math.abs(attackDestinationY - this.y) > 2) {
 			if (attackDestinationY < this.y) {
 				this.movementDirection[UP] = true;
