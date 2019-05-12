@@ -12,7 +12,6 @@ function ShadowBoss() {
 	const IDLE = 0
 	const FOLLOWING = 1;
 	const ATTACKING = 2;
-	const SHIELDING = 3;
 	
 	this.width = 48;
 	this.height = 128;
@@ -54,10 +53,6 @@ function ShadowBoss() {
 			case ATTACKING:
 				// BEHAVIOUR GOES HERE
 				break;
-
-			case SHIELDING:
-				// BEHAVIOUR GOES HERE
-				break;
 			}
 		}
 
@@ -75,7 +70,7 @@ function ShadowBoss() {
 	
 	this.progressPhaseTogether = function() {
 		for (var i = 0; i < Entities.length; i++) {
-			if (Entities[i] instanceof ShadowBoss) {
+			if (Entities[i].name == this.name) {
 				Entities[i].progressPhase();
 			}
 		}
@@ -97,7 +92,7 @@ function ShadowBoss() {
 		{
 			var shadowCount = 0;
 			for(var i = 0; i < Entities.length; i++) {
-				if(Entities[i].name == "Shadow") {
+				if(Entities[i].name == this.name) {
 					shadowCount++;
 				}
 			}
