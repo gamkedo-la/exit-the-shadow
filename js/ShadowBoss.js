@@ -149,9 +149,9 @@ function ShadowBoss(id) {
 					this.initiateAttack();
 				}
 				else {
-					this.isAttacking = false;
-					this.attackTime = 0
-					this.attackCooldown = Math.round(Math.random()*maxAttackCooldown);
+					isAttacking = false;
+					attackTime = 0
+					attackCooldown = Math.round(Math.random()*maxAttackCooldown);
 				}
 				break;
 			}
@@ -231,6 +231,7 @@ function ShadowBoss(id) {
 			return;
 		}
 		if (distanceFromDestinationX < 5 && distanceFromDestinationY < 5 && attackCooldown <= 0) {
+			console.log(attackCooldown);
 			if (attackTime == 0) {
 				this.setAttackDestination();
 			}
@@ -328,7 +329,9 @@ function ShadowBoss(id) {
 			}
 		}
 		
-		attackCooldown--;
+		if (attackCooldown > 0) {
+			attackCooldown--;
+		}
 	}
 	
 	this.checkIfPlayerIsDead = function() {
