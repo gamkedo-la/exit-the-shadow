@@ -2,7 +2,12 @@
 ShadowBoss.prototype = new EntityClass();
 ShadowBoss.prototype.constructor = ShadowBoss;
 
-function ShadowBoss() {
+function ShadowBoss(id) {
+	//IDs
+	const LEFT_SHADOW = 0;
+	const MIDDLE_SHADOW = 1;
+	const RIGHT_SHADOW = 2;
+	
 	// PHASES
 	const NOT_IN_BATTLE = 0;
 	const PHASE_1 = 1;
@@ -10,8 +15,10 @@ function ShadowBoss() {
 	
 	// BEHAVIOURS - ALTER AS NEEDED
 	const IDLE = 0
-	const FOLLOWING = 1;
-	const ATTACKING = 2;
+	const FOLLOW = 1;
+	const ATTACK = 2;
+	
+	this.id = id;
 	
 	this.width = 48;
 	this.height = 128;
@@ -36,6 +43,8 @@ function ShadowBoss() {
 
 	let behaviour = IDLE;
 	let phase = NOT_IN_BATTLE;
+	
+	let spaceBetweenPlayer = 150;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -46,16 +55,58 @@ function ShadowBoss() {
 		}
 		else if (phase == PHASE_1 || phase == PHASE_2) {
 			switch(behaviour) {
-			case FOLLOWING:
-				// BEHAVIOUR GOES HERE
+			case FOLLOW:
+				playerX = Player.x;
+				playerY = Player.y;
+				
+				switch(this.id) {
+				case LEFT_SHADOW:
+					playerX -= spaceBetweenPlayer;
+					playerY += spaceBetweenPlayer;
+					break;
+					
+				case MIDDLE_SHADOW:
+					playerY -= spaceBetweenPlayer;
+					break;
+					
+				case RIGHT_SHADOW:
+					playerX += spaceBetweenPlayer;
+					playerY += spaceBetweenPlayer;
+					break;
+				}
+				
+				if (Math.abs(playerY - this.y) > 2) {
+					if (playerY < this.y) {
+						this.movementDirection[UP] = true;
+					}
+		
+					if (playerY > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+		
+				if (Math.abs(playerX - this.x) > 2) {
+					if (playerX > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
+
+					if (playerX < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
 				break;
 
-			case ATTACKING:
+			case ATTACK:
 				// BEHAVIOUR GOES HERE
 				break;
 			}
+			
+			if (this.HP <= this.maxHP / 2) {
+				this.progressPhase();
+			}
 		}
-
+		
+		this.updateBehaviour();
 		this.updateState();
 		EntityClass.prototype.move.call(this); // call superclass function
 	}
@@ -83,6 +134,14 @@ function ShadowBoss() {
 		}
 		else if (phase == PHASE_1) {
 			phase = phase_2;
+		}
+	}
+	
+	this.updateBehaviour = function() {
+		var distFromPlayer = distanceBetweenEntities(this, Player);
+		
+		if (distFromPlayer > 5) {
+			behaviour = FOLLOW;
 		}
 	}
 
