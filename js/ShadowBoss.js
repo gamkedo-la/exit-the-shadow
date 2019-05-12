@@ -259,28 +259,33 @@ function ShadowBoss(id) {
 	}
 	
 	this.setAttackDestination = function() {
-		attackDestinationX = Player.x + (relativeDistanceBetweenEntitiesX(this, Player) * 5);
-		attackDestinationY = Player.y + (relativeDistanceBetweenEntitiesY(this, Player) * 5);
+		let playerX = Player.x + Player.width / 2;
+		let playerY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
+		attackDestinationX = playerX + (relativeDistanceBetweenEntitiesX(this, Player) * 100); // multiply by large enough number so that 
+		attackDestinationY = playerY + (relativeDistanceBetweenEntitiesY(this, Player) * 100); // we always move in one direction
 	}
 	
 	this.chargeAttackTowardsAttackDestination = function() {
+		let x = this.x + this.width / 2;
+		let y = collisionBoxY(this) + this.collisionBoxHeight / 2;
+		
 		this.moveSpeed = attackChargeTime / 4;
-		if (Math.abs(attackDestinationY - this.y) > 2) {
-			if (attackDestinationY < this.y) {
+		if (Math.abs(attackDestinationY - y) > 2) {
+			if (attackDestinationY < y) {
 				this.movementDirection[UP] = true;
 			}
 
-			if (attackDestinationY > this.y) {
+			if (attackDestinationY > y) {
 				this.movementDirection[DOWN] = true;
 			}
 		}
 
-		if (Math.abs(attackDestinationX - this.x) > 2) {
-			if (attackDestinationX > this.x) {
+		if (Math.abs(attackDestinationX - x) > 2) {
+			if (attackDestinationX > x) {
 				this.movementDirection[RIGHT] = true;
 			}
 
-			if (attackDestinationX < this.x) {
+			if (attackDestinationX < x) {
 				this.movementDirection[LEFT] = true;
 			}
 		}
