@@ -18,6 +18,7 @@ function EvilPlayerBoss() {
 	const DASH_TOWARDS = 4;
 	const DASH_AWAY = 5;
 	const TELEPORT_BEHIND_PLAYER = 6;
+	const HEAVY_ATTACK = 7;
 	
 	this.width = 25;
 	this.height = 50;
@@ -38,8 +39,10 @@ function EvilPlayerBoss() {
 		dash: {startFrame: 8, endFrame: 9, animationSpeed: 1},
 		attack: {startFrame: 10, endFrame: 10, animationSpeed: 1},
 		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1},
-		teleportOut: {startFrame: 12, endFrame: 16, animationSpeed: 2},
-		teleportIn: {startFrame: 17, endFrame: 21, animationSpeed: 1}
+		teleportOut: {startFrame: 12, endFrame: 15, animationSpeed: 2},
+		teleportIn: {startFrame: 16, endFrame: 19, animationSpeed: 1},
+		heavyAttackCharge: {startFrame: 20, endFrame: 20, animationSpeed: 1},
+		heavyAttack: {startFrame: 21, endFrame: 21, animationSpeed: 1}
 	}
 	
 	let spritePadding = 50;
@@ -66,7 +69,6 @@ function EvilPlayerBoss() {
 	let attackWidth = 40;
 	let attackHeight = 40;
 	let isAttacking = false;
-	let partOfSameComboAsNextHit = true;
 
 	let shieldCooldown = 0;
 	let isShielding = false;
@@ -78,6 +80,15 @@ function EvilPlayerBoss() {
 	let isTeleportingOut = false;
 	let isTeleportingIn = false;
 	let timeSinceLastTeleport = 0;
+	
+	let HeavyAttack = null;
+	let timeSinceLastHeavyAttack = 0;
+	let heavyAttackTime = 0;
+	let isChargingHeavyAttack = false;
+	let isHeavyAttacking = false;
+	let heavyAttackWidth = 50;
+	let heavyAttackLength = 50;
+	let isTiredFromHeavyAttack = false;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -199,11 +210,31 @@ function EvilPlayerBoss() {
 					timeSinceLastTeleport = 0;
 				}
 			}
+			else if (behaviour == HEAVY_ATTACK) {
+				heavyAttackTime++
+				if (heavyAttackTime < 30) {
+					isChargingHeavyAttack = true;
+				}
+				else if (heavyAttackTime < 35) {
+					isChargingHeavyAttack = false;
+					this.initiateHeavyAttack();
+				}
+				else if (heavyAttackTime < 60) {
+					isHeavyAttacking = false;
+					isTiredFromHeavyAttack = true;
+				}
+				else {
+					isTiredFromHeavyAttack = false;
+					timeSinceLastHeavyAttack = 0;
+				}
+			}
 			this.updateAttack();
 			this.updateShield();
 			this.updateDashCooldown();
+			this.updateHeavyAttack();
 			
 			timeSinceLastTeleport++;
+			timeSinceLastHeavyAttack++;
 			
 			if (this.HP <= this.maxHP / 2) {
 				this.progressPhase();
@@ -257,6 +288,12 @@ function EvilPlayerBoss() {
 		else if (isTeleportingIn) {
 			this.AnimatedSprite.changeState("teleportIn");
 		}
+		else if (isChargingHeavyAttack) {
+			this.AnimatedSprite.changeState("heavyAttackCharge");
+		}
+		else if (isHeavyAttacking) {
+			this.AnimatedSprite.changeState("heavyAttack");
+		}
 		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
 			this.AnimatedSprite.changeState("walk");
 		}
@@ -290,7 +327,7 @@ function EvilPlayerBoss() {
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
-		if (isDashing || isShielding || isTeleportingIn || isTeleportingOut) {
+		if (isDashing || isShielding || isTeleportingIn || isTeleportingOut || isChargingHeavyAttack || isHeavyAttacking || isTiredFromHeavyAttack) {
 			return; // to prevent going into a different behaviour mid dash or mid shield
 		}
 		else if (dashAway) {
@@ -301,6 +338,12 @@ function EvilPlayerBoss() {
 			shield = false;
 			behaviour = SHIELD;
 		}
+		else if (timeSinceLastHeavyAttack > 100 && phase == PHASE_2 && this.playerIsInAttackRange(false)) {
+			if (heavyAttackTime > 60) {
+				heavyAttackTime = 0;
+			}
+			behaviour = HEAVY_ATTACK;
+		}
 		else if (this.playerIsInAttackRange(false)) {
 			this.directionFacing = this.playerIsInAttackRange(true);
 			behaviour = SIMPLE_ATTACK;
@@ -309,15 +352,12 @@ function EvilPlayerBoss() {
 			if (teleportTime > 55) {
 				teleportTime = 0;
 			}
-			partOfSameComboAsNextHit = true;
 			behaviour = TELEPORT_BEHIND_PLAYER;
 		}
 		else if (distFromPlayer > 200) {
-			partOfSameComboAsNextHit = true;
 			behaviour = DASH_TOWARDS;
 		}
 		else if (distFromPlayer > 5) {
-			partOfSameComboAsNextHit = true;
 			behaviour = FOLLOW;
 		}
 	}
@@ -362,7 +402,6 @@ function EvilPlayerBoss() {
 			isAttacking = true;
 			
 			attackCooldown = 30;
-			partOfSameComboAsNextHit = true;
 			
 			switch(Math.floor(Math.random() * 2)) {
 			case 0:
@@ -372,6 +411,47 @@ function EvilPlayerBoss() {
 				shield = true;
 				break;
 			}
+		}
+	}
+	
+	this.initiateHeavyAttack = function() {
+		if (!isHeavyAttacking && HeavyAttack == null) {
+			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+			let velocityX = 0, velocityY = 0;
+		
+			switch(this.directionFacing) {
+			case UP:
+				centerY -= ((this.collisionBoxHeight / 2) + (heavyAttackLength / 2) - (this.collisionBoxHeight / 2));
+				velocityY = -1;
+				break;
+			case DOWN:
+				centerY += ((this.collisionBoxHeight / 2) + (heavyAttackLength / 2) + (this.collisionBoxHeight / 2));
+				velocityY = 1;
+				break;
+			case LEFT:
+				centerX -= ((this.width / 2) + (heavyAttackWidth / 2));
+				velocityX = -1;
+				break;
+			case RIGHT:
+				centerX += ((this.width / 2) + (heavyAttackWidth / 2));
+				velocityX = 1;
+				break;
+			}
+		
+			let attackOptions = {
+				centerX: centerX,
+				centerY: centerY,
+				width: heavyAttackWidth,
+				height: heavyAttackLength,
+				damage: 2,
+				velocityX: velocityX,
+				velocityY: velocityY,
+				frameLength: 5
+			}
+		
+			HeavyAttack = new ProjectileClass(attackOptions);
+			sfx[ATTACK_SFX].play();
+			isHeavyAttacking = true;
 		}
 	}
 	
@@ -385,6 +465,16 @@ function EvilPlayerBoss() {
 		}
 		else {
 			Attack = null;
+		}
+		this.checkIfPlayerIsDead();
+	}
+	
+	this.updateHeavyAttack = function() {
+		if (HeavyAttack != null) {
+			HeavyAttack.update();
+			if (HeavyAttack.attackFinished) {
+				HeavyAttack = null;
+			}
 		}
 		this.checkIfPlayerIsDead();
 	}
@@ -517,6 +607,7 @@ function EvilPlayerBoss() {
 		
 		if (!playerAlive) {
 			isAttacking = false;
+			isHeavyAttacking = false;
 			phase = PLAYER_DEAD;
 			timeSincePlayerDeath = 0;
 		}
