@@ -1,4 +1,4 @@
-const DASH_LENGTH = 300;
+const DASH_LENGTH = 150;
 const DASH_SPEED = 50;
 const DASH_COOLDOWN = 5;
 const ATTACK_COOLDOWN = 5;

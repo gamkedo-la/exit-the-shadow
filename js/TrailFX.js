@@ -43,15 +43,18 @@ function TrailFX(wooshImage) {
         var squish = 1;
         var drawX = 0;
         var drawY = 0;
+        var scaleV = 1;
+        var height = 1;
         console.log('lineAngle:'+lineAngle.toFixed(1));
         if (lineAngle>1.5 && lineAngle<1.7) // going upish
+
             squish = 0.3;
         if (lineAngle<-1.5 && lineAngle>-1.7) // going downish
             squish = 0.3;
 
         if (lineAngle<-0.6 && lineAngle>-0.9) { // going up-right
-            squish = 0.4;
         	drawX = 4;
+            squish = 0.4;
         }
         if (lineAngle>0.6 && lineAngle<0.9) { // going down-right
         	drawX = 4;
@@ -61,21 +64,30 @@ function TrailFX(wooshImage) {
         if (lineAngle<-2.3 && lineAngle>-2.5) {// going up-left
         	drawX = -4;
             squish = 0.4;
+            scaleV = -1;
+            height = -1;
         }
         if (lineAngle>2.3 && lineAngle<2.5) { // going down-left
         	drawX = -4;
             squish = 0.4;
+            scaleV = -1;
+            height = -1;
         }
 
-        
+        if (lineAngle>3.0 && lineAngle<3.2) { // going down-left
+            scaleV = -1;
+            height = -1;
+        }
+
         // rotate the sprite - works great but looks bad when moving up or down
         canvasContext.translate(startX, startY);
         canvasContext.rotate(lineAngle);
         canvasContext.translate(0, - useBitmap.height * squish / 2);
+        canvasContext.scale(1, scaleV);
 
         canvasContext.drawImage(useBitmap,
             0, 0, useBitmap.width, useBitmap.height, // src 
-            drawX, drawY, lineLength, useBitmap.height*squish);     // dest
+            drawX, drawY, lineLength, useBitmap.height*squish * height);     // dest
         canvasContext.restore();
     }
 
