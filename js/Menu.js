@@ -68,7 +68,8 @@ this.changeMenuStateOnClick = function() {
 	//MENU PAGE
 	case "New Game":
 	    gameIsStarted = true;
-	    bg_music[AMBIENT_MUSIC].play();
+	    currentBackgroundMusic = AMBIENT_MUSIC;
+	    bg_music[currentBackgroundMusic].play();
 	    this.cursor1 = null;
 	    break;
 	case "Continue":
