@@ -41,11 +41,32 @@ function TrailFX(wooshImage) {
 
         // when moving vertically, the line looks too wide, so squish it
         var squish = 1;
-        //console.log('lineAngle:'+lineAngle.toFixed(1));
+        var drawX = 0;
+        var drawY = 0;
+        console.log('lineAngle:'+lineAngle.toFixed(1));
         if (lineAngle>1.5 && lineAngle<1.7) // going upish
             squish = 0.3;
         if (lineAngle<-1.5 && lineAngle>-1.7) // going downish
             squish = 0.3;
+
+        if (lineAngle<-0.6 && lineAngle>-0.9) { // going up-right
+            squish = 0.4;
+        	drawX = 4;
+        }
+        if (lineAngle>0.6 && lineAngle<0.9) { // going down-right
+        	drawX = 4;
+            squish = 0.4;
+        }
+
+        if (lineAngle<-2.3 && lineAngle>-2.5) {// going up-left
+        	drawX = -4;
+            squish = 0.4;
+        }
+        if (lineAngle>2.3 && lineAngle<2.5) { // going down-left
+        	drawX = -4;
+            squish = 0.4;
+        }
+
         
         // rotate the sprite - works great but looks bad when moving up or down
         canvasContext.translate(startX, startY);
@@ -54,7 +75,7 @@ function TrailFX(wooshImage) {
 
         canvasContext.drawImage(useBitmap,
             0, 0, useBitmap.width, useBitmap.height, // src 
-            0, 0, lineLength, useBitmap.height*squish);     // dest
+            drawX, drawY, lineLength, useBitmap.height*squish);     // dest
         canvasContext.restore();
     }
 

@@ -1,4 +1,4 @@
-const DASH_LENGTH = 150;
+const DASH_LENGTH = 300;
 const DASH_SPEED = 50;
 const DASH_COOLDOWN = 5;
 const ATTACK_COOLDOWN = 5;
@@ -6,6 +6,9 @@ const SHIELD_MAX_TIME = 15;
 const SHIELD_COOLDOWN = 5;
 const GRADIENT_HALF_W = 640;
 const GRADIENT_HALF_H = 620;
+
+// if true, player isn't drawn when dashing
+const HIDE_PLAYER_WHEN_DASHING = false;
 
 // inherit from EntityClass
 PlayerClass.prototype = new EntityClass();
@@ -369,7 +372,14 @@ function PlayerClass() {
 		if (isDashing || dashCooldown > 1)
 			this.trail.draw(); 
 		
-		EntityClass.prototype.draw.call(this);
+		if (HIDE_PLAYER_WHEN_DASHING) {
+			if (!isDashing) {
+				EntityClass.prototype.draw.call(this);
+				return;
+			}
+		} else {
+			EntityClass.prototype.draw.call(this);
+		}
 	}
 
 	this.drawGradient = function() {

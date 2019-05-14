@@ -1,10 +1,10 @@
 const Menu = new (function() {
 const MENU_PAGE = 0;
-const RESUME_PAGE = 1;
-const PAUSED_PAGE = 2;
-const SETTINGS_PAGE = 3;
-const HELP_PAGE = 4;
-const CREDITS_PAGE = 5;
+const SETTINGS_PAGE = 1;
+const HELP_PAGE = 2;
+const CREDITS_PAGE = 3;
+//const RESUME_PAGE = 1;
+//const PAUSED_PAGE = 2;
 
 
 let itemsX = 310;
@@ -20,10 +20,10 @@ let textFontFaceCredits = "";
 let textColour = "" ;
 
 let classListMenu = ["New Game", "Continue", "Settings" , "Help", "Credits"];
-let classListSettings = ["volume", "controls", "back"];
-let classListHelp= ["gameplay","gamepad","back"];
-let classListPaused= ['save' , 'audio',  'back'];
-let classListCredits= ["back"];
+let classListSettings = ["volume", "controls", "Back"];
+let classListHelp= ["gameplay","gamepad","Back"];
+let classListPaused= ['save' , 'audio',  'Back'];
+let classListCredits= ["Back"];
 
 let menuPageText = [classListMenu, classListSettings, classListHelp, classListCredits, classListPaused];
 
@@ -91,6 +91,10 @@ this.changeMenuStateOnClick = function() {
 	case "Credits":
 	    this.cursor1 = null;
 	    currentPage  = CREDITS_PAGE;
+	    break;
+	case "Back":
+	    this.cursor1 = null;
+	    currentPage  = MENU_PAGE;
 	    break;
 	}
 }
