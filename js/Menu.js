@@ -12,7 +12,7 @@ let topItemY = 390;
 let itemsWidth = 650;
 let rowHeight = 35;
 
-let cursor1 = 0;
+this.cursor1 = null;
 let currentPage = 0;
 
 let textFontFace = "";
@@ -32,7 +32,7 @@ this.menuMouse = function(){
         if(mouseX > itemsX && mouseX < itemsX + itemsWidth && mouseY > topItemY + (i*rowHeight)-20 &&
          mouseY < topItemY + (i+1) * rowHeight - 20){
             this.cursor1= i;
-        }
+        } 
     }
 }
 
@@ -44,6 +44,8 @@ this.update = function(){
     if (this.cursor1 > menuPageText[currentPage].length){
         this.cursor1 = 0;
     }
+
+    this.menuMouse();
     this.draw();
 }
 
@@ -55,45 +57,57 @@ this.checkState = function(){
     }  
 }
 
-switch(menuPageText[currentPage][this.cursor1]) {
+this.changeMenuStateOnClick = function() {
+	//console.log(mouseX + " , " + mouseY + " , " +  Menu.cursor1);
+	if (gameIsStarted) { 
+		return;
+	}
 
- //MENU PAGE
- case "New Game":
-    gameIsStarted = true;
-    this.cursor1 = 0;
-    break;
-case "Continue":
-    loadGame();
-    this.cursor1 = 0;
-    break;
-case "Settings":
-    this.cursor1 = 0;
-    currentPage = SETTINGS_PAGE;
-    break;
-case "Help":
-    this.cursor1 = 0;
-    currentPage  = HELP_PAGE;
-    break;
-case "Credits":
-    this.cursor1 = 0;
-    currentPage  = CREDITS_PAGE;
-    break;
+	switch(menuPageText[currentPage][Menu.cursor1]) {
+
+	//MENU PAGE
+	case "New Game":
+	    gameIsStarted = true;
+	    bg_music[AMBIENT_MUSIC].play();
+	    this.cursor1 = null;
+	    break;
+	case "Continue":
+		if (saveGames == undefined || saveGames == null) {
+			console.log("No save games found");
+	    	return;
+		}
+	    loadGame();
+	    this.cursor1 = null;
+	    break;
+	case "Settings":
+	    this.cursor1 = null;
+	    currentPage = SETTINGS_PAGE;
+	    break;
+	case "Help":
+	    this.cursor1 = null;
+	    currentPage  = HELP_PAGE;
+	    break;
+	case "Credits":
+	    this.cursor1 = null;
+	    currentPage  = CREDITS_PAGE;
+	    break;
+	}
 }
 
-this.redraw = function(){ /*
-canvasContext,save;
-canvasContext.setTransform(1, 0, 0, 0, 1, 0, 0, 0);
-canvasContext.clearReact(0, 0, canvas.width, canvas.height);
-canvasContext.restore;*/
+this.redraw = function(){ 
+ 	//canvasContext.save;
+	// canvasContext.setTransform(1, 0, 0, 0, 1, 0, 0, 0);
+	canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+	//canvasContext.restore;
 }
 
 this.draw = function(){
     if(gameIsStarted === false)
     {
-        if(currentPage == PAUSED_PAGE)
-        {
-          currentPage = MENU_PAGE;
-        }
+        // if(currentPage == PAUSED_PAGE)
+        // {
+        //   currentPage = MENU_PAGE;
+        // }
 
         this.redraw();
 
@@ -108,8 +122,8 @@ this.draw = function(){
 
     for (let i = 0; i<menuPageText[currentPage].length; i++)
     {
-        colorText(menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE ? 275 : 0), topItemY+rowHeight*i - (currentPage ==HELP_PAGE ? 325 : 0),
-        (currentPage== HELP_PAGE ? "purple" : textColour), (currentPage == HELP_PAGE ? "25px" : textFontFace), 'left', 'top';
+        colorText((menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE ? 275 : 0), topItemY+rowHeight*i - (currentPage ==HELP_PAGE ? 325 : 0),
+        (currentPage== HELP_PAGE ? "purple" : textColour), (currentPage == HELP_PAGE ? "25px" : textFontFace), 'left', 'top');
 
         //Draw cursor
         if (currentPage !=HELP_PAGE){
@@ -120,10 +134,10 @@ this.draw = function(){
 }
 
 
-if(gameIsRunning){
+if(!gameIsRunning){
     console.log("Menu is running");
 }
-if(gameIsStarted){
+if(!gameIsStarted){
     console.log("Menu is started");
 }
 

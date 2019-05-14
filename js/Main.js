@@ -60,7 +60,7 @@ window.onload = function() {
 	window.addEventListener("resize", resizeCanvas);
 	window.addEventListener('focus', function () {
 		gamePaused = false;
-		gameIsStarted = false;
+		//gameIsStarted = false;
 		}
 	);
     window.addEventListener('blur', function() {
@@ -120,9 +120,9 @@ function updateAll() {
 
 	frameCounter++;
 
-	if (gameIsStarted == false || (gamePaused && gameIsRunning)) {
-		//Menu.update();
-		//return;
+	if (gameIsStarted == false) {
+		Menu.update();
+		return;
 	}	
 	if (gamePaused == false) { //Updates only if the game is not paused
 		animateAll();
