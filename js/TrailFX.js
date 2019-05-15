@@ -34,10 +34,6 @@ function TrailFX(wooshImage) {
             lineLength = 1;
         }
         canvasContext.save();
-        
-        //FIXME: "skew" the sprite - looks better at 45 deg angles
-        //canvasContext.setTransform(1, Math.tan(lineAngle), 0, 1, startX, startY);
-        //canvasContext.setTransform(1, Math.tan(lineAngle), 0, 1, 0, 0);
 
         // when moving vertically, the line looks too wide, so squish it
         var squish = 1;
@@ -45,6 +41,8 @@ function TrailFX(wooshImage) {
         var drawY = 0;
         var scaleV = 1;
         var height = 1;
+		var skewAngle = null;
+		var skewAdjustmentX = null; // amount to move to fix position after skew
         console.log('lineAngle:'+lineAngle.toFixed(1));
         if (lineAngle>1.5 && lineAngle<1.7) // going upish
 
@@ -54,24 +52,32 @@ function TrailFX(wooshImage) {
 
         if (lineAngle<-0.6 && lineAngle>-0.9) { // going up-right
         	drawX = 4;
-            squish = 0.4;
+            squish = 0.8;
+			skewAngle = -1;
+			skewAdjustmentX = 15;
         }
         if (lineAngle>0.6 && lineAngle<0.9) { // going down-right
         	drawX = 4;
-            squish = 0.4;
+            squish = 0.8;
+			skewAngle = 1;
+			skewAdjustmentX = -15;
         }
 
         if (lineAngle<-2.3 && lineAngle>-2.5) {// going up-left
         	drawX = -4;
-            squish = 0.4;
+            squish = 0.8;
             scaleV = -1;
             height = -1;
+			skewAngle = -1;
+			skewAdjustmentX = -15;
         }
         if (lineAngle>2.3 && lineAngle<2.5) { // going down-left
         	drawX = -4;
-            squish = 0.4;
+            squish = 0.8;
             scaleV = -1;
             height = -1;
+			skewAngle = 1;
+			skewAdjustmentX = 15;
         }
 
         if (lineAngle>3.0 && lineAngle<3.2) { // going down-left
@@ -84,6 +90,10 @@ function TrailFX(wooshImage) {
         canvasContext.rotate(lineAngle);
         canvasContext.translate(0, - useBitmap.height * squish / 2);
         canvasContext.scale(1, scaleV);
+		
+		if (skewAngle != null && skewAdjustmentX != null) {
+			canvasContext.transform(1,0, skewAngle,1, skewAdjustmentX,0);
+		}
 
         canvasContext.drawImage(useBitmap,
             0, 0, useBitmap.width, useBitmap.height, // src 
