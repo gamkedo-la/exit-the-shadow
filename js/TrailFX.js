@@ -53,13 +53,13 @@ function TrailFX(wooshImage) {
         if (lineAngle<-0.6 && lineAngle>-0.9) { // going up-right
         	drawX = 4;
             squish = 0.8;
-			skewAngle = -1;
+			skewAngle = -0.8;
 			skewAdjustmentX = 15;
         }
         if (lineAngle>0.6 && lineAngle<0.9) { // going down-right
         	drawX = 4;
             squish = 0.8;
-			skewAngle = 1;
+			skewAngle = 0.8;
 			skewAdjustmentX = -15;
         }
 
@@ -68,7 +68,7 @@ function TrailFX(wooshImage) {
             squish = 0.8;
             scaleV = -1;
             height = -1;
-			skewAngle = -1;
+			skewAngle = -0.8;
 			skewAdjustmentX = -15;
         }
         if (lineAngle>2.3 && lineAngle<2.5) { // going down-left
@@ -76,7 +76,7 @@ function TrailFX(wooshImage) {
             squish = 0.8;
             scaleV = -1;
             height = -1;
-			skewAngle = 1;
+			skewAngle = 0.8;
 			skewAdjustmentX = 15;
         }
 
