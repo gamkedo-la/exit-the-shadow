@@ -43,7 +43,7 @@ function TrailFX(wooshImage) {
         var height = 1;
 		var skewAngle = null;
 		var skewAdjustmentX = null; // amount to move to fix position after skew
-        console.log('lineAngle:'+lineAngle.toFixed(1));
+        //console.log('lineAngle:'+lineAngle.toFixed(1));
         if (lineAngle>1.5 && lineAngle<1.7) // going upish
 
             squish = 0.3;
