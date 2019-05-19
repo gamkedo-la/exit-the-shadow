@@ -260,18 +260,23 @@ function ShadowBoss(id) {
 	}
 	
 	this.setAttackDestination = function() {
-		let playerX = Player.x + Player.width / 2;
-		let playerY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
+		let playerX = Player.centerX();
+		let playerY = Player.centerY();
 		attackDestinationX = playerX + (relativeDistanceBetweenEntitiesX(this, Player) * 100); // multiply by large enough number so that 
 		attackDestinationY = playerY + (relativeDistanceBetweenEntitiesY(this, Player) * 100); // we always move in one direction
 	}
 	
 	this.chargeAttackTowardsAttackDestination = function() {
-		let x = this.x + this.width / 2;
-		let y = collisionBoxY(this) + this.collisionBoxHeight / 2;
+		let x = this.centerX();
+		let y = this.centerY();
 		
-		this.moveSpeed = attackChargeTime / 4;
-		if (Math.abs(attackDestinationY - y) > 2) {
+		let angle = Math.atan2(attackDestinationY - y, attackDestinationX - x);
+		
+		var speed = attackChargeTime / 4;
+		this.nextX += speed * Math.cos(angle);
+		this.nextY += speed * Math.sin(angle);
+		
+		if (Math.abs(attackDestinationY - y) > 10) {
 			if (attackDestinationY < y) {
 				this.movementDirection[UP] = true;
 			}
@@ -281,7 +286,7 @@ function ShadowBoss(id) {
 			}
 		}
 
-		if (Math.abs(attackDestinationX - x) > 2) {
+		if (Math.abs(attackDestinationX - x) > 10) {
 			if (attackDestinationX > x) {
 				this.movementDirection[RIGHT] = true;
 			}
@@ -290,6 +295,8 @@ function ShadowBoss(id) {
 				this.movementDirection[LEFT] = true;
 			}
 		}
+		console.log(this.movementSpeed)
+		this.moveSpeed = 0; // set to zero so that setting movement direction doesn't move us (we want to override movement)
 	}
 	
 	this.initiateAttack = function() {

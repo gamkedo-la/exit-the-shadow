@@ -159,6 +159,6 @@ EntityClass.prototype = {
 	},
 	
 	centerY: function () {
-		return CollisionBoxY(this) + this.collisionBoxHeight / 2;
+		return collisionBoxY(this) + this.collisionBoxHeight / 2;
 	},
 }
