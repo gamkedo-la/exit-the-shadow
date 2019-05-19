@@ -269,12 +269,16 @@ function ShadowBoss(id) {
 	}
 	
 	this.chargeAttackTowardsAttackDestination = function() {
+		var speed = attackChargeTime / 4;
+		if (phase == PHASE_2) {
+			speed *= 2;
+			this.setAttackDestination();
+		}
+		
 		let x = this.centerX();
 		let y = this.centerY();
 		
 		let angle = Math.atan2(attackDestinationY - y, attackDestinationX - x);
-		
-		var speed = attackChargeTime / 4;
 		this.nextX += speed * Math.cos(angle);
 		this.nextY += speed * Math.sin(angle);
 		
