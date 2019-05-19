@@ -27,6 +27,7 @@ function ShadowBoss(id) {
 	this.collisionBoxHeight = this.width;
 	this.HP = 30;
 	this.maxHP = this.HP;
+	this.HP = 1;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
 	this.name = "Shadow";
@@ -54,7 +55,7 @@ function ShadowBoss(id) {
 	let attackTime = 0;
 	let isChargingAttack = false;
 	let isAttacking = false;
-	let maxAttackCooldown = 1000;
+	let maxAttackCooldown = 150;
 	let minAttackCooldown = 50;
 	let attackCooldown = Math.round(Math.random()*(maxAttackCooldown-minAttackCooldown)) + minAttackCooldown;
 	let attackPadding = 32;
@@ -65,6 +66,8 @@ function ShadowBoss(id) {
 	let attackChargeTime = 0;
 	
 	let timeSincePlayerDeath = 0;
+	
+	let timeSinceBattleBegan = 0;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -75,6 +78,7 @@ function ShadowBoss(id) {
 			}
 		}
 		else if (phase == PHASE_1 || phase == PHASE_2) {
+			timeSinceBattleBegan++;
 			switch(behaviour) {
 			case FOLLOW:
 				// get center of player and us
@@ -84,7 +88,9 @@ function ShadowBoss(id) {
 				bossX = this.centerX();
 				bossY = this.centerY();
 				
-				this.updateIds();
+				if (timeSinceBattleBegan > 100) {
+					this.updateIds();
+				}
 				// decide where around the player to move to
 				switch(this.id) {
 				case LEFT_SHADOW:
@@ -361,8 +367,15 @@ function ShadowBoss(id) {
 		}
 	}
 	
-	this.updateIds = function() {
-		if (this.id == 0) { // only need one shadow to update the ids for everyone
+	this.updateIds = function() { // TODO: Improve this so it isn't first come first served per destination for each entity and instead finds the optimal solution for each entity to each destination
+		var uniqueId;
+		for (var i = 0; i < Entities.length; i++) {
+			if (Entities[i].name == "Shadow") {
+				uniqueId = Entities[i].id;
+			}
+		}
+		
+		if (this.id == uniqueId) { // only need one shadow to update the ids for everyone
 			var playerX = Player.centerX()
 			var playerY = Player.centerY();
 			
@@ -384,7 +397,7 @@ function ShadowBoss(id) {
 			var allDistancesFromDestinations = [];
 			
 			// get distances of each destination for each entity
-			for (var i = 0; i < Entities.length; i++) {
+			for (i = 0; i < Entities.length; i++) {
 				if (Entities[i].name == "Shadow") {
 					var distancesFromDestinations = [];
 					// check optimal places to move to
@@ -396,7 +409,7 @@ function ShadowBoss(id) {
 			}
 			
 			// find which is closest for each entity
-			var newIds = [0, 1, 2];
+			var newIds = [];
 			var destinationsTaken = [false, false, false];
 			for (i = 0; i < allDistancesFromDestinations.length; i++) { // entities
 				var closest = -1;
@@ -411,7 +424,7 @@ function ShadowBoss(id) {
 						closest = j; // choose destination that's closest
 					}
 				}
-				newIds[i] = closest;
+				newIds.push(closest);
 				destinationsTaken[closest] = true;
 			}
 			
