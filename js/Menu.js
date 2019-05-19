@@ -15,7 +15,7 @@ let rowHeight = 35;
 this.cursor1 = null;
 let currentPage = 0;
 
-let textFontFace = "";
+let textFontFace = "18px Satisfy";
 let textFontFaceCredits = "";
 let textColour = "" ;
 
@@ -127,8 +127,10 @@ this.draw = function(){
 
     for (let i = 0; i<menuPageText[currentPage].length; i++)
     {
+        //colorText(menuPageText[currentPage],itemsX, topItemY, textColour, textFontFace, 'left', 'top');
+
         colorText((menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE ? 275 : 0), topItemY+rowHeight*i - (currentPage ==HELP_PAGE ? 325 : 0),
-        (currentPage== HELP_PAGE ? "purple" : textColour), (currentPage == HELP_PAGE ? "25px" : textFontFace), 'left', 'top');
+        (currentPage== HELP_PAGE ? "purple" : textColour));
 
         //Draw cursor
         if (currentPage !=HELP_PAGE){
