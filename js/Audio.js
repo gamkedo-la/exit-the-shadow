@@ -2,7 +2,7 @@ var audioType = undefined;
 var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
 
 const TOTAL_SFX = 1;
-const TOTAL_BG_MUSIC = 2;
+const TOTAL_BG_MUSIC = 3;
 
 var sfx = new Array(TOTAL_SFX);
 var bg_music = new Array(TOTAL_BG_MUSIC);
@@ -11,8 +11,14 @@ const ATTACK_SFX = 0;
 
 const AMBIENT_MUSIC = 0;
 const FINAL_BOSS = 1;
+const SHADOW_BOSS = 2;
 
 var currentBackgroundMusic;
+
+var musicVolume = 1;
+
+const BOSS_MUSIC_FADE_OUT_RATE = 0.02;
+const AMBIENT_MUSIC_FADE_IN_RATE =  0.005;
 
 //This will help set the correct format type based on browser
 var setAudioTypeAndSourceExtension = () => {
@@ -34,6 +40,11 @@ setAudioTypeAndSourceExtension();
 
 function AudioClass() {
 	this.tag = '';
+	this.fadingOut = false;
+	let fadeOutRate = 0.1;
+	
+	this.fadingIn = false;
+	let fadeInRate = 0.1;
 
 	this.load = function(file) {
 		this.altTurn = false;
@@ -55,6 +66,49 @@ function AudioClass() {
 		}
 		
 		this.altTurn = !this.altTurn;
+	}
+	
+	this.stop = function() {
+		this.sound.pause();
+		this.sound.currentTime = 0;
+	}
+	
+	this.fadeOut = function(fadeOutRate_) {
+		fadeOutRate = fadeOutRate_;
+	    this.fadingOut = true;
+	}
+	
+	this.fadeIn = function(fadeInRate_) {
+		fadeInRate = fadeInRate_;
+		this.sound.volume = 0;
+		this.play();
+	    this.fadingIn = true;
+	}
+	
+	this.isPlaying = function() {
+		return !this.sound.paused;
+	}
+	
+	this.update = function() {
+		if (this.fadingOut) {
+			if (this.sound.volume <= fadeOutRate) {
+				this.sound.volume = musicVolume;
+				this.stop();
+				this.fadingOut = false;
+			}
+			else {
+				this.sound.volume -= fadeOutRate;
+			}
+		}
+		else if (this.fadingIn) {
+			if (this.sound.volume >= musicVolume - fadeInRate) {
+				this.sound.volume = musicVolume;
+				this.fadingIn = false;
+			}
+			else {
+				this.sound.volume += fadeInRate;
+			}
+		}
 	}
 }
 
@@ -79,7 +133,17 @@ function loadAudio()
 
 	bg_music[AMBIENT_MUSIC].load("music/ambientBackgroundMusic");
 	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");
+	bg_music[SHADOW_BOSS].load("music/shadowBossBattleMusicV1");
 	
 	console.log("load audio");
 }
 
+function switchMusic(newMusic, fadeOutRate, fadeInRate) {
+	for (var i = 0; i < bg_music.length; i++) {
+		if (bg_music[i].isPlaying()) {
+			bg_music[i].fadeOut(fadeOutRate);
+		}
+	}
+	
+	bg_music[newMusic].fadeIn(fadeInRate);
+}

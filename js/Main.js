@@ -101,6 +101,7 @@ function restartGame() {
 	gameRestartPending = false;
 	resetPlayer();
 	startWorld();
+	switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 }
 
 function startGame() {
@@ -157,6 +158,11 @@ function updateAll() {
 		canvasContext.textAlign = "center";
 		colorText("Paused", canvas.width/2, 50, 'grey');
 		canvasContext.restore();
+	}
+	
+	// update music (for fades)
+	for (var i = 0; i < bg_music.length; i++) {
+		bg_music[i].update();
 	}
 }
 

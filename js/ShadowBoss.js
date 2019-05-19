@@ -69,6 +69,7 @@ function ShadowBoss(id) {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
 		if (phase == NOT_IN_BATTLE) {
 			if (distanceBetweenEntities(this, Player) < 200) {
+				switchMusic(SHADOW_BOSS, 1, 1);
 				this.progressPhaseTogether();
 			}
 		}
@@ -391,6 +392,7 @@ function ShadowBoss(id) {
 
 				}
 				
+				switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 			}
 		}
 		return this.isDead;
