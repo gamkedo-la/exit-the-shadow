@@ -57,8 +57,9 @@ function ShadowBoss(id) {
 	let maxAttackCooldown = 150;
 	let minAttackCooldown = 50;
 	let attackCooldown = Math.round(Math.random()*(maxAttackCooldown-minAttackCooldown)) + minAttackCooldown;
-	let attackWidth = 64;
-	let attackHeight = 64;
+	let attackPadding = 32;
+	let attackWidth = this.width + (attackPadding*2);
+	let attackHeight = this.collisionBoxHeight + (attackPadding*2);
 	let attackDestinationX;
 	let attackDestinationY;
 	let attackChargeTime = 0;
@@ -174,6 +175,7 @@ function ShadowBoss(id) {
 			timeSincePlayerDeath++;
 			if (timeSincePlayerDeath > 50) {
 				// move back to original position
+				this.moveSpeed = 3;
 				if (Math.abs(this.startY - this.y) > 2) {
 					if (this.startY < this.y) {
 						this.movementDirection[UP] = true;
@@ -295,32 +297,27 @@ function ShadowBoss(id) {
 				this.movementDirection[LEFT] = true;
 			}
 		}
-		console.log(this.movementSpeed)
 		this.moveSpeed = 0; // set to zero so that setting movement direction doesn't move us (we want to override movement)
 	}
 	
 	this.initiateAttack = function() {
 		if (Attack == null) {
-			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
 			let velocityX = 0, velocityY = 0;
 			
-			switch(this.directionFacing) {
-			case UP:
-				centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
-				velocityY = -1;
-				break;
-			case DOWN:
-				centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
-				velocityY = 1;
-				break;
-			case LEFT:
-				centerX -= ((this.width / 2) + (attackWidth / 2));
-				velocityX = -1;
-				break;
-			case RIGHT:
-				centerX += ((this.width / 2) + (attackWidth / 2));
-				velocityX = 1;
-				break;
+			let angle = Math.atan2(Player.centerY() - this.centerY(), Player.centerX() - this.centerX()) * (180/Math.PI);
+			angle += 90; // not sure why I need this to get the angle right??
+			
+			if (angle >= -135 && angle < -45) { // left
+				velocityX = -5;
+			}
+			else if (angle >= -45 && angle < 45) { // up
+				velocityY = -5;
+			}
+			else if (angle >= 45 && angle < 135) { // right
+				velocityX = 5;
+			}
+			else { // down
+				velocityY = 5;
 			}
 			
 			let immuneEntities = [];
@@ -331,8 +328,8 @@ function ShadowBoss(id) {
 			}
 			
 			let attackOptions = {
-				centerX: centerX,
-				centerY: centerY,
+				centerX: this.centerX(),
+				centerY: this.centerY(),
 				width: attackWidth,
 				height: attackHeight,
 				damage: 1,
