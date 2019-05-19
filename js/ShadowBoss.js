@@ -54,7 +54,7 @@ function ShadowBoss(id) {
 	let attackTime = 0;
 	let isChargingAttack = false;
 	let isAttacking = false;
-	let maxAttackCooldown = 150;
+	let maxAttackCooldown = 1000;
 	let minAttackCooldown = 50;
 	let attackCooldown = Math.round(Math.random()*(maxAttackCooldown-minAttackCooldown)) + minAttackCooldown;
 	let attackPadding = 32;
@@ -78,13 +78,13 @@ function ShadowBoss(id) {
 			switch(behaviour) {
 			case FOLLOW:
 				// get center of player and us
-				destinationX = Player.x + Player.width / 2;
-				destinationY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
+				destinationX = Player.centerX();
+				destinationY = Player.centerY();
 				
-				bossX = this.x + this.width / 2;
-				bossY = collisionBoxY(this) + this.collisionBoxHeight / 2;
+				bossX = this.centerX();
+				bossY = this.centerY();
 				
-				
+				this.updateIds();
 				// decide where around the player to move to
 				switch(this.id) {
 				case LEFT_SHADOW:
@@ -358,6 +358,70 @@ function ShadowBoss(id) {
 		
 		if (attackCooldown > 0) {
 			attackCooldown--;
+		}
+	}
+	
+	this.updateIds = function() {
+		if (this.id == 0) { // only need one shadow to update the ids for everyone
+			var playerX = Player.centerX()
+			var playerY = Player.centerY();
+			
+			var x = [];
+			var y = [];
+			
+			// bottom left of player
+			x.push(playerX - spaceToLeaveBetweenPlayer);
+			y.push(playerY + spaceToLeaveBetweenPlayer);
+		
+			// above player
+			x.push(playerX);
+			y.push(playerY - spaceToLeaveBetweenPlayer);
+		
+			// bottom right of player
+			x.push(playerX + spaceToLeaveBetweenPlayer);
+			y.push(playerY + spaceToLeaveBetweenPlayer);
+			
+			var allDistancesFromDestinations = [];
+			
+			// get distances of each destination for each entity
+			for (var i = 0; i < Entities.length; i++) {
+				if (Entities[i].name == "Shadow") {
+					var distancesFromDestinations = [];
+					// check optimal places to move to
+					for (var j = 0; j < 3; j++) {
+						distancesFromDestinations.push(distanceBetweenEntityObject(Entities[i], x[j],y[j], 1,1));
+					}
+					allDistancesFromDestinations.push(distancesFromDestinations);
+				}
+			}
+			
+			// find which is closest for each entity
+			var newIds = [0, 1, 2];
+			var destinationsTaken = [false, false, false];
+			for (i = 0; i < allDistancesFromDestinations.length; i++) { // entities
+				var closest = -1;
+				for (j = 0; j < 3; j++) { // destinations
+					if (destinationsTaken[j]) { // destination already taken by another entity, skip
+						continue; // OR REPLACE / REMOVE & THIS WHOLE SECTION JUST ORDERS THE DESTINATIONS ????
+					}
+					else if (closest == -1) { // first pass, just set as this destination
+						closest = j;
+					}
+					else if (allDistancesFromDestinations[i][j] < allDistancesFromDestinations[i][closest]) {
+						closest = j; // choose destination that's closest
+					}
+				}
+				newIds[i] = closest;
+				destinationsTaken[closest] = true;
+			}
+			
+			// set new ids
+			for (var i = 0, idIndex = 0; i < Entities.length; i++) {
+				if (Entities[i].name == "Shadow") {
+					Entities[i].id = newIds[idIndex];
+					idIndex++;
+				}
+			}
 		}
 	}
 	
