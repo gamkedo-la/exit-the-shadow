@@ -1,3 +1,5 @@
+var selectedOption = 2;
+
 function saveMenuDisplay() {
     var textHeight = 30;
     var lines = 3;
@@ -10,21 +12,19 @@ function saveMenuDisplay() {
 
     var boxPosX = 200;
     var boxPosY = canvas.height / 2;
-    // var color = rgba(255,255,255,255);
 
     colorRect(boxPosX,boxPosY, boxWidth,boxHeight, 'white');
     saveFont();
     setFont('bold', textHeight, 'Arial');
     
-    colorText('Save', boxPosX + leftRightPadding, boxPosY + textHeight + linePadding, 'black');
-    colorText('Load', boxPosX + leftRightPadding, boxPosY + (textHeight + linePadding) * 2, 'black');
-    colorText('Back', boxPosX + leftRightPadding, boxPosY + (textHeight + linePadding) * 3, 'black');
-
-    // saveMenuOptions = ['Save', 'Load', 'Back']
-    // for(var i=0; i< saveMenuOptions.length; i++) {
-    //     console.log(saveMenuOptions[i] + ', green, ' + boxPosX + ', ' + boxPosY);
-    //     colorText(saveMenuOptions[i], 'white', 0, 0);
-    // }
+    saveMenuOptions = ['Save', 'Load', 'Back']
+    for(var i=0; i< saveMenuOptions.length; i++) {
+        console.log(saveMenuOptions[i] + ', green, ' + boxPosX + ', ' + boxPosY);
+        if (selectedOption == i) {
+            colorRect(boxPosX + leftRightPadding, boxPosY + ((textHeight + linePadding) * i + textHeight / 4), boxWidth - leftRightPadding, textHeight, 'grey');
+        }
+        colorText(saveMenuOptions[i], boxPosX + leftRightPadding, boxPosY + ((textHeight + linePadding) * i+textHeight), 'black');
+    }
     restoreFont();
     
 }
