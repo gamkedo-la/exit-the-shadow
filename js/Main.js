@@ -2,6 +2,7 @@ var canvas, canvasContext;
 var Player = new PlayerClass();
 var mainGameState = true;
 var helpScreen = false;
+var saveMenu = false;
 var camShakeOn = false;
 var deathScreenTime = 0;
 var gameRestartPending = false;
@@ -150,6 +151,10 @@ function updateAll() {
 				bossIsDefeated = false;
 			}
 		}
+	} else if(saveMenu) {
+		drawAll();
+		// if gamePaused and saveMenu
+		saveMenuDisplay();
 	}
 	else {
 		canvasContext.save();
@@ -237,7 +242,7 @@ function drawAll() {
 		// DISPLAY CONTROLS / ANY OTHER HELP HERE
 		drawGame();
 		helpBlock();
-	}
+	} 
 }
 
 function animateAll() {
