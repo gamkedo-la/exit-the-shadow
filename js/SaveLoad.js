@@ -74,6 +74,7 @@ function restoreValues(save) {
     // Set player position and health
     Player.HP = save.health;
 	Player.initialisePosition(save.positionX, save.positionY);
+	Player.regainHealthMeter = 0; // should probably be reset on load
 	moveCamToPlayer();
 
     // Restore bossesKilled so that we don't 'loose' progress next save

@@ -111,6 +111,7 @@ function EvilPlayerBoss() {
 		}
 		if (phase == NOT_IN_BATTLE) {
 			if (distanceBetweenEntities(this, Player) < 150) {
+				switchMusic(FINAL_BOSS, 1, 1);
 				this.progressPhase();
 			}
 		}
@@ -653,6 +654,8 @@ function EvilPlayerBoss() {
 					// show death message on screen
 					deathTextDisplay("DARK REFLECTION SUBDUED", 'grey', 'black');
 			}
+			
+			switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 		}
 		return this.isDead;
 	}	

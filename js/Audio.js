@@ -1,18 +1,57 @@
-
-const audioFormat = ".ogg";
+var audioType = undefined;
+var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
 
 const TOTAL_SFX = 1;
-const TOTAL_BG_MUSIC = 0;
+const TOTAL_BG_MUSIC = 3;
 
 var sfx = new Array(TOTAL_SFX);
 var bg_music = new Array(TOTAL_BG_MUSIC);
 
 const ATTACK_SFX = 0;
 
+const AMBIENT_MUSIC = 0;
+const FINAL_BOSS = 1;
+const SHADOW_BOSS = 2;
+
+var currentBackgroundMusic;
+
+var musicVolume = 1;
+
+const BOSS_MUSIC_FADE_OUT_RATE = 0.02;
+const AMBIENT_MUSIC_FADE_IN_RATE =  0.005;
+
+//This will help set the correct format type based on browser
+var setAudioTypeAndSourceExtension = () => {
+	var testMusic = new Audio();
+	if (testMusic.canPlayType('audio/ogg;')) {
+		audioType = 'audio/ogg';
+	} else {
+		audioType = 'audio/mpeg';
+	}
+
+	if (audioType === 'audio/mpeg') {
+		audioFormat = ".mp3";
+	} else {
+		audioFormat = ".ogg";
+	}
+};
+
+setAudioTypeAndSourceExtension();
+
 function AudioClass() {
+	this.tag = '';
+	this.fadingOut = false;
+	let fadeOutRate = 0.1;
+	
+	this.fadingIn = false;
+	let fadeInRate = 0.1;
+
 	this.load = function(file) {
 		this.altTurn = false;
 		this.sound = new Audio(file+audioFormat);
+		if (this.tag == 'music') {
+			this.sound.loop = true;
+		} 
 		this.altSound = new Audio(file+audioFormat);
 	}
 	
@@ -28,22 +67,83 @@ function AudioClass() {
 		
 		this.altTurn = !this.altTurn;
 	}
+	
+	this.stop = function() {
+		this.sound.pause();
+		this.sound.currentTime = 0;
+	}
+	
+	this.fadeOut = function(fadeOutRate_) {
+		fadeOutRate = fadeOutRate_;
+	    this.fadingOut = true;
+	}
+	
+	this.fadeIn = function(fadeInRate_) {
+		fadeInRate = fadeInRate_;
+		this.sound.volume = 0;
+		this.play();
+	    this.fadingIn = true;
+	}
+	
+	this.isPlaying = function() {
+		return !this.sound.paused;
+	}
+	
+	this.update = function() {
+		if (this.fadingOut) {
+			if (this.sound.volume <= fadeOutRate) {
+				this.sound.volume = musicVolume;
+				this.stop();
+				this.fadingOut = false;
+			}
+			else {
+				this.sound.volume -= fadeOutRate;
+			}
+		}
+		else if (this.fadingIn) {
+			if (this.sound.volume >= musicVolume - fadeInRate) {
+				this.sound.volume = musicVolume;
+				this.fadingIn = false;
+			}
+			else {
+				this.sound.volume += fadeInRate;
+			}
+		}
+	}
 }
 
 function initAudio()
 {
-	for(var i = 0; i < TOTAL_SFX; i++)
+	for(var i = 0; i < TOTAL_SFX; i++) {
 		sfx[i] = new AudioClass();
-	for(var i = 0; i < TOTAL_BG_MUSIC; i++)
+		sfx[i].tag = 'sfx';
+	}
+		
+	for(var i = 0; i < TOTAL_BG_MUSIC; i++) {
 		bg_music[i] = new AudioClass();
-	
+		bg_music[i].tag = 'music';
+	}
+
 	console.log("init audio");
 }
 
 function loadAudio()
 {
 	sfx[ATTACK_SFX].load("sfx/attack");
+
+	bg_music[AMBIENT_MUSIC].load("music/ambientBackgroundMusic");
+	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");
+	bg_music[SHADOW_BOSS].load("music/shadowBossBattleMusicV1");
 	
 	console.log("load audio");
 }
 
+function switchMusic(newMusic, fadeOutRate, fadeInRate) {
+	for (var i = 0; i < bg_music.length; i++) {
+		if (bg_music[i].isPlaying()) {
+			bg_music[i].fadeOut(fadeOutRate);
+		}
+	}
+	
+	bg_music[newMusic].fadeIn(fadeInRate);
+}

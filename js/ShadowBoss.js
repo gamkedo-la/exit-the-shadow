@@ -27,6 +27,7 @@ function ShadowBoss(id) {
 	this.collisionBoxHeight = this.width;
 	this.HP = 30;
 	this.maxHP = this.HP;
+	this.HP = 1;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
 	this.name = "Shadow";
@@ -57,32 +58,39 @@ function ShadowBoss(id) {
 	let maxAttackCooldown = 150;
 	let minAttackCooldown = 50;
 	let attackCooldown = Math.round(Math.random()*(maxAttackCooldown-minAttackCooldown)) + minAttackCooldown;
-	let attackWidth = 64;
-	let attackHeight = 64;
+	let attackPadding = 32;
+	let attackWidth = this.width + (attackPadding*2);
+	let attackHeight = this.collisionBoxHeight + (attackPadding*2);
 	let attackDestinationX;
 	let attackDestinationY;
 	let attackChargeTime = 0;
 	
 	let timeSincePlayerDeath = 0;
+	
+	let timeSinceBattleBegan = 0;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
 		if (phase == NOT_IN_BATTLE) {
 			if (distanceBetweenEntities(this, Player) < 200) {
+				switchMusic(SHADOW_BOSS, 1, 1);
 				this.progressPhaseTogether();
 			}
 		}
 		else if (phase == PHASE_1 || phase == PHASE_2) {
+			timeSinceBattleBegan++;
 			switch(behaviour) {
 			case FOLLOW:
 				// get center of player and us
-				destinationX = Player.x + Player.width / 2;
-				destinationY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
+				destinationX = Player.centerX();
+				destinationY = Player.centerY();
 				
-				bossX = this.x + this.width / 2;
-				bossY = collisionBoxY(this) + this.collisionBoxHeight / 2;
+				bossX = this.centerX();
+				bossY = this.centerY();
 				
-				
+				if (timeSinceBattleBegan > 100) {
+					this.updateIds();
+				}
 				// decide where around the player to move to
 				switch(this.id) {
 				case LEFT_SHADOW:
@@ -173,6 +181,7 @@ function ShadowBoss(id) {
 			timeSincePlayerDeath++;
 			if (timeSincePlayerDeath > 50) {
 				// move back to original position
+				this.moveSpeed = 3;
 				if (Math.abs(this.startY - this.y) > 2) {
 					if (this.startY < this.y) {
 						this.movementDirection[UP] = true;
@@ -259,18 +268,27 @@ function ShadowBoss(id) {
 	}
 	
 	this.setAttackDestination = function() {
-		let playerX = Player.x + Player.width / 2;
-		let playerY = collisionBoxY(Player) + Player.collisionBoxHeight / 2;
+		let playerX = Player.centerX();
+		let playerY = Player.centerY();
 		attackDestinationX = playerX + (relativeDistanceBetweenEntitiesX(this, Player) * 100); // multiply by large enough number so that 
 		attackDestinationY = playerY + (relativeDistanceBetweenEntitiesY(this, Player) * 100); // we always move in one direction
 	}
 	
 	this.chargeAttackTowardsAttackDestination = function() {
-		let x = this.x + this.width / 2;
-		let y = collisionBoxY(this) + this.collisionBoxHeight / 2;
+		var speed = attackChargeTime / 4;
+		if (phase == PHASE_2) {
+			speed *= 2;
+			this.setAttackDestination();
+		}
 		
-		this.moveSpeed = attackChargeTime / 4;
-		if (Math.abs(attackDestinationY - y) > 2) {
+		let x = this.centerX();
+		let y = this.centerY();
+		
+		let angle = Math.atan2(attackDestinationY - y, attackDestinationX - x);
+		this.nextX += speed * Math.cos(angle);
+		this.nextY += speed * Math.sin(angle);
+		
+		if (Math.abs(attackDestinationY - y) > 10) {
 			if (attackDestinationY < y) {
 				this.movementDirection[UP] = true;
 			}
@@ -280,7 +298,7 @@ function ShadowBoss(id) {
 			}
 		}
 
-		if (Math.abs(attackDestinationX - x) > 2) {
+		if (Math.abs(attackDestinationX - x) > 10) {
 			if (attackDestinationX > x) {
 				this.movementDirection[RIGHT] = true;
 			}
@@ -289,30 +307,27 @@ function ShadowBoss(id) {
 				this.movementDirection[LEFT] = true;
 			}
 		}
+		this.moveSpeed = 0; // set to zero so that setting movement direction doesn't move us (we want to override movement)
 	}
 	
 	this.initiateAttack = function() {
 		if (Attack == null) {
-			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
 			let velocityX = 0, velocityY = 0;
 			
-			switch(this.directionFacing) {
-			case UP:
-				centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
-				velocityY = -1;
-				break;
-			case DOWN:
-				centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
-				velocityY = 1;
-				break;
-			case LEFT:
-				centerX -= ((this.width / 2) + (attackWidth / 2));
-				velocityX = -1;
-				break;
-			case RIGHT:
-				centerX += ((this.width / 2) + (attackWidth / 2));
-				velocityX = 1;
-				break;
+			let angle = Math.atan2(Player.centerY() - this.centerY(), Player.centerX() - this.centerX()) * (180/Math.PI);
+			angle += 90; // not sure why I need this to get the angle right??
+			
+			if (angle >= -135 && angle < -45) { // left
+				velocityX = -5;
+			}
+			else if (angle >= -45 && angle < 45) { // up
+				velocityY = -5;
+			}
+			else if (angle >= 45 && angle < 135) { // right
+				velocityX = 5;
+			}
+			else { // down
+				velocityY = 5;
 			}
 			
 			let immuneEntities = [];
@@ -323,8 +338,8 @@ function ShadowBoss(id) {
 			}
 			
 			let attackOptions = {
-				centerX: centerX,
-				centerY: centerY,
+				centerX: this.centerX(),
+				centerY: this.centerY(),
 				width: attackWidth,
 				height: attackHeight,
 				damage: 1,
@@ -349,6 +364,77 @@ function ShadowBoss(id) {
 		
 		if (attackCooldown > 0) {
 			attackCooldown--;
+		}
+	}
+	
+	this.updateIds = function() { // TODO: Improve this so it isn't first come first served per destination for each entity and instead finds the optimal solution for each entity to each destination
+		var uniqueId;
+		for (var i = 0; i < Entities.length; i++) {
+			if (Entities[i].name == "Shadow") {
+				uniqueId = Entities[i].id;
+			}
+		}
+		
+		if (this.id == uniqueId) { // only need one shadow to update the ids for everyone
+			var playerX = Player.centerX()
+			var playerY = Player.centerY();
+			
+			var x = [];
+			var y = [];
+			
+			// bottom left of player
+			x.push(playerX - spaceToLeaveBetweenPlayer);
+			y.push(playerY + spaceToLeaveBetweenPlayer);
+		
+			// above player
+			x.push(playerX);
+			y.push(playerY - spaceToLeaveBetweenPlayer);
+		
+			// bottom right of player
+			x.push(playerX + spaceToLeaveBetweenPlayer);
+			y.push(playerY + spaceToLeaveBetweenPlayer);
+			
+			var allDistancesFromDestinations = [];
+			
+			// get distances of each destination for each entity
+			for (i = 0; i < Entities.length; i++) {
+				if (Entities[i].name == "Shadow") {
+					var distancesFromDestinations = [];
+					// check optimal places to move to
+					for (var j = 0; j < 3; j++) {
+						distancesFromDestinations.push(distanceBetweenEntityObject(Entities[i], x[j],y[j], 1,1));
+					}
+					allDistancesFromDestinations.push(distancesFromDestinations);
+				}
+			}
+			
+			// find which is closest for each entity
+			var newIds = [];
+			var destinationsTaken = [false, false, false];
+			for (i = 0; i < allDistancesFromDestinations.length; i++) { // entities
+				var closest = -1;
+				for (j = 0; j < 3; j++) { // destinations
+					if (destinationsTaken[j]) { // destination already taken by another entity, skip
+						continue; // OR REPLACE / REMOVE & THIS WHOLE SECTION JUST ORDERS THE DESTINATIONS ????
+					}
+					else if (closest == -1) { // first pass, just set as this destination
+						closest = j;
+					}
+					else if (allDistancesFromDestinations[i][j] < allDistancesFromDestinations[i][closest]) {
+						closest = j; // choose destination that's closest
+					}
+				}
+				newIds.push(closest);
+				destinationsTaken[closest] = true;
+			}
+			
+			// set new ids
+			for (var i = 0, idIndex = 0; i < Entities.length; i++) {
+				if (Entities[i].name == "Shadow") {
+					Entities[i].id = newIds[idIndex];
+					idIndex++;
+				}
+			}
 		}
 	}
 	
@@ -391,6 +477,7 @@ function ShadowBoss(id) {
 
 				}
 				
+				switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 			}
 		}
 		return this.isDead;

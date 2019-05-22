@@ -10,7 +10,8 @@ const KEY_P = 80; // PAUSE
 const KEY_H = 72; // HELP SCREEN KEY
 
 function setUpInput() {
-	//canvas.addEventListener('mousemove', updateMousePos);
+	canvas.addEventListener('mousemove', displayMousePos);
+	canvas.addEventListener('mousedown', Menu.changeMenuStateOnClick);
 	
 	document.addEventListener('keydown', keyPressed);
 	document.addEventListener('keyup', keyReleased);
@@ -83,4 +84,3 @@ function keyPressed(evt) {
 function keyReleased(evt) {
 	keySet(evt, Player, false);
 }
-

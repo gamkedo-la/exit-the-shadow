@@ -152,5 +152,13 @@ EntityClass.prototype = {
 	deathHandle: function ()
 	{
 		return this.isDead;
-	}
+	},
+	
+	centerX: function () {
+		return this.x + this.width / 2;
+	},
+	
+	centerY: function () {
+		return collisionBoxY(this) + this.collisionBoxHeight / 2;
+	},
 }

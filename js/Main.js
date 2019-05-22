@@ -61,7 +61,7 @@ window.onload = function() {
 	window.addEventListener("resize", resizeCanvas);
 	window.addEventListener('focus', function () {
 		gamePaused = false;
-		gameIsStarted = false;
+		//gameIsStarted = false;
 		}
 	);
     window.addEventListener('blur', function() {
@@ -102,6 +102,7 @@ function restartGame() {
 	gameRestartPending = false;
 	resetPlayer();
 	startWorld();
+	switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 }
 
 function startGame() {
@@ -121,9 +122,9 @@ function updateAll() {
 
 	frameCounter++;
 
-	if (gameIsStarted == false || (gamePaused && gameIsRunning)) {
-		//Menu.update();
-		//return;
+	if (gameIsStarted == false) {
+		Menu.update();
+		return;
 	}	
 	if (gamePaused == false) { //Updates only if the game is not paused
 		animateAll();
@@ -162,6 +163,11 @@ function updateAll() {
 		canvasContext.textAlign = "center";
 		colorText("Paused", canvas.width/2, 50, 'grey');
 		canvasContext.restore();
+	}
+	
+	// update music (for fades)
+	for (var i = 0; i < bg_music.length; i++) {
+		bg_music[i].update();
 	}
 }
 
