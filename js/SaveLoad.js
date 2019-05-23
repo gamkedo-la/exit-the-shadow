@@ -29,7 +29,9 @@ function saveMenuDisplay() {
     
 }
 
+function showSavingIndicator() {
 
+}
 
 function SaveData(name, positionX, positionY, health, bossesKilled, deaths, timePlayed) {
     this.name = name;
@@ -43,7 +45,7 @@ function SaveData(name, positionX, positionY, health, bossesKilled, deaths, time
 }
 
 function saveGame() {
-    var save = new SaveData("save1", Player.x, Player.y, Player.HP, Player.bossesKilled, 0, 300);
+    var save = new SaveData("save1", Player.x, Player.y, Player.HP, Player.bossesKilled, 0, 0);
     var savesArray = new Array();
     savesArray.push(save);
 
@@ -55,6 +57,7 @@ function saveGame() {
 }
 
 function loadGame() {
+    console.log("loading game");
     if(listSaves == null) {
         // No saves available
         return;
@@ -97,3 +100,4 @@ function listSaves() {
     var saveGames = localStorage.getItem('exit-the-shadow-saves');
     return saveGames;
 }
+

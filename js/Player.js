@@ -286,8 +286,7 @@ function PlayerClass() {
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							gamePaused = true;
-							saveMenu = true;
+							savingGame = true;
 							console.log("load save game screen here");
 					}
 				}

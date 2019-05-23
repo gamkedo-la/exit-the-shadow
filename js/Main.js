@@ -2,7 +2,6 @@ var canvas, canvasContext;
 var Player = new PlayerClass();
 var mainGameState = true;
 var helpScreen = false;
-var saveMenu = false;
 var camShakeOn = false;
 var deathScreenTime = 0;
 var gameRestartPending = false;
@@ -13,6 +12,8 @@ var bossIsDefeated = false;
 var showBossDefeated = function() {}
 var bossDefeatedScreenTime = 0;
 var frameCounter = 0;
+var savingGame = false;
+var saveGameIndicationTime = 0;
 
 var Entities = [
 	Player
@@ -152,10 +153,20 @@ function updateAll() {
 				bossIsDefeated = false;
 			}
 		}
-	} else if(saveMenu) {
-		drawAll();
-		// if gamePaused and saveMenu
-		saveMenuDisplay();
+
+		if(savingGame) {
+			if(saveGameIndicationTime == 0) {
+				saveGame();
+			}
+
+			showSavingIndicator();
+			saveGameIndicationTime++;
+
+			if(saveGameIndicationTime > 90) {
+				saveGameIndicationTime = 0;
+				savingGame = false;
+			}
+		}
 	}
 	else {
 		canvasContext.save();

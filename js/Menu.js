@@ -73,10 +73,13 @@ this.changeMenuStateOnClick = function() {
 	    this.cursor1 = null;
 	    break;
 	case "Continue":
-		if (saveGames == undefined || saveGames == null) {
+		if (listSaves() == undefined || listSaves() == null) {
 			console.log("No save games found");
 	    	return;
-		}
+        }
+        gameIsStarted = true;
+	    currentBackgroundMusic = AMBIENT_MUSIC;
+	    bg_music[currentBackgroundMusic].play();
 	    loadGame();
 	    this.cursor1 = null;
 	    break;
