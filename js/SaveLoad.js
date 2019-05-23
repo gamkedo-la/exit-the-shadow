@@ -1,7 +1,7 @@
 var selectedOption = 2;
 
-var saveIndWidth = 35;
-var saveIndHeight = 35;
+var saveIndWidth = 20;
+var saveIndHeight = 20;
 var saveIndAng = 0;
 
 
@@ -38,8 +38,9 @@ function showSavingIndicator() {
     console.log("show save indicator");
     var saveIndX = canvas.width - saveIndWidth * 2;
     var saveIndY = canvas.height - saveIndHeight * 2;
-    saveIndAng += 0.02;
+    saveIndAng += 0.04;
 
+    // main indicator
     canvasContext.save();
     canvasContext.translate(saveIndX, saveIndY);
     canvasContext.rotate(saveIndAng);
@@ -47,14 +48,22 @@ function showSavingIndicator() {
 	canvasContext.fillRect(-saveIndWidth/2, -saveIndHeight/2, saveIndWidth, saveIndHeight);
     canvasContext.restore();
 
+    // mini indicators
+    var miniIndWidth = saveIndWidth / 6;
+    var miniIndHeight = saveIndHeight / 6;
     canvasContext.save();
     canvasContext.translate(saveIndX, saveIndY);
     canvasContext.rotate(-saveIndAng);
+
     canvasContext.fillStyle = 'white';
-    canvasContext.fillRect(saveIndWidth, saveIndHeight, 5, 5);
+    canvasContext.fillRect(saveIndWidth - miniIndWidth/2, saveIndHeight - miniIndHeight / 2, miniIndWidth, miniIndHeight);
     
-    canvasContext.fillStyle = 'white';
-	canvasContext.fillRect(-saveIndWidth, -saveIndHeight, 5, 5);
+    canvasContext.fillRect(-saveIndWidth - miniIndWidth/2, saveIndHeight - miniIndHeight / 2, miniIndWidth, miniIndHeight);
+
+    canvasContext.fillRect(-saveIndWidth - miniIndWidth/2, -saveIndHeight - miniIndHeight / 2, miniIndWidth, miniIndHeight);
+    
+    canvasContext.fillRect(saveIndWidth - miniIndWidth/2, -saveIndHeight - miniIndHeight / 2, miniIndWidth, miniIndHeight);
+    
     canvasContext.restore();
 }
 
