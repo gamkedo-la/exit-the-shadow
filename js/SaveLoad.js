@@ -1,5 +1,10 @@
 var selectedOption = 2;
 
+var saveIndWidth = 35;
+var saveIndHeight = 35;
+var saveIndAng = 0;
+
+
 function saveMenuDisplay() {
     var textHeight = 30;
     var lines = 3;
@@ -30,7 +35,27 @@ function saveMenuDisplay() {
 }
 
 function showSavingIndicator() {
+    console.log("show save indicator");
+    var saveIndX = canvas.width - saveIndWidth * 2;
+    var saveIndY = canvas.height - saveIndHeight * 2;
+    saveIndAng += 0.02;
 
+    canvasContext.save();
+    canvasContext.translate(saveIndX, saveIndY);
+    canvasContext.rotate(saveIndAng);
+    canvasContext.fillStyle = 'white';
+	canvasContext.fillRect(-saveIndWidth/2, -saveIndHeight/2, saveIndWidth, saveIndHeight);
+    canvasContext.restore();
+
+    canvasContext.save();
+    canvasContext.translate(saveIndX, saveIndY);
+    canvasContext.rotate(-saveIndAng);
+    canvasContext.fillStyle = 'white';
+    canvasContext.fillRect(saveIndWidth, saveIndHeight, 5, 5);
+    
+    canvasContext.fillStyle = 'white';
+	canvasContext.fillRect(-saveIndWidth, -saveIndHeight, 5, 5);
+    canvasContext.restore();
 }
 
 function SaveData(name, positionX, positionY, health, bossesKilled, deaths, timePlayed) {
