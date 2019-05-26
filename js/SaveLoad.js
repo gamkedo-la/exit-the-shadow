@@ -79,7 +79,7 @@ function SaveData(name, positionX, positionY, health, bossesKilled, deaths, time
 }
 
 function saveGame() {
-    var save = new SaveData("save1", Player.x, Player.y, Player.HP, Player.bossesKilled, 0, 0);
+    var save = new SaveData("save1", Player.x + Player.width / 2, Player.y + Player.height / 2, Player.HP, Player.bossesKilled, 0, 0);
     var savesArray = new Array();
     savesArray.push(save);
 
