@@ -13,6 +13,7 @@ var bossTrailImage = document.createElement("img");
 var bossHealthBarOutline = document.createElement("img");
 var bossHealth = document.createElement("img");
 var playerGradient = document.createElement("img");
+var shadowBossGradient = document.createElement("img");
 var healingStatue = document.createElement("img");
 var typewriter = document.createElement("img");
 var bed = document.createElement("img");
@@ -55,6 +56,7 @@ function loadImages() {
 		{varName: bossHealthBarOutline, fileName: "BossHealthBarOutline.png"},
 		{varName: bossHealth, fileName: "BossHealthBar.png"},
 		{varName: playerGradient, fileName: "gradient.png"},
+		{varName: shadowBossGradient, fileName: "ShadowBossGradient.png"},
 		{varName: healingStatue, fileName: "healing_statue.png"},
 		{varName: typewriter, fileName: "tw_room_typewriter.png"},
 		{varName: bed, fileName: "tw_room_bed.png"},

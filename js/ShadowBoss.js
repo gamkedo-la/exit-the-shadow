@@ -39,8 +39,13 @@ function ShadowBoss(id) {
 		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1}
 	}
 	
-	let spritePadding = 64;
-	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
+	//Next 5 lines temporary while working on shadow boss
+//	let spritePadding = 64;
+//	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
+	let spritePadding = 50;
+	this.width = 25;
+	this.height = 50;
+	this.AnimatedSprite = new AnimatedSpriteClass(evilPlayerSheet, this.width, this.height, spritePadding, this.states);
 
 	this.directionFacing = DOWN;
 
@@ -227,6 +232,12 @@ function ShadowBoss(id) {
 	
 	this.draw = function() {
 		EntityClass.prototype.draw.call(this);
+
+		canvasContext.drawImage(shadowBossGradient, 
+								0, 0, //x, y of where to start clipping
+								shadowBossGradient.width, shadowBossGradient.height, //width, height of how much to clip
+								this.x - shadowBossGradient.width/4, this.y - shadowBossGradient.height/4, //x, y where to position image
+								shadowBossGradient.width/2, shadowBossGradient.height/2); //width, height of how big to draw image
 	}
 	
 	this.progressPhaseTogether = function() {
