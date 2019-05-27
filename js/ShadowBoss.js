@@ -21,8 +21,8 @@ function ShadowBoss(id) {
 	
 	this.id = id;
 	
-	this.width = 48;
-	this.height = 128;
+	this.width = 17;//48;
+	this.height = 47;//128;
 	
 	this.collisionBoxHeight = this.width;
 	this.HP = 30;
@@ -39,13 +39,8 @@ function ShadowBoss(id) {
 		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1}
 	}
 	
-	//Next 5 lines temporary while working on shadow boss
-//	let spritePadding = 64;
-//	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
-	let spritePadding = 50;
-	this.width = 25;
-	this.height = 50;
-	this.AnimatedSprite = new AnimatedSpriteClass(evilPlayerSheet, this.width, this.height, spritePadding, this.states);
+	let spritePadding = 54;
+	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
 
 	this.directionFacing = DOWN;
 
