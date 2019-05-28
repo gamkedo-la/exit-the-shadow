@@ -42,6 +42,34 @@ var SortedArt = [
 
 var OverlayingArt = [
 	{x: 3750, y: 3018, imgName: "painting"},
+	
+	// torches
+	{x:3484, y:3535, imgName: 'torchPic'},
+	{x:3405, y:3535, imgName: 'torchPic'},
+	{x:3589, y:3026, imgName: 'torchPic'},
+	{x:3297, y:3022, imgName: 'torchPic'},
+	{x:3084, y:3144, imgName: 'torchPic'},
+	{x:3803, y:3145, imgName: 'torchPic'},
+	{x:3483, y:2792, imgName: 'torchPic'},
+	{x:3403, y:2791, imgName: 'torchPic'},
+	{x:2916, y:2121, imgName: 'torchPic'},
+	{x:3721, y:2358, imgName: 'torchPic'},
+	{x:3477, y:1787, imgName: 'torchPic'},
+	{x:3411, y:1787, imgName: 'torchPic'},
+	{x:3445, y:1142, imgName: 'torchPic'},
+	{x:3494, y:1099, imgName: 'torchPic'},
+	{x:3395, y:1098, imgName: 'torchPic'},
+	{x:4816, y:3145, imgName: 'torchPic'},
+	{x:4863, y:3146, imgName: 'torchPic'},
+	{x:5962, y:3069, imgName: 'torchPic'},
+	{x:5880, y:3070, imgName: 'torchPic'},
+	{x:5880, y:3165, imgName: 'torchPic'},
+	{x:5962, y:3165, imgName: 'torchPic'},
+	{x:6210, y:2549, imgName: 'torchPic'},
+	{x:5316, y:2551, imgName: 'torchPic'},
+	{x:2179, y:3145, imgName: 'torchPic'},
+	{x:1563, y:3145, imgName: 'torchPic'},
+
 ];
 
 var SortedDrawList = [];
@@ -248,6 +276,12 @@ function drawGame() {
 	for (i = 0; i < OverlayingArt.length; i++)
 	{
 		canvasContext.drawImage(window[OverlayingArt[i].imgName], OverlayingArt[i].x, OverlayingArt[i].y);
+		
+		// an overlay that glows - like a wall torch
+		if (OverlayingArt[i].imgName == 'torchPic') {
+			LightSourcesThisFrame.push([OverlayingArt[i].x-36, OverlayingArt[i].y-42]);
+		}
+
 	}
 
 	Player.drawGradient(); // draw circular darkess around the player
@@ -258,8 +292,8 @@ function drawGame() {
 		canvasContext.drawImage(
 			glowPic,0,0,100,100,
 			LightSourcesThisFrame[i][0], LightSourcesThisFrame[i][1],
-			100-Math.sin(frameCounter*1.331),
-			100-Math.sin(frameCounter/2.012)*2.5);
+			100-Math.sin(i*1234+frameCounter*1.331),
+			100-Math.sin(i*1234+frameCounter/2.012)*2.5);
 	}
 
 	canvasContext.restore();
