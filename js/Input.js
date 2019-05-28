@@ -9,9 +9,35 @@ const KEY_L = 76; // SHIELD
 const KEY_P = 80; // PAUSE
 const KEY_H = 72; // HELP SCREEN KEY
 
+const LOG_MOUSE_CLICKS = false; // debug or level editing only
+
+function debugOnClick(e) { 
+	// used for easy level editing
+	// click many locations for a list of x,y
+
+	if (!window.debugClickLocations) { //first click ignored (menu)
+		window.debugClickLocations = "// CLICK LOG:\n";
+		return;
+	}
+	
+	var spritex = (mouseX+camPanX-12);
+	var spritey = (mouseY+camPanY-12);
+	
+	// clickspam level editor for overlays
+	window.debugClickLocations += "{x:"+spritex+", y:"+spritey+", imgName: 'torchPic'},\n";
+	console.log(window.debugClickLocations);
+
+	// show live while playing
+	OverlayingArt.push({x:spritex, y:spritey, imgName: 'torchPic'});
+
+}
+
 function setUpInput() {
 	canvas.addEventListener('mousemove', displayMousePos);
 	canvas.addEventListener('mousedown', Menu.changeMenuStateOnClick);
+	
+	if (LOG_MOUSE_CLICKS)
+		canvas.addEventListener('mousedown', debugOnClick);
 	
 	document.addEventListener('keydown', keyPressed);
 	document.addEventListener('keyup', keyReleased);
