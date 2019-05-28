@@ -45,6 +45,7 @@ var OverlayingArt = [
 ];
 
 var SortedDrawList = [];
+var LightSourcesThisFrame = [];
 
 var mouseX, mouseY;
 function displayMousePos(evt) {
@@ -210,6 +211,7 @@ function drawGame() {
 
 	// sorted art
 	SortedDrawList = [];
+	LightSourcesThisFrame = [];
 
 	SortedDrawList = SortedDrawList.concat(Entities, SortedArt, visibleTileEntities);
 	SortedDrawList.sort(sortByFloorPosition); // defined once above
@@ -221,11 +223,18 @@ function drawGame() {
 
 			// candles glow and flicker
 			if (SortedDrawList[i].imgName=="table") {
+				
+				// defer glows till after player is drawn
+				LightSourcesThisFrame.push([SortedDrawList[i].x-42, SortedDrawList[i].y-50]);
+				
+				/*
+				// works, but gets drawn UNDERNEATH the player gradient 
 				canvasContext.drawImage(
 					glowPic,0,0,100,100,
 					SortedDrawList[i].x-42, SortedDrawList[i].y-50,
 					100-Math.sin(frameCounter*1.331),
 					100-Math.sin(frameCounter/2.012)*2.5);
+				*/
 			}
 
 		}
@@ -241,7 +250,17 @@ function drawGame() {
 		canvasContext.drawImage(window[OverlayingArt[i].imgName], OverlayingArt[i].x, OverlayingArt[i].y);
 	}
 
-	Player.drawGradient();
+	Player.drawGradient(); // draw circular darkess around the player
+
+	// draw light glows over top of player gradient
+	for (i = 0; i < LightSourcesThisFrame.length; i++)
+	{
+		canvasContext.drawImage(
+			glowPic,0,0,100,100,
+			LightSourcesThisFrame[i][0], LightSourcesThisFrame[i][1],
+			100-Math.sin(frameCounter*1.331),
+			100-Math.sin(frameCounter/2.012)*2.5);
+	}
 
 	canvasContext.restore();
 
