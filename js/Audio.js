@@ -1,13 +1,14 @@
 var audioType = undefined;
 var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
 
-const TOTAL_SFX = 1;
+const TOTAL_SFX = 2;
 const TOTAL_BG_MUSIC = 3;
 
 var sfx = new Array(TOTAL_SFX);
 var bg_music = new Array(TOTAL_BG_MUSIC);
 
 const ATTACK_SFX = 0;
+const SAVE_SFX = 1;
 
 const AMBIENT_MUSIC = 0;
 const FINAL_BOSS = 1;
@@ -130,6 +131,7 @@ function initAudio()
 function loadAudio()
 {
 	sfx[ATTACK_SFX].load("sfx/attack");
+	sfx[SAVE_SFX].load("sfx/typewriter");
 
 	bg_music[AMBIENT_MUSIC].load("music/ambientBackgroundMusic");
 	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");
