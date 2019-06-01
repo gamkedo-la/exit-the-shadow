@@ -10,14 +10,14 @@ const CREDITS_PAGE = 3;
 let itemsX = 310;
 let topItemY = 390;
 let itemsWidth = 650;
-let rowHeight = 35;
+let rowHeight = 46;
 
 this.cursor1 = null;
 let currentPage = 0;
 
 let textFontFace = "18px Satisfy";
-let textFontFaceCredits = "";
-let textColour = "" ;
+let textFontFaceCredits = "28px Satisfy";
+let textColour = "white" ;
 
 let classListMenu = ["New Game", "Continue", "Settings" , "Help", "Credits"];
 let classListSettings = ["volume", "controls", "Back"];
@@ -29,8 +29,8 @@ let menuPageText = [classListMenu, classListSettings, classListHelp, classListCr
 
 this.menuMouse = function(){
     for (let i=0; i<menuPageText[currentPage].length; i++){
-        if(mouseX > itemsX && mouseX < itemsX + itemsWidth && mouseY > topItemY + (i*rowHeight)-20 &&
-         mouseY < topItemY + (i+1) * rowHeight - 20){
+        if(mouseX > itemsX && mouseX < itemsX + itemsWidth && mouseY > topItemY + (i*rowHeight)-50 &&
+         mouseY < topItemY + (i+1) * rowHeight - 50){
             this.cursor1= i;
         } 
     }
@@ -130,10 +130,10 @@ this.draw = function(){
 
     for (let i = 0; i<menuPageText[currentPage].length; i++)
     {
-        //colorText(menuPageText[currentPage],itemsX, topItemY, textColour, textFontFace, 'left', 'top');
-
-        colorText((menuPageText[currentPage][i]), itemsX - (currentPage== HELP_PAGE ? 275 : 0), topItemY+rowHeight*i - (currentPage ==HELP_PAGE ? 325 : 0),
-        (currentPage== HELP_PAGE ? "purple" : textColour));
+        canvasContext.save();
+        canvasContext.font = textFontFace;
+        colorText(menuPageText[currentPage][i],itemsX - (currentPage == CREDITS_PAGE ? 275 : 0),topItemY + rowHeight * i - (currentPage == CREDITS_PAGE ? 325 : 0),
+        (currentPage == CREDITS_PAGE ? "yellow" : textColour), (currentPage == CREDITS_PAGE ? textFontFace : textColour), 'left', 'top');
 
         //Draw cursor
         if (currentPage !=HELP_PAGE){
@@ -144,12 +144,6 @@ this.draw = function(){
 }
 
 
-if(!gameIsRunning){
-    console.log("Menu is running");
-}
-if(!gameIsStarted){
-    console.log("Menu is started");
-}
 
 
 })();
