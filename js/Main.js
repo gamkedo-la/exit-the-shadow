@@ -132,6 +132,18 @@ function restartGame() {
 	gameRestartPending = false;
 	resetPlayer();
 	startWorld();
+	
+    // Kill off bosses already defeated.
+    for(var i=0; i<Entities.length;i++) {
+        var entity = Entities[i];
+        
+        Player.bossesKilled.forEach(boss => {
+            if(entity.name == boss) {
+                Entities.splice(i, 1);
+            }
+        });
+    }
+	
 	switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 }
 
