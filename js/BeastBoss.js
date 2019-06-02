@@ -64,22 +64,22 @@ function BeastBoss() {
 			switch(behaviour) {
 			case FOLLOWING:
 				this.moveSpeed = this.followSpeed;
-				if (Math.abs(Player.y - this.y) > 2) {
-					if (Player.y < this.y) {
+				if (Math.abs(Player.centerY() - this.centerY()) > this.width/2) {
+					if (Player.centerY() < this.centerY()) {
 						this.movementDirection[UP] = true;
 					}
 		
-					if (Player.y > this.y) {
+					if (Player.centerY() > this.centerY()) {
 						this.movementDirection[DOWN] = true;
 					}
 				}
 		
-				if (Math.abs(Player.x - this.x) > 2) {
-					if (Player.x > this.x) {
+				if (Math.abs(Player.centerX() - this.centerX()) > this.width/2) {
+					if (Player.centerX() > this.centerX()) {
 						this.movementDirection[RIGHT] = true;
 					}
 
-					if (Player.x < this.x) {
+					if (Player.centerX() < this.centerX()) {
 						this.movementDirection[LEFT] = true;
 					}
 				}
@@ -99,22 +99,22 @@ function BeastBoss() {
 				if (distFromPlayer < 100){
 					isDashing = false;
 				}
-				if (Math.abs(Player.y - this.y) > 2) {
-					if (Player.y < this.y) {
+				if (Math.abs(Player.centerY() - this.centerY()) > 10) {
+					if (Player.centerY() < this.centerY()) {
 						this.movementDirection[UP] = true;
 					}
 		
-					if (Player.y > this.y) {
+					if (Player.centerY() > this.centerY()) {
 						this.movementDirection[DOWN] = true;
 					}
 				}
 		
-				if (Math.abs(Player.x - this.x) > 2) {
-					if (Player.x > this.x) {
+				if (Math.abs(Player.centerX() - this.centerX()) > 10) {
+					if (Player.centerX() > this.centerX()) {
 						this.movementDirection[RIGHT] = true;
 					}
 
-					if (Player.x < this.x) {
+					if (Player.centerX() < this.centerX()) {
 						this.movementDirection[LEFT] = true;
 					}
 				}
@@ -152,7 +152,6 @@ function BeastBoss() {
 	
 	this.initiateAttack = function() {
 		if (attackCooldown <= 0 && Attack == null) {
-			console.log("Attacking now!");
 			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
 			let velocityX = 0, velocityY = 0;
 			
