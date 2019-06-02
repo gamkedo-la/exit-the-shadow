@@ -475,6 +475,20 @@ function ShadowBoss(id) {
 
 		generateTileEntities();
 	}
+	
+	this.addHealingStatue = function() {
+		SortedArt.push({x: 1088, y: 2592, imgName: "healingStatue2", height: window["healingStatue2"].height});
+		
+		// add collision detection
+		for (var i = 83 * TILE_COLS; i <= 84 * TILE_COLS; i += TILE_COLS) {
+			for (var j = 34; j <= 35; j++) {
+				tileGrid[i + j] = 64;
+			}
+		}
+		
+		generateTileEntities();
+		generateFloorTiles();
+	}
 
 	this.deathHandle = function()
 	{
@@ -499,9 +513,11 @@ function ShadowBoss(id) {
 
 				}
 				
+				this.addHealingStatue();
+				
 				switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 			}
 		}
 		return this.isDead;
-	}	
+	}
 }

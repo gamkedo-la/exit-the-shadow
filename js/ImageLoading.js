@@ -28,6 +28,7 @@ var logoPic = document.createElement("img");
 var arrowPic = document.createElement("img");
 var glowPic = document.createElement("img");
 var torchPic = document.createElement("img");
+var healingStatue2 = document.createElement("img");
 //var playerShadowSprite = document.createElement("img");
 
 picsToLoad = 0;
@@ -69,6 +70,7 @@ function loadImages() {
 		{varName: gateway, fileName: "gateway.png"},
 		{varName: glowPic, fileName: "glow.png"},
 		{varName: torchPic, fileName: "torch.png"},
+		{varName: healingStatue2, fileName: "healing_statue_2.png"},
 		//{varName: playerShadowSprite, fileName: "playerShadow.png"},
 	];
 	

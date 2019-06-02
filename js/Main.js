@@ -122,6 +122,7 @@ function resetPlayer() {
 }
 
 function startWorld() {
+	resetWorld();
 	loadLevel(levelOne);
 	initialiseEntityPositions();
 	generateFloorTiles();
@@ -144,7 +145,9 @@ function restartGame() {
         });
     }
 	
-	switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
+	if (!bg_music[AMBIENT_MUSIC].isPlaying) {
+		switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
+	}
 }
 
 function startGame() {

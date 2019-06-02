@@ -290,6 +290,17 @@ function PlayerClass() {
 							console.log("load save game screen here");
 					}
 				}
+				else if (SortedArt[i].imgName == "healingStatue2") {
+					let object = SortedArt[i];
+					let objectWidth = window[object.imgName].width;
+					let objectHeight = window[object.imgName].height;
+					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+							restartGame();
+					}
+				}
 			}
 		}
 		
