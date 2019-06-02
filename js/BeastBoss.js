@@ -50,6 +50,8 @@ function BeastBoss() {
 	let attackWidth = 96;
 	let attackHeight = 96;
 	let isAttacking = false;
+	
+	let timeSincePlayerDeath = 0;
 
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -123,7 +125,33 @@ function BeastBoss() {
 			this.updateAttack();
 		}
 		else if (phase == PLAYER_DEAD) {
+			timeSincePlayerDeath++;
+			if (timeSincePlayerDeath > 50) {
+				// move back to original position
+				if (Math.abs(this.startY - this.y) > 2) {
+					if (this.startY < this.y) {
+						this.movementDirection[UP] = true;
+					}
+	
+					if (this.startY > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+	
+				if (Math.abs(this.startX - this.x) > 2) {
+					if (this.startX > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
 
+					if (this.startX < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
+			
+				if (this.startX - this.x <= 2 && this.startY - this.y <= 2) {
+					this.directionFacing = DOWN;
+				}
+			}
 		}
 		this.updateState();
 		this.updateBehaviour();
@@ -152,16 +180,16 @@ function BeastBoss() {
 	
 	this.initiateAttack = function() {
 		if (attackCooldown <= 0 && Attack == null) {
-			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+			let centerX = this.centerX(), centerY = this.centerY();
 			let velocityX = 0, velocityY = 0;
 			
 			switch(this.directionFacing) {
 			case UP:
-				centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
+				centerY -= (this.collisionBoxHeight / 2) + (attackHeight / 2);
 				velocityY = -10;
 				break;
 			case DOWN:
-				centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
+				centerY += (this.collisionBoxHeight / 2) + (attackHeight / 2);
 				velocityY = 10;
 				break;
 			case LEFT:
@@ -220,7 +248,7 @@ function BeastBoss() {
 		if (!playerAlive) {
 			isAttacking = false;
 			phase = PLAYER_DEAD;
-			//timeSincePlayerDeath = 0;
+			timeSincePlayerDeath = 0;
 		}
 	}
 
