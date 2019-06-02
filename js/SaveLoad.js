@@ -119,11 +119,13 @@ function restoreValues(save) {
     Player.bossesKilled = save.bossesKilled;
 
     // Kill off bosses already defeated.
-    for(var i=0; i<Entities.length;i++) {
+    for(var i=Entities.length-1; i>=0;i--) {
         var entity = Entities[i];
+		console.log(entity.name);
         
-        save.bossesKilled.forEach(boss => {
+        Player.bossesKilled.forEach(boss => {
             if(entity.name == boss) {
+				console.log("boss defeated")
                 Entities.splice(i, 1);
             }
         });
