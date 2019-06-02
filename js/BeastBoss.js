@@ -7,6 +7,7 @@ function BeastBoss() {
 	const NOT_IN_BATTLE = 0;
 	const PHASE_1 = 1;
 	const PHASE_2 = 2;
+	const PLAYER_DEAD = 3;
 	
 	// BEHAVIOURS - ALTER AS NEEDED
 	const IDLE = 0
@@ -43,6 +44,13 @@ function BeastBoss() {
 	let phase = NOT_IN_BATTLE;
 	let behaviour = FOLLOWING;
 	let isDashing = false;
+
+	let attackCooldown = 0;
+	let Attack = null;
+	let attackWidth = 96;
+	let attackHeight = 96;
+	let isAttacking = false;
+
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
 		if (phase == NOT_IN_BATTLE) {
@@ -52,6 +60,7 @@ function BeastBoss() {
 			}
 		}
 		else if (phase == PHASE_1 || phase == PHASE_2) {
+
 			switch(behaviour) {
 			case FOLLOWING:
 				this.moveSpeed = this.followSpeed;
@@ -77,7 +86,7 @@ function BeastBoss() {
 				break;
 
 			case ATTACKING:
-				// BEHAVIOUR GOES HERE
+				this.initiateAttack();
 				break;
 
 			case SHIELDING:
@@ -111,8 +120,11 @@ function BeastBoss() {
 				}
 				break;
 			}
+			this.updateAttack();
 		}
+		else if (phase == PLAYER_DEAD) {
 
+		}
 		this.updateState();
 		this.updateBehaviour();
 		EntityClass.prototype.move.call(this); // call superclass function
@@ -125,7 +137,11 @@ function BeastBoss() {
 		}else if (distFromPlayer >250 ){
 			behaviour = DASHING;
 			isDashing = true;
-		} else {
+		} else if (distFromPlayer <100){
+			behaviour = ATTACKING;
+			
+		}
+		else {
 				behaviour = FOLLOWING;
 		}
 
@@ -134,6 +150,81 @@ function BeastBoss() {
 		// CHANGE ANIMATION STATES HERE
 	}
 	
+	this.initiateAttack = function() {
+		if (attackCooldown <= 0 && Attack == null) {
+			console.log("Attacking now!");
+			let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+			let velocityX = 0, velocityY = 0;
+			
+			switch(this.directionFacing) {
+			case UP:
+				centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
+				velocityY = -10;
+				break;
+			case DOWN:
+				centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
+				velocityY = 10;
+				break;
+			case LEFT:
+				centerX -= ((this.width / 2) + (attackWidth / 2));
+				velocityX = -10;
+				break;
+			case RIGHT:
+				centerX += ((this.width / 2) + (attackWidth / 2));
+				velocityX = 10;
+				break;
+			}
+			
+			let attackOptions = {
+				centerX: centerX,
+				centerY: centerY,
+				width: attackWidth,
+				height: attackHeight,
+				damage: 1,
+				velocityX: velocityX,
+				velocityY: velocityY,
+				frameLength: 1,
+				immuneEntities: [this]
+			}
+			
+			Attack = new ProjectileClass(attackOptions);
+			sfx[ATTACK_SFX].play();
+			isAttacking = true;
+			
+			attackCooldown = 30;
+		}
+	}
+
+	this.updateAttack = function() {
+		if (attackCooldown > 0) {
+			if (Attack.attackFinished) {
+				isAttacking = false;
+			}
+			attackCooldown--;
+			Attack.update();
+		}
+		else {
+			Attack = null;
+		}
+		this.checkIfPlayerIsDead();
+	}
+
+	this.checkIfPlayerIsDead = function() {
+		var playerAlive = false;
+		for (var i = 0; i < Entities.length; i++) {
+			if (Entities[i] instanceof PlayerClass) {
+				playerAlive = true;
+				break;
+			}
+		}
+		
+		if (!playerAlive) {
+			isAttacking = false;
+			phase = PLAYER_DEAD;
+			//timeSincePlayerDeath = 0;
+		}
+	}
+
 	this.draw = function() {
 		EntityClass.prototype.draw.call(this);
 	}
@@ -199,4 +290,5 @@ function BeastBoss() {
 		}
 		return this.isDead;
 	}
+
 }
