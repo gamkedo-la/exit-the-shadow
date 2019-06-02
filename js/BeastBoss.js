@@ -50,6 +50,7 @@ function BeastBoss() {
 	let attackWidth = 96;
 	let attackHeight = 96;
 	let isAttacking = false;
+	let distBeforeAttacking = 80;
 	
 	let timeSincePlayerDeath = 0;
 
@@ -66,7 +67,7 @@ function BeastBoss() {
 			switch(behaviour) {
 			case FOLLOWING:
 				this.moveSpeed = this.followSpeed;
-				if (Math.abs(Player.centerY() - this.centerY()) > this.width/2) {
+				if (Math.abs(Player.centerY() - this.centerY()) >= this.width/2) {
 					if (Player.centerY() < this.centerY()) {
 						this.movementDirection[UP] = true;
 					}
@@ -76,7 +77,7 @@ function BeastBoss() {
 					}
 				}
 		
-				if (Math.abs(Player.centerX() - this.centerX()) > this.width/2) {
+				if (Math.abs(Player.centerX() - this.centerX()) >= this.width/2) {
 					if (Player.centerX() > this.centerX()) {
 						this.movementDirection[RIGHT] = true;
 					}
@@ -98,7 +99,7 @@ function BeastBoss() {
 			case DASHING:
 				var distFromPlayer = distanceBetweenEntities(this, Player);
 				this.moveSpeed = this.dashSpeed;
-				if (distFromPlayer < 100){
+				if (distFromPlayer < distBeforeAttacking){
 					isDashing = false;
 				}
 				if (Math.abs(Player.centerY() - this.centerY()) > 10) {
@@ -160,12 +161,15 @@ function BeastBoss() {
 	
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
+		console.log(distFromPlayer);
 		if(isDashing){
 			return;
-		}else if (distFromPlayer >250 ){
+		}
+		else if (distFromPlayer > 250){
 			behaviour = DASHING;
 			isDashing = true;
-		} else if (distFromPlayer <100){
+		}
+		else if (distFromPlayer < distBeforeAttacking){
 			behaviour = ATTACKING;
 			
 		}
@@ -248,6 +252,7 @@ function BeastBoss() {
 		if (!playerAlive) {
 			isAttacking = false;
 			phase = PLAYER_DEAD;
+			this.moveSpeed = this.followSpeed;
 			timeSincePlayerDeath = 0;
 		}
 	}
