@@ -153,6 +153,8 @@ function loadCollisionDataForBossDefeatedRooms() {
         }
 		else if (boss == beastBossName) {
 			// load beast boss room object collision data
+            var beastBoss = new BeastBoss();
+			beastBoss.addHealingStatueCollisionData();
 		}
 		else if (boss == evilPlayerBossName) {
 			// load final boss room object collision data

@@ -99,6 +99,23 @@ function BeastBoss() {
 
 		generateTileEntities();
 	}
+	
+	this.addHealingStatue = function() {
+		SortedArt.push({x: 5760, y: 2592, imgName: "healingStatue2", height: window["healingStatue2"].height});
+		
+		this.addHealingStatueCollisionData();
+		
+		generateTileEntities();
+		generateFloorTiles();
+	}
+	
+	this.addHealingStatueCollisionData = function() {
+		for (var i = 83 * TILE_COLS; i <= 84 * TILE_COLS; i += TILE_COLS) {
+			for (var j = 180; j <= 181; j++) {
+				tileGrid[i + j] = 64;
+			}
+		}
+	}
 
 	this.deathHandle = function()
 	{
@@ -114,6 +131,8 @@ function BeastBoss() {
 
 					
 			}
+			
+			this.addHealingStatue();
 		}
 		return this.isDead;
 	}
