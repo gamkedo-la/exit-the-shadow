@@ -161,7 +161,6 @@ function BeastBoss() {
 	
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
-		console.log(distFromPlayer);
 		if(isDashing){
 			return;
 		}
