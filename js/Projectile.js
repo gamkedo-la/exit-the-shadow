@@ -19,10 +19,10 @@ function ProjectileClass(options) {
 			framesLeft--;
 			
 			//draw attack hitbox (TEMPORARY)
-			canvasContext.save();
+			/*canvasContext.save();
 			canvasContext.translate(-camPanX, -camPanY);
 			colorRect(this.centerX - this.width/2,this.centerY - this.height/2, this.width,this.height, 'green');
-			canvasContext.restore();
+			canvasContext.restore();*/
 			
 			handleProjectileCollisions(this);
 
