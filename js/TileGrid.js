@@ -209,6 +209,7 @@ function initialiseEntityPositions() {
 }
 
 function generateFloorTiles() {
+	floorTiles = [];
 	var row, col;
 	for (row = 0; row < TILE_ROWS; row++) {
 		for (col = 0; col < TILE_COLS; col++) {
@@ -218,6 +219,8 @@ function generateFloorTiles() {
 }
 
 function generateTileEntities() {
+	tileEntities = [];
+	
 	for (let row = 0; row < TILE_ROWS; row++) {
 		for (let col = 0; col < TILE_COLS; col++) {
 			const thisType = tileTypeAtColRow(tileGrid, col, row);
