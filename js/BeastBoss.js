@@ -24,7 +24,7 @@ function BeastBoss() {
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
 	
-	this.name = "Beast";
+	this.name = beastBossName;
 	this.isActive = false;
 	
 	this.states = {

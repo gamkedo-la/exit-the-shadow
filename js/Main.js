@@ -14,6 +14,9 @@ var bossDefeatedScreenTime = 0;
 var frameCounter = 0;
 var savingGame = false;
 var saveGameIndicationTime = 0;
+var shadowBossName = 'Shadow';
+var beastBossName = 'Beast';
+var evilPlayerBossName = 'Self';
 
 var Entities = [
 	Player
@@ -129,23 +132,44 @@ function startWorld() {
 	generateTileEntities();
 }
 
-function restartGame() {
-	gameRestartPending = false;
-	resetPlayer();
-	startWorld();
-	
-    // Kill off bosses already defeated.
+function removeDefeatedBosses() {
     for(var i=Entities.length-1; i>=0;i--) {
         var entity = Entities[i];
-		console.log(entity.name);
         
         Player.bossesKilled.forEach(boss => {
             if(entity.name == boss) {
-				console.log("boss defeated")
                 Entities.splice(i, 1);
             }
         });
     }
+}
+
+function loadCollisionDataForBossDefeatedRooms() {
+    Player.bossesKilled.forEach(boss => {
+        if(boss == shadowBossName) {
+			// load shadow boss room object collision data
+            var shadowBoss = new ShadowBoss(1);
+			shadowBoss.addHealingStatueCollisionData();
+        }
+		else if (boss == beastBossName) {
+			// load beast boss room object collision data
+		}
+		else if (boss == evilPlayerBossName) {
+			// load final boss room object collision data
+		}
+    });
+	
+	generateTileEntities();
+	generateFloorTiles();
+}
+
+function restartGame() {
+	gameRestartPending = false;
+	resetPlayer();
+	startWorld();
+
+	removeDefeatedBosses();
+	loadCollisionDataForBossDefeatedRooms();
 	
 	if (!bg_music[AMBIENT_MUSIC].isPlaying) {
 		switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);

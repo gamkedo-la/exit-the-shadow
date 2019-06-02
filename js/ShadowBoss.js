@@ -30,7 +30,7 @@ function ShadowBoss(id) {
 	this.HP = 1;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
-	this.name = "Shadow";
+	this.name = shadowBossName;
 	this.isActive = false;
 	
 	this.states = {
@@ -479,15 +479,18 @@ function ShadowBoss(id) {
 	this.addHealingStatue = function() {
 		SortedArt.push({x: 1088, y: 2592, imgName: "healingStatue2", height: window["healingStatue2"].height});
 		
-		// add collision detection
+		this.addHealingStatueCollisionData();
+		
+		generateTileEntities();
+		generateFloorTiles();
+	}
+	
+	this.addHealingStatueCollisionData = function() {
 		for (var i = 83 * TILE_COLS; i <= 84 * TILE_COLS; i += TILE_COLS) {
 			for (var j = 34; j <= 35; j++) {
 				tileGrid[i + j] = 64;
 			}
 		}
-		
-		generateTileEntities();
-		generateFloorTiles();
 	}
 
 	this.deathHandle = function()

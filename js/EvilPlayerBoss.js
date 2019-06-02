@@ -30,7 +30,7 @@ function EvilPlayerBoss() {
 	this.maxHP = this.HP;
 	this.weight = 2; // 0-10 (10 means can't be pushed by anything)
 	
-	this.name = "Self";
+	this.name = evilPlayerBossName;
 	this.isActive = false;
 	
 	this.states = {
