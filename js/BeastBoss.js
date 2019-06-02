@@ -13,13 +13,16 @@ function BeastBoss() {
 	const FOLLOWING = 1;
 	const ATTACKING = 2;
 	const SHIELDING = 3;
+	const DASHING = 4;
 	
 	this.width = 96;
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	
-	this.moveSpeed = 2;
+
+	this.moveSpeed = 0.5;
+	this.followSpeed = this.moveSpeed;
+	this.dashSpeed = 8;
 	this.HP = 50;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
@@ -36,9 +39,10 @@ function BeastBoss() {
 
 	this.directionFacing = DOWN;
 
+	
 	let phase = NOT_IN_BATTLE;
-	let behaviour = IDLE;
-		
+	let behaviour = FOLLOWING;
+	let isDashing = false;
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
 		if (phase == NOT_IN_BATTLE) {
@@ -50,7 +54,26 @@ function BeastBoss() {
 		else if (phase == PHASE_1 || phase == PHASE_2) {
 			switch(behaviour) {
 			case FOLLOWING:
-				// BEHAVIOUR GOES HERE
+				this.moveSpeed = this.followSpeed;
+				if (Math.abs(Player.y - this.y) > 2) {
+					if (Player.y < this.y) {
+						this.movementDirection[UP] = true;
+					}
+		
+					if (Player.y > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+		
+				if (Math.abs(Player.x - this.x) > 2) {
+					if (Player.x > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
+
+					if (Player.x < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
 				break;
 
 			case ATTACKING:
@@ -60,13 +83,53 @@ function BeastBoss() {
 			case SHIELDING:
 				// BEHAVIOUR GOES HERE
 				break;
+
+			case DASHING:
+				var distFromPlayer = distanceBetweenEntities(this, Player);
+				this.moveSpeed = this.dashSpeed;
+				if (distFromPlayer < 100){
+					isDashing = false;
+				}
+				if (Math.abs(Player.y - this.y) > 2) {
+					if (Player.y < this.y) {
+						this.movementDirection[UP] = true;
+					}
+		
+					if (Player.y > this.y) {
+						this.movementDirection[DOWN] = true;
+					}
+				}
+		
+				if (Math.abs(Player.x - this.x) > 2) {
+					if (Player.x > this.x) {
+						this.movementDirection[RIGHT] = true;
+					}
+
+					if (Player.x < this.x) {
+						this.movementDirection[LEFT] = true;
+					}
+				}
+				break;
 			}
 		}
 
 		this.updateState();
+		this.updateBehaviour();
 		EntityClass.prototype.move.call(this); // call superclass function
 	}
 	
+	this.updateBehaviour = function() {
+		var distFromPlayer = distanceBetweenEntities(this, Player);
+		if(isDashing){
+			return;
+		}else if (distFromPlayer >250 ){
+			behaviour = DASHING;
+			isDashing = true;
+		} else {
+				behaviour = FOLLOWING;
+		}
+
+	}
 	this.updateState = function() {
 		// CHANGE ANIMATION STATES HERE
 	}
