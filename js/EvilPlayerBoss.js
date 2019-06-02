@@ -113,6 +113,7 @@ function EvilPlayerBoss() {
 			if (distanceBetweenEntities(this, Player) < 150) {
 				switchMusic(FINAL_BOSS, 1, 1);
 				this.progressPhase();
+				this.closeArena();
 			}
 		}
 		if (phase == PHASE_1 || phase == PHASE_2) {
@@ -640,6 +641,21 @@ function EvilPlayerBoss() {
 		else if (movementDirection[RIGHT]) {
 			return RIGHT;
 		}
+	}
+	
+	this.closeArena = function() {
+		tileGrid[56 * TILE_COLS + 106] = 6;
+		tileGrid[56 * TILE_COLS + 107] = 6;
+		tileGrid[56 * TILE_COLS + 108] = 6;
+		tileGrid[56 * TILE_COLS + 109] = 6;
+		
+		for (var i = 57 * TILE_COLS; i < 70 * TILE_COLS; i += TILE_COLS) {
+			for (var j = 106; j <= 109; j++) {
+				tileGrid[i + j] = 1;
+			}
+		}
+
+		generateTileEntities();
 	}
 	
 	this.deathHandle = function()
