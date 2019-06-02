@@ -44,6 +44,7 @@ function BeastBoss() {
 		if (phase == NOT_IN_BATTLE) {
 			if (distanceBetweenEntities(this, Player) < 200) {
 				this.progressPhase();
+				this.closeArena();
 			}
 		}
 		else if (phase == PHASE_1 || phase == PHASE_2) {
@@ -83,6 +84,21 @@ function BeastBoss() {
 			phase = phase_2;
 		}
 	}
+	
+	this.closeArena = function() {
+		tileGrid[98 * TILE_COLS + 165] = 10;
+		tileGrid[99 * TILE_COLS + 165] = 10;
+		tileGrid[100 * TILE_COLS + 165] = 10;
+		tileGrid[101 * TILE_COLS + 165] = 10;
+		
+		for (var i = 98 * TILE_COLS; i <= 101 * TILE_COLS; i += TILE_COLS) {
+			for (var j = 145; j < 165; j++) {
+				tileGrid[i + j] = 1;
+			}
+		}
+
+		generateTileEntities();
+	}
 
 	this.deathHandle = function()
 	{
@@ -100,5 +116,5 @@ function BeastBoss() {
 			}
 		}
 		return this.isDead;
-	}	
+	}
 }
