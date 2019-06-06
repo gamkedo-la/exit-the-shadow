@@ -17,6 +17,7 @@ var saveGameIndicationTime = 0;
 var shadowBossName = 'Shadow';
 var beastBossName = 'Beast';
 var evilPlayerBossName = 'Self';
+var illuminator;
 
 var Entities = [
 	Player
@@ -90,6 +91,8 @@ function displayMousePos(evt) {
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
+
+	illuminator = new Illuminator();
 	
 	window.addEventListener("resize", resizeCanvas);
 	window.addEventListener('focus', function () {
@@ -340,6 +343,10 @@ function drawGame() {
 	}
 
 	canvasContext.restore();
+
+	const playerLightPos = {x:Player.x - camPanX, y:Player.y - camPanY};
+	const shadowOverlay = illuminator.getShadowOverlayWithLightList([playerLightPos]);
+//	canvasContext.drawImage(shadowOverlay, 0, 0);
 
 	drawUI();
 
