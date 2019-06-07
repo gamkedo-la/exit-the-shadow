@@ -319,6 +319,7 @@ function drawGame() {
 	}
 
 	// overlaying art
+	const onscreenLights = [];
 	for (i = 0; i < OverlayingArt.length; i++)
 	{
 		canvasContext.drawImage(window[OverlayingArt[i].imgName], OverlayingArt[i].x, OverlayingArt[i].y);
@@ -326,11 +327,16 @@ function drawGame() {
 		// an overlay that glows - like a wall torch
 		if (OverlayingArt[i].imgName == 'torchPic') {
 			LightSourcesThisFrame.push([OverlayingArt[i].x-36, OverlayingArt[i].y-42]);
+			if((OverlayingArt[i].x-36 - camPanX >= 0) && (OverlayingArt[i].x-36 - camPanX <= canvas.width)) {
+				if((OverlayingArt[i].y-42 - camPanY >= 0) && (OverlayingArt[i].y-42 - camPanY <= canvas.height)) {
+					onscreenLights.push([OverlayingArt[i].x-36, OverlayingArt[i].y-42]);
+				}
+			}
 		}
 
 	}
 
-	Player.drawGradient(); // draw circular darkess around the player
+//	Player.drawGradient(); // draw circular darkess around the player
 
 	// draw light glows over top of player gradient
 	for (i = 0; i < LightSourcesThisFrame.length; i++)
@@ -344,9 +350,14 @@ function drawGame() {
 
 	canvasContext.restore();
 
-	const playerLightPos = {x:Player.x - camPanX, y:Player.y - camPanY};
-	const shadowOverlay = illuminator.getShadowOverlayWithLightList([playerLightPos]);
-//	canvasContext.drawImage(shadowOverlay, 0, 0);
+	const lightPoses = [Player.x - camPanX, canvas.height - (Player.y - camPanY)];
+	for(let i = 0; i < onscreenLights.length; i++) {
+		lightPoses.push(onscreenLights[i][0] - camPanX + 36);
+		lightPoses.push(canvas.height - (onscreenLights[i][1] - camPanY) - 42);
+	}
+
+	const shadowOverlay = illuminator.getShadowOverlayWithLightList(lightPoses);
+	canvasContext.drawImage(shadowOverlay, 0, 0);
 
 	drawUI();
 

@@ -30,13 +30,23 @@ function Illuminator() {
         return `
         precision mediump float;
 
-        uniform float squareDimension;
         uniform vec2 playerPosition;
+        uniform float playerLightRange;
+        uniform vec2 lights[6];
+        uniform float lightRange;
 
         void main() {
-            float deltaX = (gl_FragCoord.x - playerPosition.x);
-            float deltaY = (gl_FragCoord.y - playerPosition.y);
-            float alpha = ( deltaX * deltaX + deltaY * deltaY) / (100000.0);
+            vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
+            float playerLightAlpha = length(playerToFrag) / playerLightRange;
+
+            float lightAlpha = 1.0;
+            for(int i = 0; i < 6; i++) {
+                vec2 playerToLight = lights[i] - gl_FragCoord.xy;
+                float thisLightAlpha = length(playerToLight) / lightRange;
+                lightAlpha = min(thisLightAlpha, lightAlpha);
+            }
+            
+            float alpha = min(playerLightAlpha, lightAlpha);
 
             gl_FragColor = vec4(0.0, 0.0, 0.0, alpha);
         }
@@ -77,7 +87,7 @@ function Illuminator() {
 
     const program = getWebGLProgram();
 
-    const setUpAttribs = function(playerPos) {
+    const setUpAttribs = function(allLights) {
         const positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
         gl.vertexAttribPointer(
             positionAttribLocation, //Attribute location
@@ -91,13 +101,25 @@ function Illuminator() {
         gl.enableVertexAttribArray(positionAttribLocation);
 
         const playerPositionUniformLocation = gl.getUniformLocation(program, 'playerPosition');
-        gl.uniform2fv(playerPositionUniformLocation, new Float32Array([playerPos.x, playerPos.y]));
+        gl.uniform2fv(playerPositionUniformLocation, new Float32Array([allLights[0], allLights[1]]));
 
-        const squareDimensionUniformLocation = gl.getUniformLocation(program, 'squareDimension');
-        let squareDimension = Math.min(webCanvas.width, webCanvas.height);
-        squareDimension *= (squareDimension / 4);
-        gl.uniform1fv(squareDimensionUniformLocation, new Float32Array([squareDimension]));
-//        gl.uniform2fv(squareDimensionUniformLocation, new Float32Array([squareDimension, 0.0]));
+        const playerLightRangeUniformLocation = gl.getUniformLocation(program, 'playerLightRange');
+        const playerLightRange = 400; //based on visual appeal
+        gl.uniform1fv(playerLightRangeUniformLocation, new Float32Array([playerLightRange]));
+
+        const lightsUniformLocation = gl.getUniformLocation(program, 'lights');
+        const lights = new Float32Array([allLights[2], allLights[3], 
+                                         allLights[4], allLights[5], 
+                                         allLights[6], allLights[7],
+                                         allLights[8], allLights[9], 
+                                         allLights[10], allLights[11], 
+                                         allLights[12], allLights[13]]);
+//        console.log(`Player Light:(${allLights[0]}, ${allLights[1]}), Light: (${lights[0]}, ${lights[1]})`);
+        gl.uniform2fv(lightsUniformLocation, lights);
+
+        const lightRangeUniformLocation = gl.getUniformLocation(program, 'lightRange');
+        const lightRange = 100;
+        gl.uniform1fv(lightRangeUniformLocation, new Float32Array([lightRange]));
     }
 
     this.getShadowOverlayWithLightList = function(lights) {
@@ -121,7 +143,7 @@ function Illuminator() {
 
         gl.useProgram(program);
 
-        setUpAttribs(lights[0]);
+        setUpAttribs(lights);
         
         gl.drawArrays(
             gl.TRIANGLE_FAN, //What to draw, triangles? triangle strip?
