@@ -37,18 +37,19 @@ function Illuminator() {
 
         void main() {
             vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
-            float playerLightAlpha = length(playerToFrag) / playerLightRange;
+            float playerLightAlpha = 1.0 - min(length(playerToFrag) / playerLightRange, 1.0);
+            
+            float totalLightAlpha = playerLightAlpha;
 
-            float lightAlpha = 1.0;
             for(int i = 0; i < 6; i++) {
-                vec2 playerToLight = lights[i] - gl_FragCoord.xy;
-                float thisLightAlpha = length(playerToLight) / lightRange;
-                lightAlpha = min(thisLightAlpha, lightAlpha);
+                vec2 fragToLight = lights[i] - gl_FragCoord.xy;
+                float thisLightAlpha = 1.0 - min(length(fragToLight) / lightRange, 1.0);
+                totalLightAlpha += thisLightAlpha;
             }
             
-            float alpha = min(playerLightAlpha, lightAlpha);
+            float finalAlpha = 1.0 - totalLightAlpha;
 
-            gl_FragColor = vec4(0.0, 0.0, 0.0, alpha);
+            gl_FragColor = vec4(0.0, 0.0, 0.0, finalAlpha);
         }
         `;
     }
