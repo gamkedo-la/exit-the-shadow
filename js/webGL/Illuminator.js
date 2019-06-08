@@ -1,3 +1,7 @@
+const playerLightRange = 400; //based on visual appeal
+const torchRange = 100;
+const maxLights = 8;
+
 //Make some webGL stuff here
 function Illuminator() {
     const webCanvas = document.createElement('canvas');
@@ -32,7 +36,7 @@ function Illuminator() {
 
         uniform vec2 playerPosition;
         uniform float playerLightRange;
-        uniform vec2 lights[6];
+        uniform vec2 lights[8];
         uniform float lightRange;
 
         void main() {
@@ -41,7 +45,7 @@ function Illuminator() {
             
             float totalLightAlpha = playerLightAlpha;
 
-            for(int i = 0; i < 6; i++) {
+            for(int i = 0; i < 8; i++) {
                 vec2 fragToLight = lights[i] - gl_FragCoord.xy;
                 float thisLightAlpha = 1.0 - min(length(fragToLight) / lightRange, 1.0);
                 totalLightAlpha += thisLightAlpha;
@@ -105,22 +109,24 @@ function Illuminator() {
         gl.uniform2fv(playerPositionUniformLocation, new Float32Array([allLights[0], allLights[1]]));
 
         const playerLightRangeUniformLocation = gl.getUniformLocation(program, 'playerLightRange');
-        const playerLightRange = 400; //based on visual appeal
         gl.uniform1fv(playerLightRangeUniformLocation, new Float32Array([playerLightRange]));
 
         const lightsUniformLocation = gl.getUniformLocation(program, 'lights');
+
         const lights = new Float32Array([allLights[2], allLights[3], 
                                          allLights[4], allLights[5], 
                                          allLights[6], allLights[7],
                                          allLights[8], allLights[9], 
                                          allLights[10], allLights[11], 
-                                         allLights[12], allLights[13]]);
-//        console.log(`Player Light:(${allLights[0]}, ${allLights[1]}), Light: (${lights[0]}, ${lights[1]})`);
+                                         allLights[12], allLights[13],
+                                         allLights[14], allLights[15], 
+                                         allLights[16], allLights[17]]);
+
         gl.uniform2fv(lightsUniformLocation, lights);
 
         const lightRangeUniformLocation = gl.getUniformLocation(program, 'lightRange');
-        const lightRange = 100;
-        gl.uniform1fv(lightRangeUniformLocation, new Float32Array([lightRange]));
+        
+        gl.uniform1fv(lightRangeUniformLocation, new Float32Array([torchRange]));
     }
 
     this.getShadowOverlayWithLightList = function(lights) {
