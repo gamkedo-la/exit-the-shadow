@@ -2,7 +2,7 @@ var audioType = undefined;
 var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
 
 const TOTAL_SFX = 2;
-const TOTAL_BG_MUSIC = 3;
+const TOTAL_BG_MUSIC = 4;
 
 var sfx = new Array(TOTAL_SFX);
 var bg_music = new Array(TOTAL_BG_MUSIC);
@@ -13,6 +13,7 @@ const SAVE_SFX = 1;
 const AMBIENT_MUSIC = 0;
 const FINAL_BOSS = 1;
 const SHADOW_BOSS = 2;
+const MENU_MUSIC = 3;
 
 var currentBackgroundMusic;
 
@@ -136,6 +137,7 @@ function loadAudio()
 	bg_music[AMBIENT_MUSIC].load("music/ambientBackgroundMusic");
 	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");
 	bg_music[SHADOW_BOSS].load("music/shadowBossBattleMusicV1");
+	bg_music[MENU_MUSIC].load("music/titleScreenMusic");
 	
 	console.log("load audio");
 }

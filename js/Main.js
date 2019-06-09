@@ -144,8 +144,12 @@ function startGame() {
 }
 
 function updateAll() {
-
 	frameCounter++;
+	
+	// update music (for fades)
+	for (var i = 0; i < bg_music.length; i++) {
+		bg_music[i].update();
+	}
 
 	if (gameIsStarted == false) {
 		Menu.update();
@@ -198,11 +202,6 @@ function updateAll() {
 		canvasContext.textAlign = "center";
 		colorText("Paused", canvas.width/2, 50, 'grey');
 		canvasContext.restore();
-	}
-	
-	// update music (for fades)
-	for (var i = 0; i < bg_music.length; i++) {
-		bg_music[i].update();
 	}
 }
 

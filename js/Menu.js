@@ -23,6 +23,8 @@ const Menu = new (function() {
 	
 	let menuPageText = [classListMenu, classListSettings, classListHelp, classListCredits];
 	
+	let menuMusicStarted = false;
+	
 	this.menuMouse = function(){
 	    for (let i=0; i<menuPageText[currentPage].length; i++){
 	        if(mouseX > itemsX && mouseX < itemsX + itemsWidth && mouseY > topItemY + (i*rowHeight) - (rowHeight / 2) &&
@@ -41,6 +43,11 @@ const Menu = new (function() {
 	}
 	
 	this.update = function(){
+		if (!menuMusicStarted) {
+			menuMusicStarted = true;
+			bg_music[MENU_MUSIC].play(); // WHY DOESN'T THIS WORK????? - Causes DOMException
+		}
+		
 	    this.menuMouse();
 	    this.draw();
 	}
@@ -55,8 +62,7 @@ const Menu = new (function() {
 		//MENU PAGE
 		case "New Game":
 		    gameIsStarted = true;
-		    currentBackgroundMusic = AMBIENT_MUSIC;
-		    bg_music[currentBackgroundMusic].play();
+		    switchMusic(AMBIENT_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
 		    this.cursor1 = null;
 		    break;
 		case "Continue":
@@ -65,8 +71,7 @@ const Menu = new (function() {
 		    	return;
 	        }
 	        gameIsStarted = true;
-		    currentBackgroundMusic = AMBIENT_MUSIC;
-		    bg_music[currentBackgroundMusic].play();
+		    switchMusic(AMBIENT_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
 		    loadGame();
 		    Menu.cursor1 = null;
 		    break;
