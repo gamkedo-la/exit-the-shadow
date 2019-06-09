@@ -45,7 +45,9 @@ const Menu = new (function() {
 	this.update = function(){
 		if (!menuMusicStarted) {
 			menuMusicStarted = true;
-			bg_music[MENU_MUSIC].play(); // WHY DOESN'T THIS WORK????? - Causes DOMException
+			setTimeout(function() {
+				switchMusic(MENU_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
+			}, 200);
 		}
 		
 	    this.menuMouse();
