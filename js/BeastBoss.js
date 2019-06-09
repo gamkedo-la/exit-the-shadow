@@ -53,6 +53,9 @@ function BeastBoss() {
 	let distBeforeAttacking = 80;
 	
 	let timeSincePlayerDeath = 0;
+	let shieldCooldown = 0;
+	let isShielding = false;
+	let shield = false;
 
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -93,7 +96,7 @@ function BeastBoss() {
 				break;
 
 			case SHIELDING:
-				// BEHAVIOUR GOES HERE
+				this.initiateShield();
 				break;
 
 			case DASHING:
@@ -124,6 +127,7 @@ function BeastBoss() {
 				break;
 			}
 			this.updateAttack();
+			this.updateShield();
 		}
 		else if (phase == PLAYER_DEAD) {
 			timeSincePlayerDeath++;
@@ -171,6 +175,10 @@ function BeastBoss() {
 		else if (distFromPlayer < distBeforeAttacking){
 			behaviour = ATTACKING;
 			
+		}
+		else if (shield && !isShielding) {
+			shield = false;
+			behaviour = SHIELDING;
 		}
 		else {
 				behaviour = FOLLOWING;
@@ -237,6 +245,25 @@ function BeastBoss() {
 			Attack = null;
 		}
 		this.checkIfPlayerIsDead();
+	}
+
+	this.initiateShield = function() {
+		if (shieldCooldown <= 0) {
+			this.isInvulnerable = true;
+			isShielding = true;
+			shieldCooldown = 25;
+			console.log("SHIIIIELD");
+		}
+	}
+	
+	this.updateShield = function() {
+		if (shieldCooldown > 0) {
+			if (shieldCooldown <= 10) {
+				this.isInvulnerable = false;
+				isShielding = false;
+			}
+			shieldCooldown--;
+		}
 	}
 
 	this.checkIfPlayerIsDead = function() {
