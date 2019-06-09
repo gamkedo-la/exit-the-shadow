@@ -25,6 +25,7 @@ function BeastBoss() {
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
 	this.HP = 50;
+	this.oldHP = 0;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
 	
@@ -51,11 +52,12 @@ function BeastBoss() {
 	let attackHeight = 96;
 	let isAttacking = false;
 	let distBeforeAttacking = 80;
-	
+
+	let enemyIsHit = 0;
 	let timeSincePlayerDeath = 0;
 	let shieldCooldown = 0;
 	let isShielding = false;
-	let shield = false;
+	let shield = true;
 
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -230,6 +232,14 @@ function BeastBoss() {
 			isAttacking = true;
 			
 			attackCooldown = 30;
+			if(this.HP < this.oldHP){
+				enemyIsHit++;
+			}
+			this.oldHP = this.HP;
+			if (enemyIsHit >= 3){
+				shield = true;
+			 gotHit = 0; 
+			}
 		}
 	}
 
