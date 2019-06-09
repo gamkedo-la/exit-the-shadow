@@ -61,7 +61,7 @@ const Menu = new (function() {
 		    break;
 		case "Continue":
 			if (listSaves() == undefined || listSaves() == null) {
-				console.log("No save games found");
+				console.log("no save games found");
 		    	return;
 	        }
 	        gameIsStarted = true;

@@ -241,7 +241,6 @@ function PlayerClass() {
 		if (this.keyHeld_Shield && !isShielding && shieldCooldown <= 0 && !isDashing && Attack == null) { // not currently shielding & is able to
 			isShielding = true;
 			this.isInvulnerable = true;
-			console.log('shield activated');
 		}
 		if (isShielding){ // currently shielding
 			shieldRemaining--;
@@ -274,7 +273,6 @@ function PlayerClass() {
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							console.log("healing");
 							this.regainHealthMeter++;
 					}
 				}
@@ -287,7 +285,6 @@ function PlayerClass() {
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
 							savingGame = true;
-							console.log("load save game screen here");
 					}
 				}
 				else if (SortedArt[i].imgName == "healingStatue2") {

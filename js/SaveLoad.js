@@ -24,7 +24,6 @@ function saveMenuDisplay() {
     
     saveMenuOptions = ['Save', 'Load', 'Back']
     for(var i=0; i< saveMenuOptions.length; i++) {
-        console.log(saveMenuOptions[i] + ', green, ' + boxPosX + ', ' + boxPosY);
         if (selectedOption == i) {
             colorRect(boxPosX + leftRightPadding, boxPosY + ((textHeight + linePadding) * i + textHeight / 4), boxWidth - leftRightPadding, textHeight, 'grey');
         }
@@ -35,7 +34,6 @@ function saveMenuDisplay() {
 }
 
 function showSavingIndicator() {
-    console.log("show save indicator");
     var saveIndX = canvas.width - saveIndWidth * 2;
     var saveIndY = canvas.height - saveIndHeight * 2;
     saveIndAng += 0.04;
@@ -87,7 +85,7 @@ function saveGame() {
     localStorage.setItem('exit-the-shadow-saves', JSON.stringify(savesArray));
 
     // debug
-    console.log("Saving");
+    console.log("saving game");
     console.log(save);
 }
 

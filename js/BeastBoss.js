@@ -262,7 +262,7 @@ function BeastBoss() {
 			this.isInvulnerable = true;
 			isShielding = true;
 			shieldCooldown = 25;
-			console.log("SHIIIIELD");
+			console.log("BEAST SHIELD INITIATED");
 		}
 	}
 	
