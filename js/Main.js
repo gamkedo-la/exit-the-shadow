@@ -56,23 +56,28 @@ var OverlayingArt = [
 	{x:3803, y:3145, imgName: 'torchPic'},
 	{x:3483, y:2792, imgName: 'torchPic'},
 	{x:3403, y:2791, imgName: 'torchPic'},
-	{x:2916, y:2121, imgName: 'torchPic'},
+	// house on right side of path to final boss
 	{x:3721, y:2358, imgName: 'torchPic'},
-	{x:3477, y:1787, imgName: 'torchPic'},
-	{x:3411, y:1787, imgName: 'torchPic'},
+	{x:3810, y:2358, imgName: 'torchPic'},
+	//
 	{x:3445, y:1142, imgName: 'torchPic'},
 	{x:3494, y:1099, imgName: 'torchPic'},
 	{x:3395, y:1098, imgName: 'torchPic'},
 	{x:4816, y:3145, imgName: 'torchPic'},
-	{x:4863, y:3146, imgName: 'torchPic'},
-	{x:5962, y:3069, imgName: 'torchPic'},
-	{x:5880, y:3070, imgName: 'torchPic'},
-	{x:5880, y:3165, imgName: 'torchPic'},
-	{x:5962, y:3165, imgName: 'torchPic'},
+	{x:5280, y:3146, imgName: 'torchPic'},
+	// beast boss room torches
 	{x:6210, y:2549, imgName: 'torchPic'},
 	{x:5316, y:2551, imgName: 'torchPic'},
+	// shadow boss room torches
+	{x:645, y:2549, imgName: 'torchPic'},
+	{x:1540, y:2551, imgName: 'torchPic'},
+	// 
 	{x:2179, y:3145, imgName: 'torchPic'},
 	{x:1563, y:3145, imgName: 'torchPic'},
+	// platform final boss stands on
+	{x:3085, y:2120, imgName: 'torchPic'},
+	{x:2840, y:2121, imgName: 'torchPic'},
+	//
 
 ];
 
@@ -361,7 +366,7 @@ function drawGame() {
 
 	drawUI();
 
-	colorText((mouseX + camPanX) + ', ' + (mouseY + camPanY), mouseX, mouseY, 'black');
+	colorText((mouseX + camPanX) + ', ' + (mouseY + camPanY), mouseX, mouseY, 'white');
 }
 
 function drawAll() {
