@@ -244,6 +244,9 @@ function handleProjectileCollisions(projectile) {
 				if (projectile.isPlayerAttack) { // attack started by player
 					Player.regainHealthFromAttack();
 				}
+				else { // player was the one who got hit, play sound
+					sfx[GOT_HIT_SFX].play();
+				}
 			}
 		}
 	}
