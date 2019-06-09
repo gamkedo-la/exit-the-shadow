@@ -323,7 +323,10 @@ function BeastBoss() {
 	}
 	
 	this.addHealingStatue = function() {
-		SortedArt.push({x: 5760, y: 2592, imgName: "healingStatue2", height: window["healingStatue2"].height});
+		let xPos = 5760, yPos = 2592;
+		SortedArt.push({x: xPos, y: yPos, imgName: "healingStatue2", height: window["healingStatue2"].height});
+		
+		OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic'});
 		
 		this.addHealingStatueCollisionData();
 		
@@ -331,7 +334,7 @@ function BeastBoss() {
 		generateFloorTiles();
 	}
 	
-	this.addHealing = function() {
+	this.addHealingStatueCollisionData = function() {
 		for (var i = 83 * TILE_COLS; i <= 84 * TILE_COLS; i += TILE_COLS) {
 			for (var j = 180; j <= 181; j++) {
 				tileGrid[i + j] = 64;
