@@ -21,13 +21,12 @@ function ShadowBoss(id) {
 	
 	this.id = id;
 	
-	this.width = 17;//48;
-	this.height = 47;//128;
+	this.width = 48;
+	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
 	this.HP = 30;
 	this.maxHP = this.HP;
-	this.HP = 1;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
 	this.name = shadowBossName;
@@ -39,7 +38,7 @@ function ShadowBoss(id) {
 		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1}
 	}
 	
-	let spritePadding = 54;
+	let spritePadding = 64;
 	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
 
 	this.directionFacing = DOWN;
@@ -232,8 +231,8 @@ function ShadowBoss(id) {
 		canvasContext.drawImage(shadowBossGradient, 
 								0, 0, //x, y of where to start clipping
 								shadowBossGradient.width, shadowBossGradient.height, //width, height of how much to clip
-								this.x - shadowBossGradient.width/4, this.y - shadowBossGradient.height/4, //x, y where to position image
-								shadowBossGradient.width/2, shadowBossGradient.height/2); //width, height of how big to draw image
+								this.centerX() - shadowBossGradient.width/3, this.centerY() - shadowBossGradient.height/3 - 40, //x, y where to position image
+								shadowBossGradient.width/1.5, shadowBossGradient.height/1.5); //width, height of how big to draw image
 	}
 	
 	this.progressPhaseTogether = function() {

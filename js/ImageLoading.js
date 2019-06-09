@@ -47,7 +47,7 @@ function loadImages() {
 		{varName: arrowPic, fileName: "player.png"},
 		{varName: playerSheet, fileName: "player_sheet.png"},
 		{varName: beastSheet, fileName: "BeastSpriteSheet.png"},
-		{varName: shadowSheet, fileName: "ShadowSheetAlternate.png"},
+		{varName: shadowSheet, fileName: "ShadowSpriteSheet.png"},
 		{varName: evilPlayerSheet, fileName: "EvilPlayerSheet.png"},
 		{varName: platform, fileName: "platform.png"},
 		{varName: playerConcept, fileName: "player.png"},
