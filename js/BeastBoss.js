@@ -25,7 +25,7 @@ function BeastBoss() {
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
 	this.HP = 50;
-	this.oldHP = 0;
+	this.oldHP = this.HP;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
 	
@@ -33,7 +33,11 @@ function BeastBoss() {
 	this.isActive = false;
 	
 	this.states = {
-		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1}
+		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
+		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.1},
+		run: {startFrame: 4, endFrame: 7, animationSpeed: 0.5},
+		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1},
+		shield: {startFrame: 12, endFrame: 15, animationSpeed: 0.1}
 	}
 	
 	let spritePadding = 64;
@@ -130,6 +134,7 @@ function BeastBoss() {
 			}
 			this.updateAttack();
 			this.updateShield();
+			this.oldHP = this.HP;
 		}
 		else if (phase == PLAYER_DEAD) {
 			timeSincePlayerDeath++;
@@ -167,7 +172,7 @@ function BeastBoss() {
 	
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
-		if(isDashing){
+		if(isDashing || isShielding){
 			return;
 		}
 		else if (distFromPlayer > 250){
@@ -188,7 +193,21 @@ function BeastBoss() {
 
 	}
 	this.updateState = function() {
-		// CHANGE ANIMATION STATES HERE
+		if (isAttacking) {
+			this.AnimatedSprite.changeState("attack");
+		}
+		else if (isShielding) {
+			this.AnimatedSprite.changeState("shield");
+		}
+		else if (isDashing) {
+			this.AnimatedSprite.changeState("run");
+		}
+		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
+			this.AnimatedSprite.changeState("walk");
+		}
+		else {
+			this.AnimatedSprite.changeState("idle");
+		}
 	}
 	
 	this.initiateAttack = function() {
@@ -232,14 +251,6 @@ function BeastBoss() {
 			isAttacking = true;
 			
 			attackCooldown = 30;
-			if(this.HP < this.oldHP){
-				enemyIsHit++;
-			}
-			this.oldHP = this.HP;
-			if (enemyIsHit >= 3){
-				shield = true;
-			 gotHit = 0; 
-			}
 		}
 	}
 
@@ -261,8 +272,7 @@ function BeastBoss() {
 		if (shieldCooldown <= 0) {
 			this.isInvulnerable = true;
 			isShielding = true;
-			shieldCooldown = 25;
-			console.log("BEAST SHIELD INITIATED");
+			shieldCooldown = 50;
 		}
 	}
 	
@@ -273,6 +283,15 @@ function BeastBoss() {
 				isShielding = false;
 			}
 			shieldCooldown--;
+		}
+		else {
+			if(this.HP < this.oldHP){
+				enemyIsHit++;
+			}
+			if (enemyIsHit >= 3){
+				shield = true;
+			 	enemyIsHit = 0; 
+			}
 		}
 	}
 
