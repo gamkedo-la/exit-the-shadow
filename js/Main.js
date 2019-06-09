@@ -23,68 +23,11 @@ var Entities = [
 	Player
 ];
 
-var GroundArt = [
-	{x: 3736, y: 2400, imgName: "pathway"},
-	{x: 3040, y: 2016, imgName: "platform"},
-];
+var GroundArt = [];
 
-var SortedArt = [
-	{x: 3136, y: 3008, imgName: "healingStatue"},
-	{x: 3652, y: 3040, imgName: "typewriter"},
-	{x: 3738, y: 3040, imgName: "bed"},
-	{x: 3686, y: 3055, imgName: "plant"},
-	{x: 1900, y: 2900, imgName: "plant"},
-	{x: 1931, y: 2896, imgName: "plant"},
-	{x: 1899, y: 2882, imgName: "plant"},
-	{x: 1936, y: 2923, imgName: "plant"},
-	{x: 1894, y: 2931, imgName: "plant"},
-	{x: 3710, y: 3030, imgName: "table"},
-	{x: 3680, y: 2144, imgName: "entrance"},
-	{x: 2144, y: 2624, imgName: "entrance"},
-	{x: 3296, y: 2920, imgName: "gateway"},
-	{x: 4192, y: 2875, imgName: "cage"},
-	{x: 4608, y: 2875, imgName: "cage"},
-	{x: 4416, y: 2800, imgName: "ruins"},
-	{x: 2144, y: 3296, imgName: "ruins"},
-];
+var SortedArt = [];
 
-var OverlayingArt = [
-	{x: 3750, y: 3018, imgName: "painting"},
-	
-	// torches
-	{x:3484, y:3535, imgName: 'torchPic'},
-	{x:3405, y:3535, imgName: 'torchPic'},
-	{x:3589, y:3026, imgName: 'torchPic'},
-	{x:3297, y:3022, imgName: 'torchPic'},
-	{x:3084, y:3144, imgName: 'torchPic'},
-	{x:3803, y:3145, imgName: 'torchPic'},
-	{x:3483, y:2792, imgName: 'torchPic'},
-	{x:3403, y:2791, imgName: 'torchPic'},
-	// house on right side of path to final boss
-	{x:3721, y:2358, imgName: 'torchPic'},
-	{x:3810, y:2358, imgName: 'torchPic'},
-	//
-	{x:3445, y:1142, imgName: 'torchPic'},
-	{x:3494, y:1099, imgName: 'torchPic'},
-	{x:3395, y:1098, imgName: 'torchPic'},
-	{x:4816, y:3145, imgName: 'torchPic'},
-	{x:5280, y:3146, imgName: 'torchPic'},
-	// beast boss room torches
-	{x:6210, y:2549, imgName: 'torchPic'},
-	{x:5316, y:2551, imgName: 'torchPic'},
-	// shadow boss room torches
-	{x:645, y:2549, imgName: 'torchPic'},
-	{x:1540, y:2551, imgName: 'torchPic'},
-	// 
-	{x:2179, y:3145, imgName: 'torchPic'},
-	{x:1563, y:3145, imgName: 'torchPic'},
-	// platform final boss stands on
-	{x:3085, y:2120, imgName: 'torchPic'},
-	{x:2840, y:2121, imgName: 'torchPic'},
-	//
-	{x:3944, y:2500, imgName: 'torchPic'},
-
-];
+var OverlayingArt = [];
 
 var SortedDrawList = [];
 var LightSourcesThisFrame = [];
@@ -143,6 +86,7 @@ function startWorld() {
 	initialiseEntityPositions();
 	generateFloorTiles();
 	generateTileEntities();
+	loadArt();
 }
 
 function removeDefeatedBosses() {
@@ -157,17 +101,17 @@ function removeDefeatedBosses() {
     }
 }
 
-function loadCollisionDataForBossDefeatedRooms() {
+function loadArtAndCollisionForBossDefeatedRooms() {
     Player.bossesKilled.forEach(boss => {
         if(boss == shadowBossName) {
-			// load shadow boss room object collision data
+			// load shadow boss room art
             var shadowBoss = new ShadowBoss(1);
-			shadowBoss.addHealingStatueCollisionData();
+			shadowBoss.addHealingStatue();
         }
 		else if (boss == beastBossName) {
 			// load beast boss room object collision data
             var beastBoss = new BeastBoss();
-			beastBoss.addHealingStatueCollisionData();
+			beastBoss.addHealingStatue();
 		}
 		else if (boss == evilPlayerBossName) {
 			// load final boss room object collision data
@@ -184,7 +128,7 @@ function restartGame() {
 	startWorld();
 
 	removeDefeatedBosses();
-	loadCollisionDataForBossDefeatedRooms();
+	loadArtAndCollisionForBossDefeatedRooms();
 	
 	if (!bg_music[AMBIENT_MUSIC].isPlaying()) {
 		switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
@@ -194,11 +138,6 @@ function restartGame() {
 function startGame() {
 	var framesPerSecond = 30;
 	setInterval(updateAll, 1000/framesPerSecond);
-	
-	// fill in height (/2) for art that needs sorting
-	SortedArt.forEach(function(art) {
-		art.height = window[art.imgName].height;
-	});
 
 	setUpInput();
 	startWorld();
@@ -398,4 +337,83 @@ function handleDeadEntities() {
 			Entities.splice(i, 1); // remove dead entity
 		}
 	}
+}
+
+function loadArt() {
+	loadGroundArt();
+	loadSortedArt();
+	loadOverlayingArt();
+}
+
+function loadGroundArt() {
+	GroundArt = [
+		{x: 3736, y: 2400, imgName: "pathway"},
+		{x: 3040, y: 2016, imgName: "platform"},
+	];
+}
+
+function loadSortedArt() {
+	SortedArt = [
+		{x: 3136, y: 3008, imgName: "healingStatue"},
+		{x: 3652, y: 3040, imgName: "typewriter"},
+		{x: 3738, y: 3040, imgName: "bed"},
+		{x: 3686, y: 3055, imgName: "plant"},
+		{x: 1900, y: 2900, imgName: "plant"},
+		{x: 1931, y: 2896, imgName: "plant"},
+		{x: 1899, y: 2882, imgName: "plant"},
+		{x: 1936, y: 2923, imgName: "plant"},
+		{x: 1894, y: 2931, imgName: "plant"},
+		{x: 3710, y: 3030, imgName: "table"},
+		{x: 3680, y: 2144, imgName: "entrance"},
+		{x: 2144, y: 2624, imgName: "entrance"},
+		{x: 3296, y: 2920, imgName: "gateway"},
+		{x: 4192, y: 2875, imgName: "cage"},
+		{x: 4608, y: 2875, imgName: "cage"},
+		{x: 4416, y: 2800, imgName: "ruins"},
+		{x: 2144, y: 3296, imgName: "ruins"},
+	];
+	
+	// fill in height (/2) for art that needs sorting
+	SortedArt.forEach(function(art) {
+		art.height = window[art.imgName].height;
+	});
+}
+
+function loadOverlayingArt() {
+	OverlayingArt = [
+		{x: 3750, y: 3018, imgName: "painting"},
+	
+		// torches
+		{x:3484, y:3535, imgName: 'torchPic'},
+		{x:3405, y:3535, imgName: 'torchPic'},
+		{x:3589, y:3026, imgName: 'torchPic'},
+		{x:3297, y:3022, imgName: 'torchPic'},
+		{x:3084, y:3144, imgName: 'torchPic'},
+		{x:3803, y:3145, imgName: 'torchPic'},
+		{x:3483, y:2792, imgName: 'torchPic'},
+		{x:3403, y:2791, imgName: 'torchPic'},
+		// house on right side of path to final boss
+		{x:3721, y:2358, imgName: 'torchPic'},
+		{x:3810, y:2358, imgName: 'torchPic'},
+		//
+		{x:3445, y:1142, imgName: 'torchPic'},
+		{x:3494, y:1099, imgName: 'torchPic'},
+		{x:3395, y:1098, imgName: 'torchPic'},
+		{x:4816, y:3145, imgName: 'torchPic'},
+		{x:5280, y:3146, imgName: 'torchPic'},
+		// beast boss room torches
+		{x:6210, y:2549, imgName: 'torchPic'},
+		{x:5316, y:2551, imgName: 'torchPic'},
+		// shadow boss room torches
+		{x:645, y:2549, imgName: 'torchPic'},
+		{x:1540, y:2551, imgName: 'torchPic'},
+		// 
+		{x:2179, y:3145, imgName: 'torchPic'},
+		{x:1563, y:3145, imgName: 'torchPic'},
+		// platform final boss stands on
+		{x:3085, y:2120, imgName: 'torchPic'},
+		{x:2840, y:2121, imgName: 'torchPic'},
+		//
+		{x:3944, y:2500, imgName: 'torchPic'},
+	];
 }

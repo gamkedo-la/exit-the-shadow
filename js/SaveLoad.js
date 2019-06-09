@@ -103,6 +103,10 @@ function loadGame() {
             restoreValues(save);
         }
     });
+	
+	// do this as art changes depending on what bosses have been defeated
+	loadArt();
+	loadArtAndCollisionForBossDefeatedRooms();
 }
 
 function restoreValues(save) {

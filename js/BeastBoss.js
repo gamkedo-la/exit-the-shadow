@@ -331,7 +331,7 @@ function BeastBoss() {
 		generateFloorTiles();
 	}
 	
-	this.addHealingStatueCollisionData = function() {
+	this.addHealing = function() {
 		for (var i = 83 * TILE_COLS; i <= 84 * TILE_COLS; i += TILE_COLS) {
 			for (var j = 180; j <= 181; j++) {
 				tileGrid[i + j] = 64;
