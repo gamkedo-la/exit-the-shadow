@@ -324,7 +324,7 @@ function BeastBoss() {
 	
 	this.addHealingStatue = function() {
 		let xPos = 5760, yPos = 2592;
-		SortedArt.push({x: xPos, y: yPos, imgName: "healingStatue2", height: window["healingStatue2"].height});
+		SortedArt.push({x: xPos, y: yPos, imgName: "beastHealingStatue", height: window["beastHealingStatue"].height});
 		
 		OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic'});
 		

@@ -28,7 +28,8 @@ var logoPic = document.createElement("img");
 var arrowPic = document.createElement("img");
 var glowPic = document.createElement("img");
 var torchPic = document.createElement("img");
-var healingStatue2 = document.createElement("img");
+var beastHealingStatue = document.createElement("img");
+var shadowHealingStatue = document.createElement("img");
 var cage = document.createElement("img");
 var ruins = document.createElement("img");
 
@@ -71,7 +72,8 @@ function loadImages() {
 		{varName: gateway, fileName: "gateway.png"},
 		{varName: glowPic, fileName: "glow.png"},
 		{varName: torchPic, fileName: "torch.png"},
-		{varName: healingStatue2, fileName: "healing_statue_2.png"},
+		{varName: beastHealingStatue, fileName: "healing_statue_2.png"},
+		{varName: shadowHealingStatue, fileName: "healing_statue_2.png"},
 		{varName: cage, fileName: "cage_tileset.png"},
 		{varName: ruins, fileName: "ruins_1.png"},
 	];

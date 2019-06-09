@@ -19,13 +19,15 @@ function PlayerClass() {
 	// public
 	this.width = 25;
 	this.height = 50;
-	this.HP = 5;
+	this.HP = 3;
 	this.maxHP = this.HP;
 	this.HP = 1;
 	
 	this.collisionBoxHeight = this.width;
 	
 	this.moveSpeed = 5;
+	
+	this.heartsAcquired = {beastHeartAcquired: false, shadowHeartAcquired: false};
 	
 	// string array with names of bosses killed. used by save game system
 	this.bossesKilled = new Array();
@@ -94,8 +96,6 @@ function PlayerClass() {
 	}
 
 	this.resetStats = function () {
-		this.HP = 5;
-		this.maxHP = this.HP;
 		this.HP = 1;
 		this.regainHealthMeter = 0;
 		this.isDead = false;
@@ -287,7 +287,7 @@ function PlayerClass() {
 							savingGame = true;
 					}
 				}
-				else if (SortedArt[i].imgName == "healingStatue2") {
+				else if (SortedArt[i].imgName == "beastHealingStatue") {
 					let object = SortedArt[i];
 					let objectWidth = window[object.imgName].width;
 					let objectHeight = window[object.imgName].height;
@@ -295,7 +295,26 @@ function PlayerClass() {
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							restartGame();
+							if (!this.heartsAcquired.shadowHeartAcquired) {
+								this.heartsAcquired.shadowHeartAcquired = true;
+								restartGame();
+								this.increaseMaxHP();
+							}
+					}
+				}
+				else if (SortedArt[i].imgName == "shadowHealingStatue") {
+					let object = SortedArt[i];
+					let objectWidth = window[object.imgName].width;
+					let objectHeight = window[object.imgName].height;
+					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+							if (!this.heartsAcquired.beastHeartAcquired) {
+								this.heartsAcquired.beastHeartAcquired = true;
+								restartGame();
+								this.increaseMaxHP();
+							}
 					}
 				}
 			}
@@ -447,6 +466,23 @@ function PlayerClass() {
 	
 	this.regainHealthFromAttack = function() {
 		this.regainHealthMeter++;
+	}
+	
+	this.increaseMaxHP = function() {
+		this.updateMaxHP();
+		this.HP = this.maxHP;
+	}
+	
+	this.updateMaxHP = function() {
+		this.maxHP = 3;
+		
+		if (this.heartsAcquired.beastHeartAcquired) {
+			this.maxHP++;
+		}
+		
+		if (this.heartsAcquired.shadowHeartAcquired) {
+			this.maxHP++;
+		}
 	}
 
 	this.deathHandle = function ()

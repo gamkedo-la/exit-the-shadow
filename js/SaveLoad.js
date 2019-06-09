@@ -65,12 +65,13 @@ function showSavingIndicator() {
     canvasContext.restore();
 }
 
-function SaveData(name, positionX, positionY, health, bossesKilled, deaths, timePlayed) {
+function SaveData(name, positionX, positionY, health, bossesKilled, heartsAcquired, deaths, timePlayed) {
     this.name = name;
     this.positionX = positionX;
     this.positionY = positionY;
     this.health = health;
     this.bossesKilled = bossesKilled;
+	this.heartsAcquired = heartsAcquired;
     this.deaths = deaths;
     this.timePlayed = timePlayed;
     this.dateTimeSaved = Date.now();
@@ -78,7 +79,7 @@ function SaveData(name, positionX, positionY, health, bossesKilled, deaths, time
 
 function saveGame() {
     sfx[SAVE_SFX].play();
-    var save = new SaveData("save1", Player.x + Player.width / 2, Player.y + Player.height / 2, Player.HP, Player.bossesKilled, 0, 0);
+    var save = new SaveData("save1", Player.x + Player.width / 2, Player.y + Player.height / 2, Player.HP, Player.bossesKilled, Player.heartsAcquired, 0, 0);
     var savesArray = new Array();
     savesArray.push(save);
 
@@ -119,6 +120,9 @@ function restoreValues(save) {
 
     // Restore bossesKilled so that we don't 'loose' progress next save
     Player.bossesKilled = save.bossesKilled;
+	
+	Player.heartsAcquired = save.heartsAcquired;
+	Player.updateMaxHP();
 
     removeDefeatedBosses();
 }
