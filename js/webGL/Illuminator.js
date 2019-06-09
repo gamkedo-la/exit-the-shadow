@@ -1,6 +1,6 @@
 const playerLightRange = 400; //based on visual appeal
 const torchRange = 100;
-const maxLights = 8;
+const maxLights = 10;
 
 //Make some webGL stuff here
 function Illuminator() {
@@ -36,7 +36,7 @@ function Illuminator() {
 
         uniform vec2 playerPosition;
         uniform float playerLightRange;
-        uniform vec2 lights[8];
+        uniform vec2 lights[10];
         uniform float lightRange;
 
         void main() {
@@ -45,7 +45,7 @@ function Illuminator() {
             
             float totalLightAlpha = playerLightAlpha;
 
-            for(int i = 0; i < 8; i++) {
+            for(int i = 0; i < 10; i++) {
                 vec2 fragToLight = lights[i] - gl_FragCoord.xy;
                 float thisLightAlpha = 1.0 - min(length(fragToLight) / lightRange, 1.0);
                 totalLightAlpha += thisLightAlpha;
@@ -120,7 +120,9 @@ function Illuminator() {
                                          allLights[10], allLights[11], 
                                          allLights[12], allLights[13],
                                          allLights[14], allLights[15], 
-                                         allLights[16], allLights[17]]);
+                                         allLights[16], allLights[17],
+                                         allLights[18], allLights[19], 
+										 allLights[20], allLights[21]]);
 
         gl.uniform2fv(lightsUniformLocation, lights);
 

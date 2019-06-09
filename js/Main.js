@@ -40,8 +40,12 @@ var SortedArt = [
 	{x: 1894, y: 2931, imgName: "plant"},
 	{x: 3710, y: 3030, imgName: "table"},
 	{x: 3680, y: 2144, imgName: "entrance"},
-	{x: 2144, y: 2580, imgName: "entrance"},
+	{x: 2144, y: 2624, imgName: "entrance"},
 	{x: 3296, y: 2920, imgName: "gateway"},
+	{x: 4192, y: 2875, imgName: "cage"},
+	{x: 4608, y: 2875, imgName: "cage"},
+	{x: 4416, y: 2800, imgName: "ruins"},
+	{x: 2144, y: 3296, imgName: "ruins"},
 ];
 
 var OverlayingArt = [
@@ -78,6 +82,7 @@ var OverlayingArt = [
 	{x:3085, y:2120, imgName: 'torchPic'},
 	{x:2840, y:2121, imgName: 'torchPic'},
 	//
+	{x:3944, y:2500, imgName: 'torchPic'},
 
 ];
 

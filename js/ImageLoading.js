@@ -29,7 +29,8 @@ var arrowPic = document.createElement("img");
 var glowPic = document.createElement("img");
 var torchPic = document.createElement("img");
 var healingStatue2 = document.createElement("img");
-//var playerShadowSprite = document.createElement("img");
+var cage = document.createElement("img");
+var ruins = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -71,7 +72,8 @@ function loadImages() {
 		{varName: glowPic, fileName: "glow.png"},
 		{varName: torchPic, fileName: "torch.png"},
 		{varName: healingStatue2, fileName: "healing_statue_2.png"},
-		//{varName: playerShadowSprite, fileName: "playerShadow.png"},
+		{varName: cage, fileName: "cage_tileset.png"},
+		{varName: ruins, fileName: "ruins_1.png"},
 	];
 	
 	picsToLoad = imageList.length;
