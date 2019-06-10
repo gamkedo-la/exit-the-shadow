@@ -32,6 +32,15 @@ var beastHealingStatue = document.createElement("img");
 var shadowHealingStatue = document.createElement("img");
 var cage = document.createElement("img");
 var ruins = document.createElement("img");
+var debris1 = document.createElement("img");
+var debris2 = document.createElement("img");
+var debris3 = document.createElement("img");
+var debris4 = document.createElement("img");
+var debris5 = document.createElement("img");
+var debris6 = document.createElement("img");
+var debris7 = document.createElement("img");
+var debris8 = document.createElement("img");
+var debris9 = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -72,6 +81,15 @@ function loadImages() {
 		{varName: gateway, fileName: "gateway.png"},
 		{varName: glowPic, fileName: "glow.png"},
 		{varName: torchPic, fileName: "torch.png"},
+		{varName: debris1, fileName: "debris1.png"},
+		{varName: debris2, fileName: "debris2.png"},
+		{varName: debris3, fileName: "debris3.png"},
+		{varName: debris4, fileName: "debris4.png"},
+		{varName: debris5, fileName: "debris5.png"},
+		{varName: debris6, fileName: "debris6.png"},
+		{varName: debris7, fileName: "debris7.png"},
+		{varName: debris8, fileName: "debris8.png"},
+		{varName: debris9, fileName: "debris9.png"},
 		{varName: beastHealingStatue, fileName: "healing_statue_2.png"},
 		{varName: shadowHealingStatue, fileName: "healing_statue_2.png"},
 		{varName: cage, fileName: "cage_tileset.png"},

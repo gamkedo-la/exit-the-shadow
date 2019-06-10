@@ -414,5 +414,7 @@ function loadOverlayingArt() {
 		{x:2840, y:2121, imgName: 'torchPic'},
 		//
 		{x:3944, y:2500, imgName: 'torchPic'},
+		// assorted debris
+		
 	];
 }
