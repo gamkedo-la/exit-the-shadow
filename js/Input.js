@@ -9,7 +9,7 @@ const KEY_L = 76; // SHIELD
 const KEY_P = 80; // PAUSE
 const KEY_H = 72; // HELP SCREEN KEY
 
-const LOG_MOUSE_CLICKS = false; // debug or level editing only
+const LOG_MOUSE_CLICKS = true; // debug or level editing only
 
 function debugOnClick(e) { 
 	// used for easy level editing
@@ -24,11 +24,11 @@ function debugOnClick(e) {
 	var spritey = (mouseY+camPanY-12);
 	
 	// clickspam level editor for overlays
-	window.debugClickLocations += "{x:"+spritex+", y:"+spritey+", imgName: 'torchPic'},\n";
+	window.debugClickLocations += "{x:"+spritex+", y:"+spritey+", imgName: 'debris1'},\n";
 	console.log(window.debugClickLocations);
 
 	// show live while playing
-	OverlayingArt.push({x:spritex, y:spritey, imgName: 'torchPic'});
+	OverlayingArt.push({x:spritex, y:spritey, imgName: 'debris1'});
 
 }
 

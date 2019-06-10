@@ -348,6 +348,29 @@ function loadGroundArt() {
 	GroundArt = [
 		{x: 3736, y: 2400, imgName: "pathway"},
 		{x: 3040, y: 2016, imgName: "platform"},
+		// floor debris
+		{x:3435, y:3478, imgName: 'debris1'},
+		{x:3399, y:3346, imgName: 'debris1'},
+		{x:3415, y:3329, imgName: 'debris1'},
+		{x:3570, y:3053, imgName: 'debris1'},
+		{x:3411, y:2815, imgName: 'debris1'},
+		{x:3460, y:2569, imgName: 'debris1'},
+		{x:3250, y:2129, imgName: 'debris1'},
+		{x:3224, y:2133, imgName: 'debris1'},
+		{x:3658, y:2402, imgName: 'debris1'},
+		{x:3677, y:2418, imgName: 'debris1'},
+		{x:3670, y:2395, imgName: 'debris1'},
+		{x:3484, y:1768, imgName: 'debris1'},
+		{x:3471, y:1778, imgName: 'debris1'},
+		{x:3217, y:1430, imgName: 'debris1'},
+		{x:3594, y:1341, imgName: 'debris1'},
+		{x:3608, y:1380, imgName: 'debris1'},
+		{x:2748, y:3208, imgName: 'debris1'},
+		{x:1531, y:3150, imgName: 'debris1'},
+		{x:1542, y:3133, imgName: 'debris1'},
+		{x:1012, y:2894, imgName: 'debris1'},
+		{x:987, y:2926, imgName: 'debris1'},		
+
 	];
 }
 
@@ -414,7 +437,5 @@ function loadOverlayingArt() {
 		{x:2840, y:2121, imgName: 'torchPic'},
 		//
 		{x:3944, y:2500, imgName: 'torchPic'},
-		// assorted debris
-		
 	];
 }
