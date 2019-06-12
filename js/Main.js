@@ -18,6 +18,7 @@ var shadowBossName = 'Shadow';
 var beastBossName = 'Beast';
 var evilPlayerBossName = 'Self';
 var illuminator;
+var finalBossPlatformTorches = [];
 
 var Entities = [
 	Player
@@ -277,8 +278,14 @@ function drawGame() {
 			LightSourcesThisFrame.push([OverlayingArt[i].x-36, OverlayingArt[i].y-42]);
 			if((OverlayingArt[i].x-36 - camPanX >= -torchRange) && (OverlayingArt[i].x-36 - camPanX <= canvas.width + torchRange)) {
 				if((OverlayingArt[i].y-42 - camPanY >= -torchRange) && (OverlayingArt[i].y-42 - camPanY <= canvas.height + torchRange)) {
-					onscreenLights.push([OverlayingArt[i].x, OverlayingArt[i].y,
-					OverlayingArt[i].r, OverlayingArt[i].g, OverlayingArt[i].b]);
+					onscreenLights.push([
+						OverlayingArt[i].x+ILLUM_OFFSET_X, 
+						OverlayingArt[i].y+ILLUM_OFFSET_Y,
+						OverlayingArt[i].r, 
+						OverlayingArt[i].g, 
+						OverlayingArt[i].b,
+						OverlayingArt[i].range
+					]);
 				}
 			}
 		}
@@ -301,15 +308,26 @@ function drawGame() {
 
 	const lightPoses = [Player.x - camPanX, canvas.height - (Player.y - camPanY)];
 	const lightColors = [];
-	for(let i = 0; i < onscreenLights.length; i++) {
-		lightPoses.push(onscreenLights[i][0] - camPanX);//x position
-		lightPoses.push(canvas.height - (onscreenLights[i][1] - camPanY));//y position
-		lightColors.push(onscreenLights[i][2]);//red component
-		lightColors.push(onscreenLights[i][3]);//green component
-		lightColors.push(onscreenLights[i][4]);//blue component
+	const lightRanges = [];
+	for(let i = 0; i < maxLights; i++) {
+		if(i < onscreenLights.length) {
+			lightPoses.push(onscreenLights[i][0] - camPanX);//x position
+			lightPoses.push(canvas.height - (onscreenLights[i][1] - camPanY));//y position
+			lightColors.push(onscreenLights[i][2]);//red component
+			lightColors.push(onscreenLights[i][3]);//green component
+			lightColors.push(onscreenLights[i][4]);//blue component
+			lightRanges.push(onscreenLights[i][5]);//range of this light
+		} else {//finish filling the buffers with empty data
+			lightPoses.push(0);//x position
+			lightPoses.push(0);//y position
+			lightColors.push(0);//red component
+			lightColors.push(0);//green component
+			lightColors.push(0);//blue component
+			lightRanges.push(0);//range of this light
+		}
 	}
 
-	const shadowOverlay = illuminator.getShadowOverlayWithLightList(lightPoses, lightColors);
+	const shadowOverlay = illuminator.getShadowOverlayWithLightList(lightPoses, lightColors, lightRanges);
 	canvasContext.drawImage(shadowOverlay, 0, 0);
 
 	drawUI();
@@ -537,41 +555,46 @@ function loadSortedArt() {
 }
 
 function loadOverlayingArt() {
+	finalBossPlatformTorches = [
+		{x:3085, y:2120, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+		{x:2840, y:2121, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+	];
+
 	OverlayingArt = [
 		{x: 3750, y: 3018, imgName: "painting"},
 	
 		// torches
-		{x:3484, y:3535, imgName: 'torchPic', r:1, g:252/255, b:206/255},
-		{x:3405, y:3535, imgName: 'torchPic', r:1, g:252/255, b:206/255},
-		{x:3589, y:3026, imgName: 'torchPic', r:1, g:252/255, b:206/255},
-		{x:3297, y:3022, imgName: 'torchPic', r:1, g:252/255, b:206/255},
-		{x:3084, y:3144, imgName: 'torchPic', r:1/255, g:252/255, b:206/255},
-		{x:3803, y:3145, imgName: 'torchPic', r:1/255, g:252/255, b:20/255},
-		{x:3483, y:2792, imgName: 'torchPic', r:1, g:25/255, b:20/255},
-		{x:3403, y:2791, imgName: 'torchPic', r:1, g:25/255, b:20/255},
+		{x:3484, y:3535, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
+		{x:3405, y:3535, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
+		{x:3589, y:3026, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
+		{x:3297, y:3022, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
+		{x:3084, y:3144, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:206/255},
+		{x:3803, y:3145, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
+		{x:3483, y:2792, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		{x:3403, y:2791, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
 		// house on right side of path to final boss
-		{x:3721, y:2358, imgName: 'torchPic', r:1, g:25/255, b:20/255},
-		{x:3810, y:2358, imgName: 'torchPic', r:1, g:25/255, b:20/255},
-		//
-		{x:3445, y:1142, imgName: 'torchPic', r:1, g:25/255, b:20/255},
-		{x:3494, y:1099, imgName: 'torchPic', r:1, g:25/255, b:20/255},
-		{x:3395, y:1098, imgName: 'torchPic', r:1, g:25/255, b:20/255},
+		{x:3721, y:2358, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		{x:3810, y:2358, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		//final boss torches
+		{x:3445, y:1142, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+		{x:3494, y:1099, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+		{x:3395, y:1098, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
 		// path to the beast boss room torches
-		{x:4816, y:3145, imgName: 'torchPic', r:1/255, g:252/255, b:20/255},
-		{x:5280, y:3146, imgName: 'torchPic', r:1/255, g:252/255, b:20/255},
+		{x:4816, y:3145, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
+		{x:5280, y:3146, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
 		// beast boss room torches
-		{x:6210, y:2549, imgName: 'torchPic', r:1/255, g:252/255, b:20/255},
-		{x:5316, y:2551, imgName: 'torchPic', r:1/255, g:252/255, b:20/255},
+		{x:6210, y:2549, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
+		{x:5316, y:2551, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
 		// shadow boss room torches
-		{x:645, y:2549, imgName: 'torchPic', r:1/255, g:252/255, b:206/255},
-		{x:1540, y:2551, imgName: 'torchPic', r:1/255, g:252/255, b:206/255},
+		{x:645, y:2549, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:206/255},
+		{x:1540, y:2551, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:206/255},
 		// path to shadow boss room torches
-		{x:2179, y:3145, imgName: 'torchPic', r:1/255, g:252/255, b:206/255},
-		{x:1563, y:3145, imgName: 'torchPic', r:1/255, g:252/255, b:206/255},
+		{x:2179, y:3145, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:206/255},
+		{x:1563, y:3145, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:206/255},
 		// platform final boss stands on
-		{x:3085, y:2120, imgName: 'torchPic', r:1, g:25/255, b:20/255},
-		{x:2840, y:2121, imgName: 'torchPic', r:1, g:25/255, b:20/255},
+		finalBossPlatformTorches[0],
+		finalBossPlatformTorches[1],
 		//
-		{x:3944, y:2500, imgName: 'torchPic', r:1, g:25/255, b:20/255},
+		{x:3944, y:2500, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
 	];
 }
