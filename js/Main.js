@@ -277,8 +277,12 @@ function drawGame() {
 			LightSourcesThisFrame.push([OverlayingArt[i].x-36, OverlayingArt[i].y-42]);
 			if((OverlayingArt[i].x-36 - camPanX >= -torchRange) && (OverlayingArt[i].x-36 - camPanX <= canvas.width + torchRange)) {
 				if((OverlayingArt[i].y-42 - camPanY >= -torchRange) && (OverlayingArt[i].y-42 - camPanY <= canvas.height + torchRange)) {
-					onscreenLights.push([OverlayingArt[i].x, OverlayingArt[i].y,
-					OverlayingArt[i].r, OverlayingArt[i].g, OverlayingArt[i].b]);
+					onscreenLights.push([
+						OverlayingArt[i].x+ILLUM_OFFSET_X, 
+						OverlayingArt[i].y+ILLUM_OFFSET_Y,
+						OverlayingArt[i].r, 
+						OverlayingArt[i].g, 
+						OverlayingArt[i].b]);
 				}
 			}
 		}

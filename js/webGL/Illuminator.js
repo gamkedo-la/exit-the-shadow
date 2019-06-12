@@ -1,3 +1,7 @@
+// center the webGL glows around torch sprites
+const ILLUM_OFFSET_X = 10;
+const ILLUM_OFFSET_Y = 10;
+
 const playerLightRange = 400; //based on visual appeal
 const torchRange = 100;
 const maxLights = 10;
