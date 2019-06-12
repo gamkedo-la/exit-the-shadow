@@ -96,11 +96,9 @@ function EvilPlayerBoss() {
 			if (Player.y < 1900) {
 				teleportTime++;
 				if (teleportTime < 5) {
-					fadeOutPlatformTorches();
 					isTeleportingOut = true;
 				}
 				else if (teleportTime < 30) {
-					fadeInPlatformTorches();
 					isTeleportingOut = false;
 					this.startX = this.x = this.nextX = 3443.5;
 					this.startY = this.y = this.nextY = 1063;
@@ -277,25 +275,6 @@ function EvilPlayerBoss() {
 		this.updateBehaviour();
 		this.updateState();
 		EntityClass.prototype.move.call(this); // call superclass function
-	}
-
-	const fadeOutPlatformTorches = function() {
-		finalBossPlatformTorches[0].range -= 40;
-		finalBossPlatformTorches[1].range -= 40;
-	}
-
-	const fadeInPlatformTorches = function() {
-		if(finalBossPlatformTorches[0].range <= 100) {
-			finalBossPlatformTorches[0].r = 1;
-			finalBossPlatformTorches[0].g = 252/255;
-			finalBossPlatformTorches[0].b = 206/255;
-			finalBossPlatformTorches[1].r = 1;
-			finalBossPlatformTorches[1].g = 252/255;
-			finalBossPlatformTorches[1].b = 206/255;
-
-			finalBossPlatformTorches[0].range += 40;
-			finalBossPlatformTorches[1].range += 40;	
-		}
 	}
 	
 	this.updateState = function() {

@@ -1,10 +1,6 @@
-// center the webGL glows around torch sprites
-const ILLUM_OFFSET_X = 10;
-const ILLUM_OFFSET_Y = 10;
-
 const playerLightRange = 400; //based on visual appeal
 const torchRange = 100;
-const maxLights = 12;
+const maxLights = 10;
 
 //Make some webGL stuff here
 function Illuminator() {
@@ -40,19 +36,19 @@ function Illuminator() {
 
         uniform vec2 playerPosition;
         uniform float playerLightRange;
-        uniform vec2 lights[12];
-        uniform float lightRanges[12];
-        uniform vec3 colors[12];
+        uniform vec2 lights[10];
+        uniform float lightRange;
+        uniform vec3 colors[10];
 
         void main() {
             vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
 
             gl_FragColor.a = 1.0 - min(length(playerToFrag) / playerLightRange, 1.0);
 
-            for(int i = 0; i < 12; i++) {
+            for(int i = 0; i < 10; i++) {
                 vec2 fragToLight = lights[i] - gl_FragCoord.xy;
 
-                float thisLightAlpha = 1.0 - min(length(fragToLight) / lightRanges[i], 1.0);
+                float thisLightAlpha = 1.0 - min(length(fragToLight) / lightRange, 1.0);
                 gl_FragColor.rgb += (colors[i] * thisLightAlpha / 3.0);
 
                 gl_FragColor.a += thisLightAlpha;
@@ -97,7 +93,7 @@ function Illuminator() {
 
     const program = getWebGLProgram();
 
-    const setUpAttribs = function(allLights, allColors, allRanges) {
+    const setUpAttribs = function(allLights, allColors) {
         const positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
         gl.vertexAttribPointer(
             positionAttribLocation, //Attribute location
@@ -117,17 +113,42 @@ function Illuminator() {
         gl.uniform1fv(playerLightRangeUniformLocation, new Float32Array([playerLightRange]));
 
         const lightsUniformLocation = gl.getUniformLocation(program, 'lights');
-        allLights.splice(0, 2);//remove player light information
-        gl.uniform2fv(lightsUniformLocation, new Float32Array(allLights));
+        const lights = new Float32Array([
+            allLights[2], allLights[3], //x, y for light #1
+            allLights[4], allLights[5], //x, y for light #2
+            allLights[6], allLights[7], //x, y for light #3
+            allLights[8], allLights[9], //x, y for light #4
+            allLights[10], allLights[11], //x, y for light #5
+            allLights[12], allLights[13], //x, y for light #6
+            allLights[14], allLights[15], //x, y for light #7
+            allLights[16], allLights[17], //x, y for light #8
+            allLights[18], allLights[19], //x, y for light #9
+            allLights[20], allLights[21] //x, y for light #10
+        ]);
+        gl.uniform2fv(lightsUniformLocation, lights);
 
-        const lightRangeUniformLocation = gl.getUniformLocation(program, 'lightRanges');
-        gl.uniform1fv(lightRangeUniformLocation, new Float32Array(allRanges));
+        const lightRangeUniformLocation = gl.getUniformLocation(program, 'lightRange');
+        gl.uniform1fv(lightRangeUniformLocation, new Float32Array([torchRange]));
 
-        const colorUniformLocation = gl.getUniformLocation(program, 'colors');        
-        gl.uniform3fv(colorUniformLocation, new Float32Array(allColors));
+//        console.log(`Color - (r:${allColors[0]}, g:${allColors[1]}, b:${allColors[2]})`);
+
+        const colorUniformLocation = gl.getUniformLocation(program, 'colors');
+        const colors = new Float32Array([
+            allColors[0], allColors[1], allColors[2], //r, g, b for light #1
+            allColors[3], allColors[4], allColors[5], //r, g, b for light #2
+            allColors[6], allColors[7], allColors[8], //r, g, b for light #3
+            allColors[9], allColors[10], allColors[11], //r, g, b for light #4
+            allColors[12], allColors[13], allColors[14], //r, g, b for light #5
+            allColors[15], allColors[16], allColors[17], //r, g, b for light #6
+            allColors[18], allColors[19], allColors[20], //r, g, b for light #7
+            allColors[21], allColors[22], allColors[23], //r, g, b for light #8
+            allColors[24], allColors[25], allColors[26], //r, g, b for light #9
+            allColors[27], allColors[28], allColors[29], //r, g, b for light #10
+        ]);
+        gl.uniform3fv(colorUniformLocation, colors);
     }
 
-    this.getShadowOverlayWithLightList = function(lights, colors, ranges) {
+    this.getShadowOverlayWithLightList = function(lights, colors) {
         webCanvas.width = canvas.width;
         webCanvas.height = canvas.height;
         gl.viewport(0, 0, webCanvas.width, webCanvas.height);
@@ -148,7 +169,7 @@ function Illuminator() {
 
         gl.useProgram(program);
 
-        setUpAttribs(lights, colors, ranges);
+        setUpAttribs(lights, colors);
         
         gl.drawArrays(
             gl.TRIANGLE_FAN, //What to draw, triangles? triangle strip?
