@@ -479,7 +479,7 @@ function ShadowBoss(id) {
 		let xPos = 1088, yPos = 2592;
 		SortedArt.push({x: xPos, y: yPos, imgName: "shadowHealingStatue", height: window["shadowHealingStatue"].height});
 		
-		OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic'});
+		OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
 		
 		this.addHealingStatueCollisionData();
 		
