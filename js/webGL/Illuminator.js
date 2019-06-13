@@ -66,7 +66,7 @@ function Illuminator() {
 
                 float thisDarkAlpha = 1.0 - min(length(fragToDark) / darkRanges[j], 1.0);
 
-                darkAlpha += (thisDarkAlpha / 2.0);
+                darkAlpha += (thisDarkAlpha / 2.2);
             }
 
             gl_FragColor.a = 1.0 - gl_FragColor.a + darkAlpha;

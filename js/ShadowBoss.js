@@ -25,7 +25,7 @@ function ShadowBoss(id) {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	this.HP = 30;
+	this.HP = 10;
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
@@ -41,8 +41,8 @@ function ShadowBoss(id) {
 	let spritePadding = 64;
 	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
 	let darkRange = 200;
-	const dark = {x:0, y:0, imgName: 'torchPic', range:darkRange, r:0, g:0, b:0};
-	shadowBossDarks.push(dark);
+	this.dark = {x:0, y:0, imgName: 'torchPic', range:darkRange, r:0, g:0, b:0};
+	shadowBossDarks.push(this.dark);
 	
 	this.directionFacing = DOWN;
 
@@ -214,8 +214,8 @@ function ShadowBoss(id) {
 		this.updateBehaviour();
 		this.updateState();
 		EntityClass.prototype.move.call(this); // call superclass function
-		dark.x = this.centerX();
-		dark.y = this.centerY() - 10;//-10 to adjust vertical placement of shadow for aesthetics
+		this.dark.x = this.centerX();
+		this.dark.y = this.centerY() - 10;//-10 to adjust vertical placement of shadow for aesthetics
 	}
 	
 	this.updateState = function() {
@@ -509,6 +509,7 @@ function ShadowBoss(id) {
 			for(var i = 0; i < Entities.length; i++) {
 				if(Entities[i].name == this.name) {
 					shadowCount++;
+					Entities[i].dark.range *= 1.5;
 				}
 			}
 
@@ -528,8 +529,6 @@ function ShadowBoss(id) {
 				
 				switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 			} 
-		} else {
-			dark.range *= 1.5;
 		}
 		
 		return this.isDead;
@@ -540,6 +539,6 @@ function ShadowBoss(id) {
 			{x:this.centerX(), y:this.centerY() - 10, imgName: 'torchPic', range:100, r:1, g:1, b:1}
 		);
 
-		dark.range = 0;
+		this.dark.range = 0;
 	}
 }
