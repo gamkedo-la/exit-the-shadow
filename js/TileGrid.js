@@ -170,6 +170,7 @@ function loadLevel(level) {
 function initialiseEntityPositions() {
 	var enemy;
 	var shadowBossId = 0;
+	shadowBossDarks = []; // reset shadow boss shadows
 	var tileType;
 	var row, col;
 	for (row = 0; row < TILE_ROWS; row++) {

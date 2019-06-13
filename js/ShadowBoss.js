@@ -536,7 +536,7 @@ function ShadowBoss(id) {
 
 	this.addDeathTorch = function() {
 		OverlayingArt.push(
-			{x:this.centerX(), y:this.centerY() - 10, imgName: 'torchPic', range:100, r:1, g:1, b:1}
+			{x:this.centerX(), y:this.centerY() - 10, imgName: 'torchPic', range:150, r:1, g:1, b:1}
 		);
 
 		this.dark.range = 0;
