@@ -504,6 +504,7 @@ function ShadowBoss(id) {
 	{
 		if(this.isDead) 
 		{
+			this.addDeathTorch();
 			var shadowCount = 0;
 			for(var i = 0; i < Entities.length; i++) {
 				if(Entities[i].name == this.name) {
@@ -526,8 +527,19 @@ function ShadowBoss(id) {
 				this.addHealingStatue();
 				
 				switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
-			}
+			} 
+		} else {
+			dark.range *= 1.5;
 		}
+		
 		return this.isDead;
+	}
+
+	this.addDeathTorch = function() {
+		OverlayingArt.push(
+			{x:this.centerX(), y:this.centerY() - 10, imgName: 'torchPic', range:100, r:1, g:1, b:1}
+		);
+
+		dark.range = 0;
 	}
 }
