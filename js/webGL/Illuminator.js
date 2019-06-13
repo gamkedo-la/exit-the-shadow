@@ -3,7 +3,7 @@ const ILLUM_OFFSET_X = 10;
 const ILLUM_OFFSET_Y = 10;
 
 const playerLightRange = 400; //based on visual appeal
-const torchRange = 100;
+const torchRange = 200;
 const maxLights = 12;
 
 //Make some webGL stuff here
@@ -43,6 +43,8 @@ function Illuminator() {
         uniform vec2 lights[12];
         uniform float lightRanges[12];
         uniform vec3 colors[12];
+        uniform vec2 darks[3];
+        uniform float darkRanges[3];
 
         void main() {
             vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
@@ -58,7 +60,16 @@ function Illuminator() {
                 gl_FragColor.a += thisLightAlpha;
             }
 
-            gl_FragColor.a = 1.0 - gl_FragColor.a;
+            float darkAlpha = 0.0;
+            for(int j = 0; j < 3; j++) {
+                vec2 fragToDark = darks[j] - gl_FragCoord.xy;
+
+                float thisDarkAlpha = 1.0 - min(length(fragToDark) / darkRanges[j], 1.0);
+
+                darkAlpha += (thisDarkAlpha / 2.0);
+            }
+
+            gl_FragColor.a = 1.0 - gl_FragColor.a + darkAlpha;
         }
         `;
     }
@@ -97,7 +108,7 @@ function Illuminator() {
 
     const program = getWebGLProgram();
 
-    const setUpAttribs = function(allLights, allColors, allRanges) {
+    const setUpAttribs = function(allLights, allColors, allRanges, allDarks, allDarkRanges) {
         const positionAttribLocation = gl.getAttribLocation(program, 'vertPosition');
         gl.vertexAttribPointer(
             positionAttribLocation, //Attribute location
@@ -125,9 +136,15 @@ function Illuminator() {
 
         const colorUniformLocation = gl.getUniformLocation(program, 'colors');        
         gl.uniform3fv(colorUniformLocation, new Float32Array(allColors));
+
+        const darksUniformLocation = gl.getUniformLocation(program, 'darks');
+        gl.uniform2fv(darksUniformLocation, new Float32Array(allDarks));
+
+        const darksRangesUniformLocation = gl.getUniformLocation(program, 'darkRanges');
+        gl.uniform1fv(darksRangesUniformLocation, new Float32Array(allDarkRanges));
     }
 
-    this.getShadowOverlayWithLightList = function(lights, colors, ranges) {
+    this.getShadowOverlay = function(lights, colors, ranges, darks, darkRanges) {
         webCanvas.width = canvas.width;
         webCanvas.height = canvas.height;
         gl.viewport(0, 0, webCanvas.width, webCanvas.height);
@@ -148,7 +165,7 @@ function Illuminator() {
 
         gl.useProgram(program);
 
-        setUpAttribs(lights, colors, ranges);
+        setUpAttribs(lights, colors, ranges, darks, darkRanges);
         
         gl.drawArrays(
             gl.TRIANGLE_FAN, //What to draw, triangles? triangle strip?

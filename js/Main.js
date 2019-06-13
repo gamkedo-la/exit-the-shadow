@@ -19,6 +19,7 @@ var beastBossName = 'Beast';
 var evilPlayerBossName = 'Self';
 var illuminator;
 var finalBossPlatformTorches = [];
+var shadowBossDarks = [];
 
 var Entities = [
 	Player
@@ -326,8 +327,16 @@ function drawGame() {
 			lightRanges.push(0);//range of this light
 		}
 	}
+	
+	const darkPoses = [
+		shadowBossDarks[0].x - camPanX, canvas.height + camPanY - shadowBossDarks[0].y,
+		shadowBossDarks[1].x - camPanX, canvas.height + camPanY - shadowBossDarks[1].y,
+		shadowBossDarks[2].x - camPanX, canvas.height + camPanY - shadowBossDarks[2].y,
+	];
 
-	const shadowOverlay = illuminator.getShadowOverlayWithLightList(lightPoses, lightColors, lightRanges);
+	const darkRanges = [shadowBossDarks[0].range, shadowBossDarks[1].range, shadowBossDarks[2].range];
+
+	const shadowOverlay = illuminator.getShadowOverlay(lightPoses, lightColors, lightRanges, darkPoses, darkRanges);
 	canvasContext.drawImage(shadowOverlay, 0, 0);
 
 	drawUI();

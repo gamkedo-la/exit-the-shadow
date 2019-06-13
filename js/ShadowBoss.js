@@ -40,7 +40,10 @@ function ShadowBoss(id) {
 	
 	let spritePadding = 64;
 	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
-
+	let darkRange = 200;
+	const dark = {x:0, y:0, imgName: 'torchPic', range:darkRange, r:0, g:0, b:0};
+	shadowBossDarks.push(dark);
+	
 	this.directionFacing = DOWN;
 
 	let behaviour = IDLE;
@@ -211,6 +214,8 @@ function ShadowBoss(id) {
 		this.updateBehaviour();
 		this.updateState();
 		EntityClass.prototype.move.call(this); // call superclass function
+		dark.x = this.centerX();
+		dark.y = this.centerY() - 10;//-10 to adjust vertical placement of shadow for aesthetics
 	}
 	
 	this.updateState = function() {
@@ -228,11 +233,11 @@ function ShadowBoss(id) {
 	this.draw = function() {
 		EntityClass.prototype.draw.call(this);
 
-		canvasContext.drawImage(shadowBossGradient, 
+/*		canvasContext.drawImage(shadowBossGradient, 
 								0, 0, //x, y of where to start clipping
 								shadowBossGradient.width, shadowBossGradient.height, //width, height of how much to clip
 								this.centerX() - shadowBossGradient.width/3, this.centerY() - shadowBossGradient.height/3 - 40, //x, y where to position image
-								shadowBossGradient.width/1.5, shadowBossGradient.height/1.5); //width, height of how big to draw image
+								shadowBossGradient.width/1.5, shadowBossGradient.height/1.5); //width, height of how big to draw image*/
 	}
 	
 	this.progressPhaseTogether = function() {
