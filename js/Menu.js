@@ -107,9 +107,12 @@ const Menu = new (function() {
 	
 	    this.redraw();
 	
-	    canvasContext.drawImage(titlePic, 0,0);
-	    if(currentPage != CREDITS_PAGE && currentPage != HELP_PAGE) {
-	        canvasContext.drawImage(logoPic, canvas.width/2,30, 300,300);
+
+		canvasContext.drawImage(titlePic, 0,0);
+		
+		if(currentPage != CREDITS_PAGE && currentPage != HELP_PAGE) {
+			canvasContext.drawImage(logoPic, (canvas.width/2)-(logoPic.width/2),64);
+			//canvasContext.drawImage(logoPic, canvas.width/2,30, 300,300);
 	    }
 		
 	    for (let i = 0; i<menuPageText[currentPage].length; i++)

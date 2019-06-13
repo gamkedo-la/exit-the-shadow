@@ -51,8 +51,8 @@ function loadImage(imgVar, fileName) {
 
 function loadImages() {
 	var imageList = [
-		{varName: logoPic, fileName: "playerShadow.png"},
-		{varName: titlePic, fileName: "gradient.png"},
+		{varName: logoPic, fileName: "logo.png"},
+		{varName: titlePic, fileName: "titlescreenBG.png"},
 		{varName: arrowPic, fileName: "player.png"},
 		{varName: playerSheet, fileName: "player_sheet.png"},
 		{varName: beastSheet, fileName: "BeastSpriteSheet.png"},
