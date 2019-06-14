@@ -4,17 +4,17 @@ const Menu = new (function() {
 	const HELP_PAGE = 2;
 	const CREDITS_PAGE = 3;
 	
-	let itemsX = 250;
-	let topItemY = 300;
-	let itemsWidth = 650;
-	let rowHeight = 80;
+	let itemsX = null;
+	let topItemY = null;
+	let itemsWidth = 250;
+	let rowHeight = 60;
 	
 	this.cursor1 = null;
 	let currentPage = 0;
 	
-	let textFontFace = "32px Satisfy";
-	let textFontFaceCredits = "28px Satisfy";
-	let textColour = "white";
+	let textFontFace = "32px Impact";
+	let textFontFaceCredits = "28px Impact";
+	let textColour = "#dacdc7"; // same as logo
 	
 	let classListMenu = ["New Game", "Continue", "Settings" , "Help", "Credits"];
 	let classListSettings = ["Volume", "Back"];
@@ -27,7 +27,7 @@ const Menu = new (function() {
 	
 	this.menuMouse = function(){
 	    for (let i=0; i<menuPageText[currentPage].length; i++){
-	        if(mouseX > itemsX && mouseX < itemsX + itemsWidth && mouseY > topItemY + (i*rowHeight) - (rowHeight / 2) &&
+	        if(mouseX > itemsX - (itemsWidth / 2) && mouseX < itemsX + (itemsWidth / 2) && mouseY > topItemY + (i*rowHeight) - (rowHeight / 2) &&
 	         mouseY < topItemY + (i+1) * rowHeight - (rowHeight / 2)){
 	            this.cursor1 = i;
 	        } 
@@ -107,25 +107,27 @@ const Menu = new (function() {
 	
 	    this.redraw();
 	
-
 		canvasContext.drawImage(titlePic, 0,0);
+		canvasContext.drawImage(logoPic, (canvas.width/2)-(logoPic.width/2),64);
 		
-		if(currentPage != CREDITS_PAGE && currentPage != HELP_PAGE) {
-			canvasContext.drawImage(logoPic, (canvas.width/2)-(logoPic.width/2),64);
-			//canvasContext.drawImage(logoPic, canvas.width/2,30, 300,300);
-	    }
+		if (itemsX == null) {
+			itemsX = canvas.width / 2;
+		}
+		if (topItemY == null) {
+			topItemY = 64 + logoPic.height + 64;
+		}
 		
+        canvasContext.save();
+        canvasContext.font = textFontFace;
+		canvasContext.textAlign = "center";
 	    for (let i = 0; i<menuPageText[currentPage].length; i++)
 	    {
-	        canvasContext.save();
-	        canvasContext.font = textFontFace;
-	        colorText(menuPageText[currentPage][i],itemsX - (currentPage == CREDITS_PAGE ? 275 : 0),topItemY + rowHeight * i - (currentPage == CREDITS_PAGE ? 325 : 0),
-	        (currentPage == CREDITS_PAGE ? "yellow" : textColour), (currentPage == CREDITS_PAGE ? textFontFace : textColour), 'left', 'top');
+			strokeColorText(menuPageText[currentPage][i], itemsX, topItemY + rowHeight * i, 'black', 7)
+	        colorText(menuPageText[currentPage][i], itemsX, topItemY + rowHeight * i, textColour);
 
 	        //Draw cursor
-	        canvasContext.drawImage(arrowPic, itemsX - 30, topItemY + (this.cursor1 * rowHeight) - 25);
-			
-			canvasContext.restore();
+	        canvasContext.drawImage(arrowPic, itemsX - 100, topItemY + (this.cursor1 * rowHeight) - 25);
 	    }
+		canvasContext.restore();
 	}	
 })();

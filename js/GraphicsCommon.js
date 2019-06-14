@@ -32,6 +32,12 @@ function colorText(text, textX, textY, fillColor) {
 	canvasContext.fillText(text, textX,textY);
 }
 
+function strokeColorText(text, textX, textY, strokeColor, lineWidth) {
+	canvasContext.strokeStyle = strokeColor;
+	canvasContext.lineWidth = lineWidth;
+	canvasContext.strokeText(text, textX,textY);
+}
+
 function textWidth(_text) {
 	return canvasContext.measureText(_text).width;
 }
