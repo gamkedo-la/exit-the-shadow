@@ -37,7 +37,7 @@ function BeastBoss() {
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.1},
 		run: {startFrame: 4, endFrame: 7, animationSpeed: 0.5},
 		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1},
-		shield: {startFrame: 12, endFrame: 15, animationSpeed: 0.1}
+		shield: {startFrame: 12, endFrame: 12, animationSpeed: 0.1}
 	}
 	
 	let spritePadding = 64;
