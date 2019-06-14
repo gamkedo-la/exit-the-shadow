@@ -21,6 +21,7 @@ var illuminator;
 var finalBossPlatformTorches = [];
 var shadowBossDarks = [];
 var framesPerSecond = 30;
+var drawCursorCoordinates = false;
 
 var Entities = [
 	Player
@@ -341,7 +342,9 @@ function drawGame() {
 
 	drawUI();
 
-	colorText((mouseX + camPanX) + ', ' + (mouseY + camPanY), mouseX, mouseY, 'white');
+	if (drawCursorCoordinates) {
+		colorText((mouseX + camPanX) + ', ' + (mouseY + camPanY), mouseX, mouseY, 'white');
+	}
 }
 
 function drawAll() {
