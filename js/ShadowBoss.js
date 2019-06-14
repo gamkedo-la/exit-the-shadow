@@ -32,10 +32,13 @@ function ShadowBoss(id) {
 	this.name = shadowBossName;
 	this.isActive = false;
 	
+	let timeForAttackInFrames = 40;
+	let numberOfAttackFrames = 4;
+	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.1},
-		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1}
+		attack: {startFrame: 8, endFrame: 11, animationSpeed: calculateAnimationSpeed(timeForAttackInFrames, numberOfAttackFrames)}
 	}
 	
 	let spritePadding = 64;
@@ -145,22 +148,22 @@ function ShadowBoss(id) {
 			case ATTACK:
 				attackTime++;
 				isAttacking = true;
-				if (attackTime < 30) {
+				if (attackTime < timeForAttackInFrames * 0.75) {
 					attackChargeTime++;
 					this.chargeAttackTowardsAttackDestination();
 				}
-				else if (attackTime < 40) {
-					if (attackTime == 30) {
+				else if (attackTime < timeForAttackInFrames) {
+					if (attackTime == timeForAttackInFrames * 0.75) {
 						attackChargeTime = 0;
 						this.initiateAttack();
 					}
 				}
-				else if (attackTime < 70) {
+				else if (attackTime < timeForAttackInFrames + (timeForAttackInFrames * 0.75)) {
 					attackChargeTime++;
 					this.chargeAttackTowardsAttackDestination();
 				}
-				else if (attackTime < 80) {
-					if (attackTime == 70) {
+				else if (attackTime < timeForAttackInFrames*2) {
+					if (attackTime == timeForAttackInFrames + (timeForAttackInFrames * 0.75)) {
 						attackChargeTime = 0;
 						this.initiateAttack();
 					}

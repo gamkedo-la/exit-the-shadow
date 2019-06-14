@@ -59,3 +59,7 @@ function clamp(num, min, max) {
 function clamp01(num) {
 	return clamp(num, 0.0, 1.0);
 }
+
+function calculateAnimationSpeed(animationTimeInFrames, numberOfAnimationFrames) {
+	return numberOfAnimationFrames / animationTimeInFrames;
+}

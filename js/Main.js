@@ -20,6 +20,7 @@ var evilPlayerBossName = 'Self';
 var illuminator;
 var finalBossPlatformTorches = [];
 var shadowBossDarks = [];
+var framesPerSecond = 30;
 
 var Entities = [
 	Player
@@ -138,7 +139,6 @@ function restartGame() {
 }
 
 function startGame() {
-	var framesPerSecond = 30;
 	setInterval(updateAll, 1000/framesPerSecond);
 
 	setUpInput();
