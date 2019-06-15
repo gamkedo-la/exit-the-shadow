@@ -13,7 +13,7 @@ function BeastBoss() {
 	const IDLE = 0
 	const FOLLOWING = 1;
 	const ATTACKING = 2;
-	const SHIELDING = 3;
+	const STUNNED = 3;
 	const DASHING = 4;
 	
 	this.beastHair = [];
@@ -25,7 +25,7 @@ function BeastBoss() {
 	this.moveSpeed = 0.5;
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
-	this.HP = 50;
+	this.HP = 30;
 	this.oldHP = this.HP;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
@@ -43,6 +43,8 @@ function BeastBoss() {
 	let attackHeight = 192;
 	let isAttacking = false;
 	let distBeforeAttacking = 80;
+	let minTimeBetweenAttacks = 30;
+	let timeSinceLastAttack = minTimeBetweenAttacks;
 	
 	let attackTime = 0;
 	let timeForAttackInFrames = 8;
@@ -50,10 +52,15 @@ function BeastBoss() {
 
 	let enemyIsHit = 0;
 	let timeSincePlayerDeath = 0;
-	let shieldCooldown = 0;
-	let isShielding = false;
-	let shield = false;
+	let stunnedCooldown = 0;
+	let isStunned = false;
+	let stunned = false;
+	let stunTime = 75;
+	let stunThreshold;
 	let breathingOsc = 0; // oscillator, just advances for pulse effect
+	
+	let minTimesHitBeforeGettingStunned = 2;
+	let maxTimesHitBeforeGettingStunned = 5;
 
 	this.prepHair = function () {
 		for(var eachHair=0;eachHair<70;eachHair++) {
@@ -119,12 +126,13 @@ function BeastBoss() {
 						attackChargeTime = 0;
 						attackTime = 0;
 						this.initiateAttack();
+						timeSinceLastAttack = 0;
 					}
 				}
 				break;
 
-			case SHIELDING:
-				this.initiateShield();
+			case STUNNED:
+				this.initiateStunned();
 				break;
 
 			case DASHING:
@@ -155,7 +163,7 @@ function BeastBoss() {
 				break;
 			}
 			this.updateAttack();
-			this.updateShield();
+			this.updateStunned();
 			this.oldHP = this.HP;
 			
 			this.updateBehaviour();
@@ -190,20 +198,20 @@ function BeastBoss() {
 	
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
-		if(isDashing || isShielding){
+		if(isDashing || isStunned){
 			return;
 		}
 		else if (distFromPlayer > 250){
 			behaviour = DASHING;
 			isDashing = true;
 		}
-		else if (distFromPlayer < distBeforeAttacking){
+		else if (timeSinceLastAttack > minTimeBetweenAttacks && distFromPlayer < distBeforeAttacking){
 			behaviour = ATTACKING;
 			
 		}
-		else if (shield && !isShielding) {
-			shield = false;
-			behaviour = SHIELDING;
+		else if (stunned && !isStunned) {
+			stunned = false;
+			behaviour = STUNNED;
 		}
 		else {
 				behaviour = FOLLOWING;
@@ -252,6 +260,7 @@ function BeastBoss() {
 	}
 
 	this.updateAttack = function() {
+		timeSinceLastAttack++;
 		if (attackCooldown > 0) {
 			if (Attack.attackFinished) {
 				isAttacking = false;
@@ -265,28 +274,31 @@ function BeastBoss() {
 		this.checkIfPlayerIsDead();
 	}
 
-	this.initiateShield = function() {
-		if (shieldCooldown <= 0) {
-			this.isInvulnerable = true;
-			isShielding = true;
-			shieldCooldown = 50;
+	this.initiateStunned = function() {
+		if (stunnedCooldown <= 0) {
+			isStunned = true;
+			stunnedCooldown = stunTime;
 		}
 	}
 	
-	this.updateShield = function() {
-		if (shieldCooldown > 0) {
-			if (shieldCooldown <= 10) {
+	this.updateStunned = function() {
+		if (enemyIsHit == 0) {
+			stunThreshold = Math.random() * (maxTimesHitBeforeGettingStunned - minTimesHitBeforeGettingStunned) + minTimesHitBeforeGettingStunned;
+		}
+		
+		if (stunnedCooldown > 0) {
+			if (stunnedCooldown <= 10) {
 				this.isInvulnerable = false;
-				isShielding = false;
+				isStunned = false;
 			}
-			shieldCooldown--;
+			stunnedCooldown--;
 		}
 		else {
 			if(this.HP < this.oldHP){
 				enemyIsHit++;
 			}
-			if (enemyIsHit >= 3){
-				shield = true;
+			if (enemyIsHit >= stunThreshold){
+				stunned = true;
 			 	enemyIsHit = 0; 
 			}
 		}
@@ -327,11 +339,11 @@ function BeastBoss() {
 					this.beastHair[eachHair][0].ang += (Math.cos(breathingOsc)) * 0.03; // spin whole thing
 				}
 				break;
-			case SHIELDING:
+			case STUNNED:
 				wiggleMult = 0.03;
 				for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 					for(var i=1; i < this.beastHair[eachHair].length; i++) { // skipping root [0]
-						this.beastHair[eachHair][i].ang *= 1.01;
+						this.beastHair[eachHair][i].ang *= 1.03;
 					}
 				}
 				break;
