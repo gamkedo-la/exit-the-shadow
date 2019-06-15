@@ -30,7 +30,7 @@ function BeastBoss() {
 	this.oldHP = this.HP;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
-	
+
 	this.name = beastBossName;
 	this.isActive = false;
 	
@@ -64,19 +64,22 @@ function BeastBoss() {
 	let shieldCooldown = 0;
 	let isShielding = false;
 	let shield = true;
+	let breathingOsc = 0; // oscillator, just advances for pulse effect
 
 	this.prepHair = function () {
 		for(var eachHair=0;eachHair<135;eachHair++) {
 			this.beastHair[eachHair] = [];
+			var bendDownJoint = Math.random() * 6+12;
 			for(var i=0;i<20;i++) {
 				this.beastHair[eachHair][i] = {len: Math.random() * 7 + 3,
 											ang: (Math.random() - 0.5) * 2,
 											vel: (Math.random() - 0.5) * 0.005,
+											hei: (Math.random()*3+0.7) * (i<bendDownJoint ? 1 : -0.7),
 											col: randCol};
 			}
-			 var r = 200+55*Math.random()|0,
-			        g = 150*Math.random()|0,
-			        b = 35*Math.random()|0;
+			 var r = 70+75*Math.random()|0,
+			        g = 20+60*Math.random()|0,
+			        b = 5*Math.random()|0;
 			var randCol = 'rgb(' + r + ',' + g + ',' + b + ')';
 			this.beastHair[eachHair][0].col = randCol;
 			this.beastHair[eachHair][0].ang = Math.random() * Math.PI * 2.0;
@@ -333,26 +336,84 @@ function BeastBoss() {
 	}
 
 	this.draw = function() {
+		var wiggleMult = 1.0;
+		switch(behaviour) {
+			case IDLE:
+				wiggleMult = 1;
+				break;
+			case FOLLOWING:
+				wiggleMult = 3;
+				break;
+			case ATTACKING:
+				wiggleMult = 10;
+				for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
+					for(var i=1; i < this.beastHair[eachHair].length; i++) { // skipping root [0]
+						this.beastHair[eachHair][i].ang *= 0.8;
+					}
+					this.beastHair[eachHair][0].ang += (Math.cos(breathingOsc)) * 0.03; // spin whole thing
+				}
+				break;
+			case SHIELDING:
+				wiggleMult = 0.03;
+				for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
+					for(var i=1; i < this.beastHair[eachHair].length; i++) { // skipping root [0]
+						this.beastHair[eachHair][i].ang *= 1.01;
+					}
+				}
+				break;
+			case DASHING:
+				wiggleMult = 5;
+				for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
+					this.beastHair[eachHair][0].ang += (0.8 + Math.cos(breathingOsc)) * 0.01; // spin whole thing
+				}
+				break;
+		}
+
+		breathingOsc+= 0.1;
+		wiggleMult += Math.cos(breathingOsc) * 2;
+			
+		var currX,currY,rAng;	
+		canvasContext.lineWidth = 2;
+		canvasContext.globalAlpha = 0.2;
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
-			var currX = this.x + this.width*0.5;
-			var currY = this.y + this.height*0.5;
-			var rAng = 0;
+			currX = this.x + this.width*0.5;
+			currY = this.y + this.height*0.5;
+			rAng = 0;
 			canvasContext.beginPath();
-			canvasContext.strokeStyle = this.beastHair[eachHair][0].col;
+			canvasContext.moveTo(currX, currY);
+			canvasContext.strokeStyle = "black";
 			for(var i=0; i < this.beastHair[eachHair].length; i++) {
 				this.beastHair[eachHair][i].ang += 
-					this.beastHair[eachHair][i].vel;
-
-				//this.beastHair[eachHair][i].vel += (Math.random()-0.5) * 0.01;
+					this.beastHair[eachHair][i].vel * wiggleMult;
 
 				rAng += this.beastHair[eachHair][i].ang;
+				canvasContext.lineTo(currX, currY);
 				currX += Math.cos(rAng) * this.beastHair[eachHair][i].len;
 				currY += Math.sin(rAng) * this.beastHair[eachHair][i].len;
-				canvasContext.lineTo(currX, currY);
 			}
 			canvasContext.stroke();
 		}
+		canvasContext.globalAlpha = 1.0;
 
+		canvasContext.lineWidth = 1.5;
+		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
+			canvasContext.beginPath();
+			canvasContext.strokeStyle = this.beastHair[eachHair][0].col;
+			currX = this.x + this.width*0.5;
+			currY = this.y + this.height*0.5;
+			rAng = 0;
+			var shadowOffsetHeight = 0;
+			canvasContext.moveTo(currX, currY);
+			for(var i=0; i < this.beastHair[eachHair].length; i++) {
+								rAng += this.beastHair[eachHair][i].ang;
+				shadowOffsetHeight+=this.beastHair[eachHair][i].hei;
+				canvasContext.lineTo(currX, currY-shadowOffsetHeight);
+				currX += Math.cos(rAng) * this.beastHair[eachHair][i].len;
+				currY += Math.sin(rAng) * this.beastHair[eachHair][i].len;
+			}
+			canvasContext.stroke();
+		}
+		canvasContext.lineWidth = 1;
 		// EntityClass.prototype.draw.call(this);
 	}
 	
