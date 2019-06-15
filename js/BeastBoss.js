@@ -18,10 +18,9 @@ function BeastBoss() {
 	
 	this.beastHair = [];
 
-	this.width = 96;
-	this.height = 128;
-	
-	this.collisionBoxHeight = this.width;
+	this.width = 64;
+	this.height = 64;
+	this.collisionBoxHeight = this.height;
 
 	this.moveSpeed = 0.5;
 	this.followSpeed = this.moveSpeed;
@@ -54,8 +53,8 @@ function BeastBoss() {
 
 	let attackCooldown = 0;
 	let Attack = null;
-	let attackWidth = 96;
-	let attackHeight = 96;
+	let attackWidth = 192;
+	let attackHeight = 192;
 	let isAttacking = false;
 	let distBeforeAttacking = 80;
 
@@ -235,31 +234,27 @@ function BeastBoss() {
 	
 	this.initiateAttack = function() {
 		if (attackCooldown <= 0 && Attack == null) {
-			let centerX = this.centerX(), centerY = this.centerY();
 			let velocityX = 0, velocityY = 0;
 			
-			switch(this.directionFacing) {
-			case UP:
-				centerY -= (this.collisionBoxHeight / 2) + (attackHeight / 2);
-				velocityY = -10;
-				break;
-			case DOWN:
-				centerY += (this.collisionBoxHeight / 2) + (attackHeight / 2);
-				velocityY = 10;
-				break;
-			case LEFT:
-				centerX -= ((this.width / 2) + (attackWidth / 2));
-				velocityX = -10;
-				break;
-			case RIGHT:
-				centerX += ((this.width / 2) + (attackWidth / 2));
-				velocityX = 10;
-				break;
+			let angle = Math.atan2(Player.centerY() - this.centerY(), Player.centerX() - this.centerX()) * (180/Math.PI);
+			angle += 90; // not sure why I need this to get the angle right??
+			
+			if (angle >= -135 && angle < -45) { // left
+				velocityX = -5;
+			}
+			else if (angle >= -45 && angle < 45) { // up
+				velocityY = -5;
+			}
+			else if (angle >= 45 && angle < 135) { // right
+				velocityX = 5;
+			}
+			else { // down
+				velocityY = 5;
 			}
 			
 			let attackOptions = {
-				centerX: centerX,
-				centerY: centerY,
+				centerX: this.centerX(),
+				centerY: this.centerY(),
 				width: attackWidth,
 				height: attackHeight,
 				damage: 1,
@@ -270,7 +265,7 @@ function BeastBoss() {
 			}
 			
 			Attack = new ProjectileClass(attackOptions);
-			sfx[ATTACK_SFX].play();
+			//sfx[ATTACK_SFX].play(); // TODO: add beast boss attack sound
 			isAttacking = true;
 			
 			attackCooldown = 30;
@@ -376,8 +371,8 @@ function BeastBoss() {
 		canvasContext.lineWidth = 2;
 		canvasContext.globalAlpha = 0.1;
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
-			currX = this.x + this.width*0.5;
-			currY = this.y + this.height*0.5;
+			currX = this.x + this.width*0.5 - 16;
+			currY = this.y + this.height*0.5 + 16;
 			rAng = 0;
 			canvasContext.beginPath();
 			canvasContext.moveTo(currX, currY);
@@ -399,8 +394,8 @@ function BeastBoss() {
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 			canvasContext.beginPath();
 			canvasContext.strokeStyle = this.beastHair[eachHair][0].col;
-			currX = this.x + this.width*0.5;
-			currY = this.y + this.height*0.5;
+			currX = this.x + this.width*0.5 - 16;
+			currY = this.y + this.height*0.5 + 16;
 			rAng = 0;
 			var shadowOffsetHeight = 0;
 			canvasContext.moveTo(currX, currY);
