@@ -52,7 +52,7 @@ function BeastBoss() {
 	let breathingOsc = 0; // oscillator, just advances for pulse effect
 
 	this.prepHair = function () {
-		for(var eachHair=0;eachHair<135;eachHair++) {
+		for(var eachHair=0;eachHair<70;eachHair++) {
 			this.beastHair[eachHair] = [];
 			var bendDownJoint = Math.random() * 6+12;
 			for(var i=0;i<20;i++) {
@@ -334,14 +334,14 @@ function BeastBoss() {
 			
 		var currX,currY,rAng;	
 		canvasContext.lineWidth = 2;
-		canvasContext.globalAlpha = 0.1;
+		// canvasContext.globalAlpha = 0.1;
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 			currX = this.x + this.width*0.5 - 16;
 			currY = this.y + this.height*0.5 + 16;
 			rAng = 0;
 			canvasContext.beginPath();
 			canvasContext.moveTo(currX, currY);
-			canvasContext.strokeStyle = "black";
+			canvasContext.strokeStyle = "#666666";
 			for(var i=0; i < this.beastHair[eachHair].length; i++) {
 				this.beastHair[eachHair][i].ang += 
 					this.beastHair[eachHair][i].vel * wiggleMult;
@@ -353,7 +353,7 @@ function BeastBoss() {
 			}
 			canvasContext.stroke();
 		}
-		canvasContext.globalAlpha = 1.0;
+		//canvasContext.globalAlpha = 1.0;
 
 		canvasContext.lineWidth = 1.5;
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
