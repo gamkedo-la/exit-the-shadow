@@ -312,14 +312,15 @@ function drawGame() {
 	const lightPoses = [Player.x - camPanX, canvas.height - (Player.y - camPanY)];
 	const lightColors = [];
 	const lightRanges = [];
+	const slowCounter = frameCounter / 3;
 	for(let i = 0; i < maxLights; i++) {
 		if(i < onscreenLights.length) {
-			lightPoses.push(onscreenLights[i][0] - camPanX);//x position
-			lightPoses.push(canvas.height - (onscreenLights[i][1] - camPanY));//y position
+			lightPoses.push(onscreenLights[i][0] - camPanX + (Math.sin(i*1234+slowCounter*1.331)));//x position
+			lightPoses.push(canvas.height - (onscreenLights[i][1] - camPanY) + (Math.sin(i*1234+slowCounter/2.012)*2.5));//y position
 			lightColors.push(onscreenLights[i][2]);//red component
 			lightColors.push(onscreenLights[i][3]);//green component
 			lightColors.push(onscreenLights[i][4]);//blue component
-			lightRanges.push(onscreenLights[i][5]);//range of this light
+			lightRanges.push(onscreenLights[i][5] + (Math.sin(i*1234+slowCounter/2.012)*2.5));//range of this light
 		} else {//finish filling the buffers with empty data
 			lightPoses.push(0);//x position
 			lightPoses.push(0);//y position
