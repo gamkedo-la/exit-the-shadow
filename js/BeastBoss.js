@@ -43,6 +43,10 @@ function BeastBoss() {
 	let attackHeight = 192;
 	let isAttacking = false;
 	let distBeforeAttacking = 80;
+	
+	let attackTime = 0;
+	let timeForAttackInFrames = 8;
+	let attackChargeTime = 0;
 
 	let enemyIsHit = 0;
 	let timeSincePlayerDeath = 0;
@@ -106,7 +110,17 @@ function BeastBoss() {
 				break;
 
 			case ATTACKING:
-				this.initiateAttack();
+				attackTime++;
+				if (attackTime < timeForAttackInFrames * 0.75) {
+					attackChargeTime++;
+				}
+				else if (attackTime < timeForAttackInFrames) {
+					if (attackTime == timeForAttackInFrames * 0.75) {
+						attackChargeTime = 0;
+						attackTime = 0;
+						this.initiateAttack();
+					}
+				}
 				break;
 
 			case SHIELDING:
@@ -336,8 +350,8 @@ function BeastBoss() {
 		canvasContext.lineWidth = 2;
 		// canvasContext.globalAlpha = 0.1;
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
-			currX = this.x + this.width*0.5 - 16;
-			currY = this.y + this.height*0.5 + 16;
+			currX = this.x + this.width*0.5;
+			currY = this.y + this.height*0.5;
 			rAng = 0;
 			canvasContext.beginPath();
 			canvasContext.moveTo(currX, currY);
@@ -359,8 +373,8 @@ function BeastBoss() {
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 			canvasContext.beginPath();
 			canvasContext.strokeStyle = this.beastHair[eachHair][0].col;
-			currX = this.x + this.width*0.5 - 16;
-			currY = this.y + this.height*0.5 + 16;
+			currX = this.x + this.width*0.5;
+			currY = this.y + this.height*0.5;
 			rAng = 0;
 			var shadowOffsetHeight = 0;
 			canvasContext.moveTo(currX, currY);
