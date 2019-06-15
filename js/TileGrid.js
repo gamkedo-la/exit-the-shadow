@@ -193,6 +193,7 @@ function initialiseEntityPositions() {
 			case BEAST:
 				enemy = new BeastBoss();
 				enemy.initialisePosition(col*TILE_W + (TILE_W), row*TILE_H + (TILE_H));
+				enemy.prepHair();
 				Entities.push(enemy);
 				var arrayIndex = colRowToArrayIndex(col, row);
 				tileGrid[arrayIndex] = 0;

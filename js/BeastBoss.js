@@ -16,6 +16,8 @@ function BeastBoss() {
 	const SHIELDING = 3;
 	const DASHING = 4;
 	
+	this.beastHair = [];
+
 	this.width = 96;
 	this.height = 128;
 	
@@ -62,6 +64,24 @@ function BeastBoss() {
 	let shieldCooldown = 0;
 	let isShielding = false;
 	let shield = true;
+
+	this.prepHair = function () {
+		for(var eachHair=0;eachHair<135;eachHair++) {
+			this.beastHair[eachHair] = [];
+			for(var i=0;i<20;i++) {
+				this.beastHair[eachHair][i] = {len: Math.random() * 7 + 3,
+											ang: (Math.random() - 0.5) * 2,
+											vel: (Math.random() - 0.5) * 0.005,
+											col: randCol};
+			}
+			 var r = 200+55*Math.random()|0,
+			        g = 150*Math.random()|0,
+			        b = 35*Math.random()|0;
+			var randCol = 'rgb(' + r + ',' + g + ',' + b + ')';
+			this.beastHair[eachHair][0].col = randCol;
+			this.beastHair[eachHair][0].ang = Math.random() * Math.PI * 2.0;
+		}
+	}
 
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -313,24 +333,27 @@ function BeastBoss() {
 	}
 
 	this.draw = function() {
-		canvasContext.strokeStyle = 'brown';
-		canvasContext.beginPath();
-		for(var eachHair=0; eachHair < 35; eachHair++) {
-			canvasContext.moveTo(this.x, this.y);
+		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 			var currX = this.x + this.width*0.5;
 			var currY = this.y + this.height*0.5;
-			var randAng = Math.random() * Math.PI * 2.0;
-			for(var i=0; i < 20; i++) {
-				var randLen = Math.random() * 7 + 3;
-				randAng += (Math.random() - 0.5) * 2;
-				currX += Math.cos(randAng) * randLen;
-				currY += Math.sin(randAng) * randLen;
+			var rAng = 0;
+			canvasContext.beginPath();
+			canvasContext.strokeStyle = this.beastHair[eachHair][0].col;
+			for(var i=0; i < this.beastHair[eachHair].length; i++) {
+				this.beastHair[eachHair][i].ang += 
+					this.beastHair[eachHair][i].vel;
+
+				//this.beastHair[eachHair][i].vel += (Math.random()-0.5) * 0.01;
+
+				rAng += this.beastHair[eachHair][i].ang;
+				currX += Math.cos(rAng) * this.beastHair[eachHair][i].len;
+				currY += Math.sin(rAng) * this.beastHair[eachHair][i].len;
 				canvasContext.lineTo(currX, currY);
 			}
 			canvasContext.stroke();
 		}
 
-		EntityClass.prototype.draw.call(this);
+		// EntityClass.prototype.draw.call(this);
 	}
 	
 	this.progressPhase = function() {
