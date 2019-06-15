@@ -374,7 +374,7 @@ function BeastBoss() {
 			
 		var currX,currY,rAng;	
 		canvasContext.lineWidth = 2;
-		canvasContext.globalAlpha = 0.2;
+		canvasContext.globalAlpha = 0.1;
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 			currX = this.x + this.width*0.5;
 			currY = this.y + this.height*0.5;
@@ -407,7 +407,7 @@ function BeastBoss() {
 			for(var i=0; i < this.beastHair[eachHair].length; i++) {
 								rAng += this.beastHair[eachHair][i].ang;
 				shadowOffsetHeight+=this.beastHair[eachHair][i].hei;
-				canvasContext.lineTo(currX, currY-shadowOffsetHeight);
+				canvasContext.lineTo(currX+shadowOffsetHeight*0.7, currY-shadowOffsetHeight);
 				currX += Math.cos(rAng) * this.beastHair[eachHair][i].len;
 				currY += Math.sin(rAng) * this.beastHair[eachHair][i].len;
 			}
