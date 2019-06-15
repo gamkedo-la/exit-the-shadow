@@ -34,7 +34,7 @@ function BeastBoss() {
 	this.isActive = false;
 	
 	let phase = NOT_IN_BATTLE;
-	let behaviour = FOLLOWING;
+	let behaviour = IDLE;
 	let isDashing = false;
 
 	let attackCooldown = 0;
@@ -48,7 +48,7 @@ function BeastBoss() {
 	let timeSincePlayerDeath = 0;
 	let shieldCooldown = 0;
 	let isShielding = false;
-	let shield = true;
+	let shield = false;
 	let breathingOsc = 0; // oscillator, just advances for pulse effect
 
 	this.prepHair = function () {
@@ -143,6 +143,9 @@ function BeastBoss() {
 			this.updateAttack();
 			this.updateShield();
 			this.oldHP = this.HP;
+			
+			this.updateBehaviour();
+			EntityClass.prototype.move.call(this); // call superclass function
 		}
 		else if (phase == PLAYER_DEAD) {
 			timeSincePlayerDeath++;
@@ -169,8 +172,6 @@ function BeastBoss() {
 				}
 			}
 		}
-		this.updateBehaviour();
-		EntityClass.prototype.move.call(this); // call superclass function
 	}
 	
 	this.updateBehaviour = function() {
