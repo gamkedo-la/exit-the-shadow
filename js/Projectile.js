@@ -1,3 +1,5 @@
+var debugDrawHitboxes = false; // turn false for final release!
+
 function ProjectileClass(options) {	
 	this.centerX = options.centerX;
 	this.centerY = options.centerY;
@@ -18,11 +20,12 @@ function ProjectileClass(options) {
 		if (!this.attackFinished) {
 			framesLeft--;
 			
-			//draw attack hitbox (TEMPORARY)
-			/*canvasContext.save();
-			canvasContext.translate(-camPanX, -camPanY);
-			colorRect(this.centerX - this.width/2,this.centerY - this.height/2, this.width,this.height, 'green');
-			canvasContext.restore();*/
+			if(debugDrawHitboxes) { //draw attack hitbox (DEBUG/TEMPORARY)
+				canvasContext.save();
+				canvasContext.translate(-camPanX, -camPanY);
+				colorRect(this.centerX - this.width/2,this.centerY - this.height/2, this.width,this.height, 'green');
+				canvasContext.restore();
+			}
 			
 			handleProjectileCollisions(this);
 

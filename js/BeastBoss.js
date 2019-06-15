@@ -313,6 +313,23 @@ function BeastBoss() {
 	}
 
 	this.draw = function() {
+		canvasContext.strokeStyle = 'brown';
+		canvasContext.beginPath();
+		for(var eachHair=0; eachHair < 35; eachHair++) {
+			canvasContext.moveTo(this.x, this.y);
+			var currX = this.x + this.width*0.5;
+			var currY = this.y + this.height*0.5;
+			var randAng = Math.random() * Math.PI * 2.0;
+			for(var i=0; i < 20; i++) {
+				var randLen = Math.random() * 7 + 3;
+				randAng += (Math.random() - 0.5) * 2;
+				currX += Math.cos(randAng) * randLen;
+				currY += Math.sin(randAng) * randLen;
+				canvasContext.lineTo(currX, currY);
+			}
+			canvasContext.stroke();
+		}
+
 		EntityClass.prototype.draw.call(this);
 	}
 	
