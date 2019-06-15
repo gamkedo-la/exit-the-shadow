@@ -33,20 +33,6 @@ function BeastBoss() {
 	this.name = beastBossName;
 	this.isActive = false;
 	
-	this.states = {
-		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
-		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.1},
-		run: {startFrame: 4, endFrame: 7, animationSpeed: 0.5},
-		attack: {startFrame: 8, endFrame: 11, animationSpeed: 0.1},
-		shield: {startFrame: 12, endFrame: 12, animationSpeed: 0.1}
-	}
-	
-	let spritePadding = 64;
-	this.AnimatedSprite = new AnimatedSpriteClass(beastSheet, this.width, this.height, spritePadding, this.states);
-
-	this.directionFacing = DOWN;
-
-	
 	let phase = NOT_IN_BATTLE;
 	let behaviour = FOLLOWING;
 	let isDashing = false;
@@ -181,10 +167,6 @@ function BeastBoss() {
 						this.movementDirection[LEFT] = true;
 					}
 				}
-			
-				if (this.startX - this.x <= 2 && this.startY - this.y <= 2) {
-					this.directionFacing = DOWN;
-				}
 			}
 		}
 		this.updateState();
@@ -213,23 +195,6 @@ function BeastBoss() {
 				behaviour = FOLLOWING;
 		}
 
-	}
-	this.updateState = function() {
-		if (isAttacking) {
-			this.AnimatedSprite.changeState("attack");
-		}
-		else if (isShielding) {
-			this.AnimatedSprite.changeState("shield");
-		}
-		else if (isDashing) {
-			this.AnimatedSprite.changeState("run");
-		}
-		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
-			this.AnimatedSprite.changeState("walk");
-		}
-		else {
-			this.AnimatedSprite.changeState("idle");
-		}
 	}
 	
 	this.initiateAttack = function() {
