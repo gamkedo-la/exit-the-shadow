@@ -19,6 +19,7 @@ var beastBossName = 'Beast';
 var evilPlayerBossName = 'Self';
 var illuminator;
 var finalBossPlatformTorches = [];
+var finalBossRoomTorches = [];
 var shadowBossDarks = [];
 var framesPerSecond = 30;
 var drawCursorCoordinates = false;
@@ -572,6 +573,12 @@ function loadOverlayingArt() {
 		{x:2840, y:2121, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
 	];
 
+	finalBossRoomTorches = [
+		{x:3550, y:1210, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+		{x:3440, y:1035, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+		{x:3330, y:1210, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+	];
+
 	OverlayingArt = [
 		{x: 3750, y: 3018, imgName: "painting"},
 	
@@ -588,9 +595,9 @@ function loadOverlayingArt() {
 		{x:3721, y:2358, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
 		{x:3810, y:2358, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
 		//final boss torches
-		{x:3445, y:1142, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
-		{x:3494, y:1099, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
-		{x:3395, y:1098, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255},
+		finalBossRoomTorches[0],
+		finalBossRoomTorches[1],
+		finalBossRoomTorches[2],
 		// path to the beast boss room torches
 		{x:4816, y:3145, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
 		{x:5280, y:3146, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},

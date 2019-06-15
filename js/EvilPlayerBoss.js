@@ -89,6 +89,11 @@ function EvilPlayerBoss() {
 	let heavyAttackWidth = 50;
 	let heavyAttackLength = 50;
 	let isTiredFromHeavyAttack = false;
+
+	const deepRed = {r:1, g:0, b:0};
+	const brightRed = {r:1, g:1, b:1};
+	const minTorchDist = 50;
+	const maxTorchDist = 500;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -277,6 +282,7 @@ function EvilPlayerBoss() {
 		this.updateBehaviour();
 		this.updateState();
 		EntityClass.prototype.move.call(this); // call superclass function
+		updateBossRoomTorchColors(this.centerX(), this.centerY(), deepRed, brightRed, minTorchDist, maxTorchDist);
 	}
 	
 	const fadeOutPlatformTorches = function() {
@@ -295,6 +301,33 @@ function EvilPlayerBoss() {
 
 			finalBossPlatformTorches[0].range += 40;
 			finalBossPlatformTorches[1].range += 40;	
+		}
+	}
+
+	const updateBossRoomTorchColors = function(x, y, deepRed, brightRed, minDist, maxDist) {
+		for(let i = 0; i < finalBossRoomTorches.length; i++) {
+			const deltaX = finalBossRoomTorches[i].x - x;
+			const deltaY = finalBossRoomTorches[i].y - y;
+			const dist = Math.sqrt((deltaX * deltaX) + (deltaY * deltaY));
+
+			if(dist <= minDist) {//use deep red
+				finalBossRoomTorches[i].r = deepRed.r;
+				finalBossRoomTorches[i].g = deepRed.g;
+				finalBossRoomTorches[i].b = deepRed.b;
+			} else if(dist >= maxDist) {//use bright red
+				finalBossRoomTorches[i].r = brightRed.r;
+				finalBossRoomTorches[i].g = brightRed.g;
+				finalBossRoomTorches[i].b = brightRed.b;
+			} else {//interpolate the color
+				const lerpValue = (dist - minDist) / (maxDist - minDist);
+				const deltaR = brightRed.r - deepRed.r;
+				const deltaG = brightRed.g - deepRed.g;
+				const deltaB = brightRed.b - deepRed.b;
+
+				finalBossRoomTorches[i].r = deepRed.r + deltaR * lerpValue;
+				finalBossRoomTorches[i].g = deepRed.g + deltaG * lerpValue;
+				finalBossRoomTorches[i].b = deepRed.b + deltaB * lerpValue;
+			}
 		}
 	}
 	
