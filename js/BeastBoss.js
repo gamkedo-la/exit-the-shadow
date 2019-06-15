@@ -169,7 +169,6 @@ function BeastBoss() {
 				}
 			}
 		}
-		this.updateState();
 		this.updateBehaviour();
 		EntityClass.prototype.move.call(this); // call superclass function
 	}

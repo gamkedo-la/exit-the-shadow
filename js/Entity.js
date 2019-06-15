@@ -31,7 +31,7 @@ function EntityClass() {
 	this.movementDirection = [false, false, false, false]; // up, left, down, right
 	
 	this.states;
-	this.AnimatedSprite;
+	this.AnimatedSprite = null;
 	
 	this.HP = 30;
 	this.directionFacing = UP;
@@ -67,20 +67,28 @@ EntityClass.prototype = {
 		
 		if (this.movementDirection[UP]) {
 			this.directionFacing = UP;
-			this.AnimatedSprite.setEntityDirection(UP);
+			if (this.AnimatedSprite != null) {
+				this.AnimatedSprite.setEntityDirection(UP);
+			}
 		}
 		else if (this.movementDirection[DOWN]) {
 			this.directionFacing = DOWN;
-			this.AnimatedSprite.setEntityDirection(DOWN);
+			if (this.AnimatedSprite != null) {
+				this.AnimatedSprite.setEntityDirection(DOWN);
+			}
 		}
 		if (!(this.movementDirection[RIGHT] && this.movementDirection[LEFT])) {
 			if (this.movementDirection[LEFT]) {
 				this.directionFacing = LEFT;
-				this.AnimatedSprite.setEntityDirection(LEFT);
+				if (this.AnimatedSprite != null) {
+					this.AnimatedSprite.setEntityDirection(LEFT);
+				}
 			}
 			else if (this.movementDirection[RIGHT]) {
 				this.directionFacing = RIGHT;
-				this.AnimatedSprite.setEntityDirection(RIGHT);
+				if (this.AnimatedSprite != null) {
+					this.AnimatedSprite.setEntityDirection(RIGHT);
+				}
 			}
 		}
 
@@ -134,7 +142,9 @@ EntityClass.prototype = {
 	},
 	
 	animate: function() {
-		this.AnimatedSprite.update();
+		if (this.AnimatedSprite != null) {
+			this.AnimatedSprite.update();
+		}
 	},
 
 	takeDamage: function(damage) {
