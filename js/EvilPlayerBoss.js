@@ -33,16 +33,20 @@ function EvilPlayerBoss() {
 	this.name = evilPlayerBossName;
 	this.isActive = false;
 	
+	let attackChargeTime = 10;
+	let heavyAttackChargeTime = 30;
+	
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.1},
 		dash: {startFrame: 8, endFrame: 9, animationSpeed: 1},
-		attack: {startFrame: 10, endFrame: 10, animationSpeed: 1},
-		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1},
-		teleportOut: {startFrame: 12, endFrame: 15, animationSpeed: 2},
-		teleportIn: {startFrame: 16, endFrame: 19, animationSpeed: 1},
-		heavyAttackCharge: {startFrame: 20, endFrame: 20, animationSpeed: 1},
-		heavyAttack: {startFrame: 21, endFrame: 21, animationSpeed: 1}
+		attackCharge: {startFrame: 10, endFrame: 12, animationSpeed: calculateAnimationSpeed(attackChargeTime, 3)},
+		attack: {startFrame: 13, endFrame: 13, animationSpeed: 1},
+		shield: {startFrame: 14, endFrame: 14, animationSpeed: 1},
+		teleportOut: {startFrame: 15, endFrame: 18, animationSpeed: 2},
+		teleportIn: {startFrame: 19, endFrame: 22, animationSpeed: 1},
+		heavyAttackCharge: {startFrame: 23, endFrame: 26, animationSpeed: calculateAnimationSpeed(heavyAttackChargeTime, 4)},
+		heavyAttack: {startFrame: 27, endFrame: 27, animationSpeed: 1},
 	}
 	
 	let spritePadding = 50;
@@ -69,6 +73,8 @@ function EvilPlayerBoss() {
 	let attackWidth = 40;
 	let attackHeight = 40;
 	let isAttacking = false;
+	let isChargingAttack = false;
+	let attackTime = 0;
 
 	let shieldCooldown = 0;
 	let isShielding = false;
@@ -146,7 +152,15 @@ function EvilPlayerBoss() {
 				}
 			}
 			else if (behaviour == SIMPLE_ATTACK) {
-				this.initiateAttack();
+				attackTime++;
+				if (attackTime < attackChargeTime) {
+					isChargingAttack = true;
+				}
+				else if (attackTime >= attackChargeTime) {
+					isChargingAttack = false;
+					attackTime = 0;
+					this.initiateAttack();
+				}
 			}
 			else if (behaviour == SHIELD) {
 				this.initiateShield();
@@ -221,14 +235,14 @@ function EvilPlayerBoss() {
 			}
 			else if (behaviour == HEAVY_ATTACK) {
 				heavyAttackTime++
-				if (heavyAttackTime < 30) {
+				if (heavyAttackTime < heavyAttackChargeTime - 1) {
 					isChargingHeavyAttack = true;
 				}
-				else if (heavyAttackTime < 35) {
+				else if (heavyAttackTime < heavyAttackChargeTime) {
 					isChargingHeavyAttack = false;
 					this.initiateHeavyAttack();
 				}
-				else if (heavyAttackTime < 60) {
+				else if (heavyAttackTime < heavyAttackChargeTime*2) {
 					isHeavyAttacking = false;
 					isTiredFromHeavyAttack = true;
 				}
@@ -332,7 +346,10 @@ function EvilPlayerBoss() {
 	}
 	
 	this.updateState = function() {
-		if (isAttacking) {
+		if (isChargingAttack) {
+			this.AnimatedSprite.changeState("attackCharge");
+		}
+		else if (isAttacking) {
 			this.AnimatedSprite.changeState("attack");
 		}
 		else if (isShielding) {
@@ -383,7 +400,7 @@ function EvilPlayerBoss() {
 	this.updateBehaviour = function() {
 		var distFromPlayer = distanceBetweenEntities(this, Player);
 		
-		if (isDashing || isShielding || isTeleportingIn || isTeleportingOut || isChargingHeavyAttack || isHeavyAttacking || isTiredFromHeavyAttack) {
+		if (isDashing || isShielding || isTeleportingIn || isTeleportingOut || isChargingAttack || isChargingHeavyAttack || isHeavyAttacking || isTiredFromHeavyAttack) {
 			return; // to prevent going into a different behaviour mid dash or mid shield
 		}
 		else if (dashAway) {
