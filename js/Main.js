@@ -203,9 +203,12 @@ function updateAll() {
 	}
 	else {
 		canvasContext.save();
-		canvasContext.font = "30px Arial";
+		canvasContext.font = "30px Impact";
 		canvasContext.textAlign = "center";
-		colorText("Paused", canvas.width/2, 50, 'grey');
+		colorText("Paused", canvas.width/2, 50, 'white');
+		colorText("Press Q to quit", canvas.width/2, 100, 'white');
+		strokeColorText("Paused", canvas.width/2, 50, 'black', 2);
+		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 2);
 		canvasContext.restore();
 	}
 }
@@ -374,6 +377,12 @@ function handleDeadEntities() {
 			Entities.splice(i, 1); // remove dead entity
 		}
 	}
+}
+
+function quitToMenu() {
+	gameIsStarted = false;
+	gamePaused = false;
+	switchMusic(MENU_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
 }
 
 function loadArt() {

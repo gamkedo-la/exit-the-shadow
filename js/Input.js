@@ -8,6 +8,7 @@ const KEY_K = 75; // ATTACK
 const KEY_L = 76; // SHIELD
 const KEY_P = 80; // PAUSE
 const KEY_H = 72; // HELP SCREEN KEY
+const KEY_Q = 81; // QUIT KEY
 
 const LOG_MOUSE_CLICKS = false; // debug or level editing only
 
@@ -50,6 +51,9 @@ var gamePaused = false;
 function keySet(evt, player, isPressed) {
   	if (isPressed && evt.keyCode == KEY_P) {
   		gamePaused = !gamePaused;
+  	}
+  	if (isPressed && evt.keyCode == KEY_Q && gamePaused) {
+		quitToMenu();
   	}
 	if (evt.keyCode == player.controlKeyLeft) {
 		player.keyHeld_Left = isPressed;
