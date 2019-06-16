@@ -22,7 +22,6 @@ var finalBossPlatformTorches = [];
 var finalBossRoomTorches = [];
 var shadowBossDarks = [];
 var framesPerSecond = 30;
-var drawCursorCoordinates = true;
 var upgradeAcquired = false;
 var upgradeAcquiredScreenTime = 0;
 var bossDefeatedTextBackgroundColour = "rgba(0, 0, 0, 0.7)";
@@ -35,6 +34,11 @@ var angleToSaveLocation = 0;
 var showSaveArrow = false;
 var showHealArrow = false;
 var showArrow = false;
+
+// DEBUG CONTROLS - TURN OFF FOR FINAL RELEASE
+var debugDrawCursorCoordinates = false;
+var debugSaveLoadFromAnywhere = false;
+var debugDrawHitboxes = false;
 
 var Entities = [
 	Player
@@ -417,7 +421,7 @@ function drawGame() {
 
 	drawUI();
 
-	if (drawCursorCoordinates) {
+	if (debugDrawCursorCoordinates) {
 		colorText((mouseX + camPanX) + ', ' + (mouseY + camPanY), mouseX, mouseY, 'white');
 	}
 }
