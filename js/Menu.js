@@ -11,7 +11,7 @@ const Menu = new (function() {
 	let itemsWidth = 250;
 	let rowHeight = 60;
 	
-	this.cursor1 = null;
+	this.cursor1 = 0;
 	let cursorPos;
 	let currentPage = 0;
 	
@@ -82,7 +82,7 @@ const Menu = new (function() {
 		case "New Game":
 		    gameIsStarted = true;
 		    switchMusic(AMBIENT_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
-		    this.cursor1 = null;
+		    this.cursor1 = 0;
 		    break;
 		case "Continue":
 			if (listSaves() == undefined || listSaves() == null) {
@@ -92,18 +92,18 @@ const Menu = new (function() {
 	        gameIsStarted = true;
 		    switchMusic(AMBIENT_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
 		    loadGame();
-		    Menu.cursor1 = null;
+		    Menu.cursor1 = 0;
 		    break;
 		case "Settings":
-		    Menu.cursor1 = null;
+		    Menu.cursor1 = 0;
 		    currentPage = SETTINGS_PAGE;
 		    break;
 		case "Help":
-		    Menu.cursor1 = null;
+		    Menu.cursor1 = 0;
 		    currentPage  = HELP_PAGE;
 		    break;
 		case "Credits":
-		    Menu.cursor1 = null;
+		    Menu.cursor1 = 0;
 		    currentPage  = CREDITS_PAGE;
 		    break;
 			
@@ -161,12 +161,16 @@ const Menu = new (function() {
 			strokeColorText(text, itemsX, topItemY + rowHeight * i, 'black', 7)
 	        colorText(text, itemsX, topItemY + rowHeight * i, textColour);
 
-			//Draw cursor
-			cursorPos = {x: itemsX - 100, y: topItemY + (this.cursor1 * rowHeight) - 25};
-			canvasContext.drawImage(arrowPic, cursorPos.x, cursorPos.y);
-			if(menuTorches.length > 0) {
-				menuTorches[0].x = cursorPos.x;
-				menuTorches[0].y = canvas.height - cursorPos.y;	
+			if (menuPageText[currentPage][Menu.cursor1] == menuPageText[currentPage][i]) {
+				//Draw cursor
+				var textWidth = canvasContext.measureText(text).width;
+				cursorPos = {x: itemsX - textWidth / 2 - 30, y: topItemY + (this.cursor1 * rowHeight) - 25};
+				canvasContext.drawImage(arrowPic, cursorPos.x, cursorPos.y);
+			
+				if(menuTorches.length > 0) {
+					menuTorches[0].x = cursorPos.x;
+					menuTorches[0].y = canvas.height - cursorPos.y;	
+				}
 			}
 	    }
 		canvasContext.restore();
