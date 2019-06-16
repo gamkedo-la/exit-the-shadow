@@ -708,7 +708,48 @@ function EvilPlayerBoss() {
 				tileGrid[i + j] = 1;
 			}
 		}
-
+		
+		generateTileEntities();
+	}
+	
+	this.openFinalPath = function() {
+		resetWorld();
+		loadLevel(levelOne);
+		
+		// remove all entity numbers to avoid crashing
+		for (var i = 0; i < tileGrid.length; i++) {
+			if (tileGrid[i] < 0) {
+				tileGrid[i] = 0;
+			}
+		}
+				
+		for (i = 0 * TILE_COLS; i < 30 * TILE_COLS; i += TILE_COLS) {
+			for (var j = 106, k = 0; j <= 109; j++, k++) {
+				if (k == 0) {
+					if (i == 29 * TILE_COLS) {
+						tileGrid[i + j] = 34;
+					}
+					else {
+						tileGrid[i + j] = 10;
+					}
+				}
+				else if (k == 3) {
+					if (i == 29 * TILE_COLS) {
+						tileGrid[i + j] = 33;
+					}
+					else {
+						tileGrid[i + j] = 7;
+					}
+				}
+				else {
+					tileGrid[i + j] = 0;
+				}
+			}
+		}
+		
+		this.closeArena();
+		
+		generateFloorTiles();
 		generateTileEntities();
 	}
 	
@@ -726,6 +767,8 @@ function EvilPlayerBoss() {
 			}
 			
 			switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
+			
+			this.openFinalPath();
 		}
 		return this.isDead;
 	}	
