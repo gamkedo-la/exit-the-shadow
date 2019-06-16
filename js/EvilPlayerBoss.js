@@ -30,7 +30,7 @@ function EvilPlayerBoss() {
 	this.maxHP = this.HP;
 	this.weight = 2; // 0-10 (10 means can't be pushed by anything)
 	
-	this.name = evilPlayerBossName;
+	this.name = finalBossName;
 	this.isActive = false;
 	
 	let attackChargeTime = 10;

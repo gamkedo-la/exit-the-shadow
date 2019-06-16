@@ -17,7 +17,7 @@ var savingGame = false;
 var saveGameIndicationTime = 0;
 var shadowBossName = 'Shadow';
 var beastBossName = 'Beast';
-var evilPlayerBossName = 'Self';
+var finalBossName = 'Self';
 var illuminator;
 var finalBossPlatformTorches = [];
 var finalBossRoomTorches = [];
@@ -194,7 +194,7 @@ function loadArtAndCollisionForBossDefeatedRooms() {
             var beastBoss = new BeastBoss();
 			beastBoss.addHealingStatue();
 		}
-		else if (boss == evilPlayerBossName) {
+		else if (boss == finalBossName) {
 			// load final boss room object collision data
 		}
     });
@@ -227,7 +227,7 @@ function startGame() {
 function updateAll() {
 	frameCounter++;
 	
-	// check if player is in a battleground
+	// check if player is in a battleground & play tension music if they are and boss hasn't been defeated
 	var playerX = Player.centerX();
 	var playerY = Player.centerY();
 	var beastBattleGroundStartX = 5300;
@@ -238,7 +238,7 @@ function updateAll() {
 	var shadowBattleGroundEndX = 1600;
 	var shadowBattleGroundStartY = 2500;
 	var shadowBattleGroundEndY = 3400;
-	var finalBattleGroundStartX = 3050;
+	var finalBattleGroundStartX = 0;
 	var finalBattleGroundEndX = 3850;
 	var finalBattleGroundStartY = 850;
 	var finalBattleGroundEndY = 1850;
@@ -247,21 +247,53 @@ function updateAll() {
 		playerY > beastBattleGroundStartY && playerY < beastBattleGroundEndY) {
 		
 			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[BEAST_BOSS].isPlaying()) {
-				bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				var playMusic = true;
+		        Player.bossesKilled.forEach(boss => {
+		            if(boss == beastBossName) {
+		                playMusic = false;
+		            }
+		        });
+				if (playMusic) {
+					bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				}
 			}
 	}
 	else if (playerX > shadowBattleGroundStartX && playerX < shadowBattleGroundEndX &&
 		playerY > shadowBattleGroundStartY && playerY < shadowBattleGroundEndY) {
 		
 			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[SHADOW_BOSS].isPlaying()) {
-				bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				var playMusic = true;
+		        Player.bossesKilled.forEach(boss => {
+		            if(boss == shadowBossName) {
+		                playMusic = false;
+		            }
+		        });
+				if (playMusic) {
+					bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				}
 			}
 	}
 	else if (playerX > finalBattleGroundStartX && playerX < finalBattleGroundEndX &&
 		playerY > finalBattleGroundStartY && playerY < finalBattleGroundEndY) {
 		
 			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[FINAL_BOSS].isPlaying()) {
-				bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				var playMusic = true;
+		        Player.bossesKilled.forEach(boss => {
+		            if(boss == finalBossName) {
+		                playMusic = false;
+		            }
+		        });
+				if (playMusic) {
+					bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				}
+				else {
+					// stop all music for final section
+					for (var i = 0; i < bg_music.length; i++) {
+						if (bg_music[i].isPlaying()) {
+							bg_music[i].fadeOut(BOSS_MUSIC_FADE_OUT_RATE);
+						}
+					}
+				}
 			}
 	}
 	else {
@@ -269,6 +301,7 @@ function updateAll() {
 			bg_music[AMBIENT_TENSION].fadeOut(AMBIENT_TENSION_FADE_IN_RATE);
 		}
 	}
+	// end of checking if player is in battleground
 
 	// update music (for fades)
 	for (var i = 0; i < bg_music.length; i++) {
