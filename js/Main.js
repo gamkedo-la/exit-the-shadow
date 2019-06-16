@@ -230,6 +230,8 @@ function updateAll() {
 				savingGame = false;
 			}
 		}
+		
+		drawHelpBox(); // do this last as we want it over everything
 	}
 	else {
 		canvasContext.save();
@@ -383,16 +385,18 @@ function drawGame() {
 	}
 }
 
+function drawHelpBox() {
+	if (helpScreen && !mainGameState) {
+		helpBlock();
+	} 
+}
+
 function drawAll() {
-	if(mainGameState) {
+	if(mainGameState || helpScreen) {
 		drawGame();
 		if (m_helpScreenTrasitioningOut) { helpBlock();}
 
-	} else if (helpScreen) {
-		// DISPLAY CONTROLS / ANY OTHER HELP HERE
-		drawGame();
-		helpBlock();
-	} 
+	}
 }
 
 function animateAll() {
