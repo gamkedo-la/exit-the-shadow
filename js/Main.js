@@ -274,7 +274,7 @@ function drawGame() {
 	
 	// show tutorial arrow
 	canvasContext.save();
-	canvasContext.translate(Player.centerX() - camPanX, Player.centerY() - camPanY);
+	canvasContext.translate(Player.centerX() - camPanX - 1, Player.centerY() - camPanY + 5);
 	if (tutorialIsActive) {
 		if (!playerHasHealed) {
 			if (showHealArrow) {
@@ -296,9 +296,11 @@ function drawGame() {
 		}
 		
 		if (showArrow) {
-			var arrowWidth = 50;
-			var arrowHeight = 30;
-			canvasContext.drawImage(tutorialArrow, -arrowWidth / 2 - 45, -arrowHeight / 2, arrowWidth, arrowHeight);
+			var scale = 0.3;
+			var arrowWidth = tutorialArrow.width * scale;
+			var arrowHeight = tutorialArrow.height * scale;
+			canvasContext.globalAlpha = 0.5;
+			canvasContext.drawImage(tutorialArrow, -arrowWidth / 2 - 25, -arrowHeight / 2, arrowWidth, arrowHeight);
 		}
 	}
 	canvasContext.restore();
