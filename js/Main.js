@@ -421,6 +421,12 @@ function startTutorial() {
 	playerHasSaved = false;
 }
 
+function disableTutorial() {
+	tutorialIsActive = false;
+	playerHasHealed = true;
+	playerHasSaved = true;
+}
+
 function loadArt() {
 	loadGroundArt();
 	loadSortedArt();

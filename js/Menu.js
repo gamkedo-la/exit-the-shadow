@@ -96,6 +96,7 @@ const Menu = new (function() {
 	        gameIsStarted = true;
 		    switchMusic(AMBIENT_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 		    loadGame();
+			disableTutorial();
 		    Menu.cursor1 = 0;
 		    break;
 		case "Settings":
