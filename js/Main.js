@@ -23,6 +23,10 @@ var finalBossRoomTorches = [];
 var shadowBossDarks = [];
 var framesPerSecond = 30;
 var drawCursorCoordinates = false;
+var upgradeAcquired = false;
+var upgradeAcquiredScreenTime = 0;
+var bossDefeatedTextBackgroundColour = "rgba(0, 0, 0, 0.7)";
+var textDisplayTextColour = "rgba(255, 255, 255, 0.3)";
 
 var Entities = [
 	Player
@@ -168,7 +172,7 @@ function updateAll() {
 		
 		// death screen
 		if (gameRestartPending) {
-			deathTextDisplay();
+			textDisplay("no more are you", textDisplayTextColour, "rgba(128, 30, 30, 0.7)");
 			deathScreenTime++;
 			if (deathScreenTime > 150) {
 				deathScreenTime = 0;
@@ -177,13 +181,26 @@ function updateAll() {
 		}
 
 		// show boss deafeated text
-		if(bossIsDefeated)
+		if(bossIsDefeated && !upgradeAcquired)
 		{
 			showBossDefeated();
 			bossDefeatedScreenTime++;
 			if(bossDefeatedScreenTime > 90) {
 				bossDefeatedScreenTime = 0;
 				bossIsDefeated = false;
+			}
+		}
+		else if (upgradeAcquired) { // stop showing text if upgrade acquired text should be shown instead
+			bossDefeatedScreenTime = 0;
+			bossIsDefeated = false;
+		}
+		
+		if (upgradeAcquired) {
+			textDisplay("max hp and damage increased", textDisplayTextColour, "rgba(0, 64, 64, 0.7)");
+			upgradeAcquiredScreenTime++;
+			if(upgradeAcquiredScreenTime > 90) {
+				upgradeAcquiredScreenTime = 0;
+				upgradeAcquired = false;
 			}
 		}
 
@@ -205,8 +222,8 @@ function updateAll() {
 		canvasContext.save();
 		canvasContext.font = "30px Impact";
 		canvasContext.textAlign = "center";
-		colorText("Paused", canvas.width/2, 50, 'white');
-		colorText("Press Q to quit", canvas.width/2, 100, 'white');
+		colorText("Paused", canvas.width/2, 50, '#dacdc7');
+		colorText("Press Q to quit", canvas.width/2, 100, '#dacdc7');
 		strokeColorText("Paused", canvas.width/2, 50, 'black', 2);
 		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 2);
 		canvasContext.restore();

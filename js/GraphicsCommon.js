@@ -56,9 +56,7 @@ function setFont(style, fontSize, font) {
 	canvasContext.font = style + " " + fontSize + "px " + font;
 }
 
-function deathTextDisplay(textToDisplay = "no more are you", 
-							textColor = "rgba(255, 255, 255, " + 0.3 + ")",
-							bgColor = "rgba(128, 30, 30," + 0.7 + ")")
+function textDisplay(textToDisplay, textColor, bgColor)
 {
 	saveFont();
 	var txtHeight = 40;

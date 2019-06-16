@@ -25,7 +25,7 @@ function BeastBoss() {
 	this.moveSpeed = 0.5;
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
-	this.HP = 30;
+	this.HP = 1;
 	this.oldHP = this.HP;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
@@ -458,7 +458,7 @@ function BeastBoss() {
 			bossIsDefeated = true;
 			showBossDefeated = function() {
 					// show death message on screen
-					deathTextDisplay("BEAST SLAUGHTERED ", 'grey', 'black');
+					textDisplay("BEAST SLAUGHTERED ", textDisplayTextColour, bossDefeatedTextBackgroundColour);
 
 					
 			}

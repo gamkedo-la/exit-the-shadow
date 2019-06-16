@@ -722,7 +722,7 @@ function EvilPlayerBoss() {
 			bossIsDefeated = true;
 			showBossDefeated = function() {
 					// show death message on screen
-					deathTextDisplay("DARK REFLECTION SUBDUED", 'grey', 'black');
+					textDisplay("DARK REFLECTION SUBDUED", textDisplayTextColour, bossDefeatedTextBackgroundColour);
 			}
 			
 			switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);

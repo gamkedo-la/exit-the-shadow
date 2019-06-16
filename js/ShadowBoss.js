@@ -524,7 +524,7 @@ function ShadowBoss(id) {
 				bossIsDefeated = true;
 				showBossDefeated = function() {
 						// show death message on screen
-						deathTextDisplay("SHADOW DEFEATED", 'grey', 'black');
+						textDisplay("SHADOW DEFEATED", textDisplayTextColour, bossDefeatedTextBackgroundColour);
 
 				}
 				

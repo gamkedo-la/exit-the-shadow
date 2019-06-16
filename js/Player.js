@@ -299,8 +299,7 @@ function PlayerClass() {
 							if (!this.heartsAcquired.shadowHeartAcquired) {
 								this.heartsAcquired.shadowHeartAcquired = true;
 								restartGame();
-								this.increaseMaxHP();
-								this.increaseDamage();
+								this.increaseAttributes();
 							}
 					}
 				}
@@ -315,8 +314,7 @@ function PlayerClass() {
 							if (!this.heartsAcquired.beastHeartAcquired) {
 								this.heartsAcquired.beastHeartAcquired = true;
 								restartGame();
-								this.increaseMaxHP();
-								this.increaseDamage();
+								this.increaseAttributes();
 							}
 					}
 				}
@@ -502,6 +500,12 @@ function PlayerClass() {
 		if (this.heartsAcquired.shadowHeartAcquired) {
 			this.damage++;
 		}
+	}
+	
+	this.increaseAttributes = function() {
+		this.increaseMaxHP();
+		this.increaseDamage();
+		upgradeAcquired = true;
 	}
 
 	this.deathHandle = function ()
