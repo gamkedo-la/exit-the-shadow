@@ -25,7 +25,7 @@ function BeastBoss() {
 	this.moveSpeed = 0.5;
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
-	this.HP = 40;
+	this.HP = 1;
 	this.oldHP = this.HP;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
@@ -96,6 +96,7 @@ function BeastBoss() {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
 		if (phase == NOT_IN_BATTLE) {
 			if (distanceBetweenEntities(this, Player) < 200) {
+				switchMusic(BEAST_BOSS, 1, 1);
 				this.progressPhase();
 				this.closeArena();
 			}
@@ -494,6 +495,7 @@ function BeastBoss() {
 			}
 			
 			this.addHealingStatue();
+			switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 		}
 		return this.isDead;
 	}
