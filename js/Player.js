@@ -22,6 +22,7 @@ function PlayerClass() {
 	this.HP = 3;
 	this.maxHP = this.HP;
 	this.HP = 1;
+	this.damage = 1;
 	
 	this.collisionBoxHeight = this.width;
 	
@@ -207,7 +208,7 @@ function PlayerClass() {
 					centerY: centerY,
 					width: attackWidth,
 					height: attackHeight,
-					damage: 1,
+					damage: this.damage,
 					velocityX: velocityX,
 					velocityY: velocityY,
 					frameLength: 1,
@@ -299,6 +300,7 @@ function PlayerClass() {
 								this.heartsAcquired.shadowHeartAcquired = true;
 								restartGame();
 								this.increaseMaxHP();
+								this.increaseDamage();
 							}
 					}
 				}
@@ -314,6 +316,7 @@ function PlayerClass() {
 								this.heartsAcquired.beastHeartAcquired = true;
 								restartGame();
 								this.increaseMaxHP();
+								this.increaseDamage();
 							}
 					}
 				}
@@ -482,6 +485,22 @@ function PlayerClass() {
 		
 		if (this.heartsAcquired.shadowHeartAcquired) {
 			this.maxHP++;
+		}
+	}
+	
+	this.increaseDamage = function() {
+		this.updateDamage();
+	}
+	
+	this.updateDamage = function() {
+		this.damage = 1;
+		
+		if (this.heartsAcquired.beastHeartAcquired) {
+			this.damage++;
+		}
+		
+		if (this.heartsAcquired.shadowHeartAcquired) {
+			this.damage++;
 		}
 	}
 

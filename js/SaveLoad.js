@@ -123,6 +123,7 @@ function restoreValues(save) {
 	
 	Player.heartsAcquired = save.heartsAcquired;
 	Player.updateMaxHP();
+	Player.updateDamage();
 
     removeDefeatedBosses();
 }
