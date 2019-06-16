@@ -288,7 +288,7 @@ function PlayerClass() {
 					}
 					else {
 						showHealArrow = true;
-						angleToHealLocation = Math.atan2(this.centerY() - objectCenterY, this.centerX() - objectCenterX);
+						angleToHealLocation = Math.atan2(this.centerY() - objectCenterY -25, this.centerX() - objectCenterX);
 					}
 				}
 				else if (SortedArt[i].imgName == "typewriter") {

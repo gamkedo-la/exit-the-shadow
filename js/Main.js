@@ -260,6 +260,17 @@ function drawGame() {
 
 	drawFloorTiles();
 	visibleTileEntities = getVisibleTileEntities();
+
+	canvasContext.save();
+	canvasContext.translate(-camPanX, -camPanY);
+
+	// ground art
+	for (i = 0; i < GroundArt.length; i++)
+	{
+		canvasContext.drawImage(window[GroundArt[i].imgName], GroundArt[i].x, GroundArt[i].y);
+	}
+	
+	canvasContext.restore()
 	
 	// show tutorial arrow
 	canvasContext.save();
@@ -286,20 +297,14 @@ function drawGame() {
 		
 		if (showArrow) {
 			var arrowWidth = 50;
-			var arrowHeight = 25;
+			var arrowHeight = 30;
 			canvasContext.drawImage(tutorialArrow, -arrowWidth / 2 - 45, -arrowHeight / 2, arrowWidth, arrowHeight);
 		}
 	}
 	canvasContext.restore();
-
+	
 	canvasContext.save();
 	canvasContext.translate(-camPanX, -camPanY);
-
-	// ground art
-	for (i = 0; i < GroundArt.length; i++)
-	{
-		canvasContext.drawImage(window[GroundArt[i].imgName], GroundArt[i].x, GroundArt[i].y);
-	}
 
 	// sorted art
 	SortedDrawList = [];
