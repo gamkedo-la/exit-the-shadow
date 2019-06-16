@@ -15,6 +15,11 @@ PlayerClass.prototype = new EntityClass();
 PlayerClass.prototype.constructor = PlayerClass;
 
 function PlayerClass() {
+	
+	const PHASE_PLAYABLE = 0;
+	const PHASE_END_GAME = 1;
+	
+	let phase = PHASE_PLAYABLE;
 
 	// public
 	this.width = 25;
@@ -100,294 +105,300 @@ function PlayerClass() {
 		this.HP = 1;
 		this.regainHealthMeter = 0;
 		this.isDead = false;
+		phase = PHASE_PLAYABLE;
 	}
 	
 	this.move = function () {
-
-		// MOVEMENT
+		if (this.y < 100) {
+			phase = PHASE_END_GAME;
+		}
 		this.movementDirection = [false, false, false, false]; // up, left, down, right
+		if (phase == PHASE_PLAYABLE) {
+			// MOVEMENT
+			if (!isDashing && !isShielding) {
+				if (this.keyHeld_Up) {
+					this.movementDirection[UP] = true;
+				}
 		
-		if (!isDashing && !isShielding) {
-			if (this.keyHeld_Up) {
-				this.movementDirection[UP] = true;
-			}
+				if (this.keyHeld_Down) {
+					this.movementDirection[DOWN] = true;
+				}
 		
-			if (this.keyHeld_Down) {
-				this.movementDirection[DOWN] = true;
-			}
-		
-			if (this.keyHeld_Right) {
-				this.movementDirection[RIGHT] = true;
-			}
+				if (this.keyHeld_Right) {
+					this.movementDirection[RIGHT] = true;
+				}
 
-			if (this.keyHeld_Left) {
-				this.movementDirection[LEFT] = true;
+				if (this.keyHeld_Left) {
+					this.movementDirection[LEFT] = true;
+				}
 			}
-		}
 		
-		// DASH
-		if (this.keyHeld_Dash && !isDashing && dashCooldown <= 0 &&
-		   (this.movementDirection[UP] || this.movementDirection[DOWN] || this.movementDirection[RIGHT] || this.movementDirection[LEFT])) {
-			isDashing = true;
-			dashDirection = this.calculateDashDirection(this.movementDirection);
-		}
-		if (isDashing) {
-			dashRemaining--;
-			switch(dashDirection) {
-			case UP:
-				this.nextY -= DASH_SPEED;
-				break;
-			case LEFT:
-				this.nextX -= DASH_SPEED;
-				break;
-			case DOWN:
-				this.nextY += DASH_SPEED;
-				break;
-			case RIGHT:
-				this.nextX += DASH_SPEED;
-				break;
-			case UP_LEFT:
-				this.nextX -= diagonalDashSpeed;
-				this.nextY -= diagonalDashSpeed;
-				break;
-			case DOWN_LEFT:
-				this.nextX -= diagonalDashSpeed;
-				this.nextY += diagonalDashSpeed;
-				break;
-			case DOWN_RIGHT:
-				this.nextX += diagonalDashSpeed;
-				this.nextY += diagonalDashSpeed;
-				break;
-			case UP_RIGHT:
-				this.nextX += diagonalDashSpeed;
-				this.nextY -= diagonalDashSpeed;
-				break;
+			// DASH
+			if (this.keyHeld_Dash && !isDashing && dashCooldown <= 0 &&
+			   (this.movementDirection[UP] || this.movementDirection[DOWN] || this.movementDirection[RIGHT] || this.movementDirection[LEFT])) {
+				isDashing = true;
+				dashDirection = this.calculateDashDirection(this.movementDirection);
 			}
-			if (dashRemaining <= 0) {
-				isDashing = false;
-				dashCooldown = DASH_COOLDOWN;
-			}
-		}
-		if (dashCooldown > 0) {
-			dashCooldown--;
-			if (dashCooldown <= 0 && !this.keyHeld_Dash) {
-				dashRemaining = DASH_LENGTH/DASH_SPEED;
-			}
-			else if (dashCooldown <= 0 && this.keyHeld_Dash) {
-				dashCooldown = 1; // prevent repeatedly dashing if keyheld
-			}
-		}
-		
-		// ATTACK
-		if (this.keyHeld_Attack && attackCooldown <= 0 && !isShielding && !isDashing) { // not attacking right now & is able to
-			if (Attack == null) {
-				let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
-				let velocityX = 0, velocityY = 0;
-				
-				switch(this.directionFacing) {
+			if (isDashing) {
+				dashRemaining--;
+				switch(dashDirection) {
 				case UP:
-					centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
-					velocityY = -1;
-					break;
-				case DOWN:
-					centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
-					velocityY = 1;
+					this.nextY -= DASH_SPEED;
 					break;
 				case LEFT:
-					centerX -= ((this.width / 2) + (attackWidth / 2));
-					velocityX = -1;
+					this.nextX -= DASH_SPEED;
+					break;
+				case DOWN:
+					this.nextY += DASH_SPEED;
 					break;
 				case RIGHT:
-					centerX += ((this.width / 2) + (attackWidth / 2));
-					velocityX = 1;
+					this.nextX += DASH_SPEED;
+					break;
+				case UP_LEFT:
+					this.nextX -= diagonalDashSpeed;
+					this.nextY -= diagonalDashSpeed;
+					break;
+				case DOWN_LEFT:
+					this.nextX -= diagonalDashSpeed;
+					this.nextY += diagonalDashSpeed;
+					break;
+				case DOWN_RIGHT:
+					this.nextX += diagonalDashSpeed;
+					this.nextY += diagonalDashSpeed;
+					break;
+				case UP_RIGHT:
+					this.nextX += diagonalDashSpeed;
+					this.nextY -= diagonalDashSpeed;
 					break;
 				}
+				if (dashRemaining <= 0) {
+					isDashing = false;
+					dashCooldown = DASH_COOLDOWN;
+				}
+			}
+			if (dashCooldown > 0) {
+				dashCooldown--;
+				if (dashCooldown <= 0 && !this.keyHeld_Dash) {
+					dashRemaining = DASH_LENGTH/DASH_SPEED;
+				}
+				else if (dashCooldown <= 0 && this.keyHeld_Dash) {
+					dashCooldown = 1; // prevent repeatedly dashing if keyheld
+				}
+			}
+		
+			// ATTACK
+			if (this.keyHeld_Attack && attackCooldown <= 0 && !isShielding && !isDashing) { // not attacking right now & is able to
+				if (Attack == null) {
+					let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
+					let velocityX = 0, velocityY = 0;
 				
-				let attackOptions = {
-					centerX: centerX,
-					centerY: centerY,
-					width: attackWidth,
-					height: attackHeight,
-					damage: this.damage,
-					velocityX: velocityX,
-					velocityY: velocityY,
-					frameLength: 1,
-					immuneEntities: [Player],
-					isPlayerAttack: true
-				}
+					switch(this.directionFacing) {
+					case UP:
+						centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
+						velocityY = -1;
+						break;
+					case DOWN:
+						centerY += ((this.collisionBoxHeight / 2) + (attackHeight / 2) + (this.collisionBoxHeight / 2));
+						velocityY = 1;
+						break;
+					case LEFT:
+						centerX -= ((this.width / 2) + (attackWidth / 2));
+						velocityX = -1;
+						break;
+					case RIGHT:
+						centerX += ((this.width / 2) + (attackWidth / 2));
+						velocityX = 1;
+						break;
+					}
 				
-				Attack = new ProjectileClass(attackOptions);
-				sfx[ATTACK_SFX].play();
+					let attackOptions = {
+						centerX: centerX,
+						centerY: centerY,
+						width: attackWidth,
+						height: attackHeight,
+						damage: this.damage,
+						velocityX: velocityX,
+						velocityY: velocityY,
+						frameLength: 1,
+						immuneEntities: [Player],
+						isPlayerAttack: true
+					}
+				
+					Attack = new ProjectileClass(attackOptions);
+					sfx[ATTACK_SFX].play();
+				}
 			}
-		}
-		if (Attack != null){ // currently attacking
-			if (!Attack.attackFinished) {
-				Attack.update();
+			if (Attack != null){ // currently attacking
+				if (!Attack.attackFinished) {
+					Attack.update();
+				}
+				else {
+					Attack = null;
+					attackCooldown = ATTACK_COOLDOWN;
+				}
 			}
-			else {
-				Attack = null;
-				attackCooldown = ATTACK_COOLDOWN;
-			}
-		}
-		if (attackCooldown > 0) {
-			attackCooldown--;
+			if (attackCooldown > 0) {
+				attackCooldown--;
 			
-			// prevent being able to just hold down the key
-			if (attackCooldown <= 0 && this.keyHeld_Attack) {
-				attackCooldown = 1;
+				// prevent being able to just hold down the key
+				if (attackCooldown <= 0 && this.keyHeld_Attack) {
+					attackCooldown = 1;
+				}
 			}
-		}
 		
-		// SHIELD
-		if (this.keyHeld_Shield && !isShielding && shieldCooldown <= 0 && !isDashing && Attack == null) { // not currently shielding & is able to
-			isShielding = true;
-			this.isInvulnerable = true;
-		}
-		if (isShielding){ // currently shielding
-			shieldRemaining--;
+			// SHIELD
+			if (this.keyHeld_Shield && !isShielding && shieldCooldown <= 0 && !isDashing && Attack == null) { // not currently shielding & is able to
+				isShielding = true;
+				this.isInvulnerable = true;
+			}
+			if (isShielding){ // currently shielding
+				shieldRemaining--;
 			
-			if (shieldRemaining <= 0 || !this.keyHeld_Shield) {
-				isShielding = false;
-				this.isInvulnerable = false;
-				shieldCooldown = SHIELD_COOLDOWN;
+				if (shieldRemaining <= 0 || !this.keyHeld_Shield) {
+					isShielding = false;
+					this.isInvulnerable = false;
+					shieldCooldown = SHIELD_COOLDOWN;
+				}
 			}
-		}
-		if (shieldCooldown > 0) {
-			shieldCooldown--;
+			if (shieldCooldown > 0) {
+				shieldCooldown--;
 			
-			if (shieldCooldown <= 0 && !this.keyHeld_Shield) {
-				shieldRemaining = SHIELD_MAX_TIME;
+				if (shieldCooldown <= 0 && !this.keyHeld_Shield) {
+					shieldRemaining = SHIELD_MAX_TIME;
+				}
+				else if (shieldCooldown <= 0 && this.keyHeld_Shield) {
+					shieldCooldown = 1; // prevent repeatedly shielding if keyheld
+				}
 			}
-			else if (shieldCooldown <= 0 && this.keyHeld_Shield) {
-				shieldCooldown = 1; // prevent repeatedly shielding if keyheld
-			}
-		}
 		
-		if ((!playerHasHealed || !playerHasSaved) && tutorialIsActive) {
-			for (var i = 0; i < SortedArt.length; i++) {
-				if (SortedArt[i].imgName == "healingStatue") {
-					let object = SortedArt[i];
-					let objectWidth = window[object.imgName].width;
-					let objectHeight = window[object.imgName].height;
-					let objectCenterX = object.x + objectWidth / 2;
-					let objectCenterY = object.y + objectHeight / 2;
-					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
-					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							canvasContext.save();
-							canvasContext.translate(-camPanX, -camPanY);
-							canvasContext.font = "35px Impact";
-							canvasContext.textAlign = "center";
-							colorText("Hold E To Heal", objectCenterX, object.y - 50, '#dacdc7');
-							strokeColorText("Hold E To Heal", objectCenterX, object.y - 50, 'black', 1.5);
-							canvasContext.restore();
+			if ((!playerHasHealed || !playerHasSaved) && tutorialIsActive) {
+				for (var i = 0; i < SortedArt.length; i++) {
+					if (SortedArt[i].imgName == "healingStatue") {
+						let object = SortedArt[i];
+						let objectWidth = window[object.imgName].width;
+						let objectHeight = window[object.imgName].height;
+						let objectCenterX = object.x + objectWidth / 2;
+						let objectCenterY = object.y + objectHeight / 2;
+						let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+								canvasContext.save();
+								canvasContext.translate(-camPanX, -camPanY);
+								canvasContext.font = "35px Impact";
+								canvasContext.textAlign = "center";
+								colorText("Hold E To Heal", objectCenterX, object.y - 50, '#dacdc7');
+								strokeColorText("Hold E To Heal", objectCenterX, object.y - 50, 'black', 1.5);
+								canvasContext.restore();
+						}
+						else if (distanceX < objectWidth && distanceY < objectHeight) {
+							showHealArrow = false;
+						}
+						else {
+							showHealArrow = true;
+							angleToHealLocation = Math.atan2(this.centerY() - objectCenterY -25, this.centerX() - objectCenterX);
+						}
 					}
-					else if (distanceX < objectWidth && distanceY < objectHeight) {
-						showHealArrow = false;
-					}
-					else {
-						showHealArrow = true;
-						angleToHealLocation = Math.atan2(this.centerY() - objectCenterY -25, this.centerX() - objectCenterX);
-					}
-				}
-				else if (SortedArt[i].imgName == "typewriter") {
-					let object = SortedArt[i];
-					let objectWidth = window[object.imgName].width;
-					let objectHeight = window[object.imgName].height;
-					let objectCenterX = object.x + objectWidth / 2;
-					let objectCenterY = object.y + objectHeight / 2;
-					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
-					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							canvasContext.save();
-							canvasContext.translate(-camPanX, -camPanY);
-							canvasContext.font = "35px Impact";
-							canvasContext.textAlign = "center";
-							colorText("Press E To Save", objectCenterX, object.y - 50, '#dacdc7');
-							strokeColorText("Press E To Save", objectCenterX, object.y - 50, 'black', 1.5);
-							canvasContext.restore();
-					}
-					else if (distanceX < objectWidth*2 && distanceY < objectHeight*2) {
-						showSaveArrow = false;
-					}
-					else {
-						showSaveArrow = true;
-						angleToSaveLocation = Math.atan2(this.centerY() - objectCenterY, this.centerX() - objectCenterX);
-					}
-				}
-			}
-		}
-		
-		if (this.keyHeld_Interact) {
-			// interact with nearby things here
-			for (var i = 0; i < SortedArt.length; i++) {
-				if (SortedArt[i].imgName == "healingStatue") {
-					let object = SortedArt[i];
-					let objectWidth = window[object.imgName].width;
-					let objectHeight = window[object.imgName].height;
-					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
-					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							playerHasHealed = true;
-							this.regainHealthMeter++;
-					}
-				}
-				else if (SortedArt[i].imgName == "typewriter") {
-					let object = SortedArt[i];
-					let objectWidth = window[object.imgName].width;
-					let objectHeight = window[object.imgName].height;
-					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
-					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							playerHasSaved = true;
-							savingGame = true;
-					}
-				}
-				else if (SortedArt[i].imgName == "beastHealingStatue") {
-					let object = SortedArt[i];
-					let objectWidth = window[object.imgName].width;
-					let objectHeight = window[object.imgName].height;
-					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
-					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							if (!this.heartsAcquired.shadowHeartAcquired) {
-								this.heartsAcquired.shadowHeartAcquired = true;
-								restartGame();
-								this.increaseAttributes();
-							}
-					}
-				}
-				else if (SortedArt[i].imgName == "shadowHealingStatue") {
-					let object = SortedArt[i];
-					let objectWidth = window[object.imgName].width;
-					let objectHeight = window[object.imgName].height;
-					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
-					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
-					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
-						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-							if (!this.heartsAcquired.beastHeartAcquired) {
-								this.heartsAcquired.beastHeartAcquired = true;
-								restartGame();
-								this.increaseAttributes();
-							}
+					else if (SortedArt[i].imgName == "typewriter") {
+						let object = SortedArt[i];
+						let objectWidth = window[object.imgName].width;
+						let objectHeight = window[object.imgName].height;
+						let objectCenterX = object.x + objectWidth / 2;
+						let objectCenterY = object.y + objectHeight / 2;
+						let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+								canvasContext.save();
+								canvasContext.translate(-camPanX, -camPanY);
+								canvasContext.font = "35px Impact";
+								canvasContext.textAlign = "center";
+								colorText("Press E To Save", objectCenterX, object.y - 50, '#dacdc7');
+								strokeColorText("Press E To Save", objectCenterX, object.y - 50, 'black', 1.5);
+								canvasContext.restore();
+						}
+						else if (distanceX < objectWidth*2 && distanceY < objectHeight*2) {
+							showSaveArrow = false;
+						}
+						else {
+							showSaveArrow = true;
+							angleToSaveLocation = Math.atan2(this.centerY() - objectCenterY, this.centerX() - objectCenterX);
+						}
 					}
 				}
 			}
-		}
 		
-		this.checkForRegainHealth();
-
+			if (this.keyHeld_Interact) {
+				// interact with nearby things here
+				for (var i = 0; i < SortedArt.length; i++) {
+					if (SortedArt[i].imgName == "healingStatue") {
+						let object = SortedArt[i];
+						let objectWidth = window[object.imgName].width;
+						let objectHeight = window[object.imgName].height;
+						let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+								playerHasHealed = true;
+								this.regainHealthMeter++;
+						}
+					}
+					else if (SortedArt[i].imgName == "typewriter") {
+						let object = SortedArt[i];
+						let objectWidth = window[object.imgName].width;
+						let objectHeight = window[object.imgName].height;
+						let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+								playerHasSaved = true;
+								savingGame = true;
+						}
+					}
+					else if (SortedArt[i].imgName == "beastHealingStatue") {
+						let object = SortedArt[i];
+						let objectWidth = window[object.imgName].width;
+						let objectHeight = window[object.imgName].height;
+						let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+								if (!this.heartsAcquired.shadowHeartAcquired) {
+									this.heartsAcquired.shadowHeartAcquired = true;
+									restartGame();
+									this.increaseAttributes();
+								}
+						}
+					}
+					else if (SortedArt[i].imgName == "shadowHealingStatue") {
+						let object = SortedArt[i];
+						let objectWidth = window[object.imgName].width;
+						let objectHeight = window[object.imgName].height;
+						let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+								if (!this.heartsAcquired.beastHeartAcquired) {
+									this.heartsAcquired.beastHeartAcquired = true;
+									restartGame();
+									this.increaseAttributes();
+								}
+						}
+					}
+				}
+			}
+		
+			this.checkForRegainHealth();
+		}
+		else if (phase == PHASE_END_GAME) {
+			endGamePending = true;
+		}
 		this.updateState(); // update animation state
 		EntityClass.prototype.move.call(this); // call superclass function
 
 		//clamp player position to on the map
 		this.clampPositionToScreen();
-		
+	
 		cameraFollow();
 	}
 

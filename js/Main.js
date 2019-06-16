@@ -12,12 +12,11 @@ var bossIsDefeated = false;
 var showBossDefeated = function() {}
 var bossDefeatedScreenTime = 0;
 var frameCounter = 0;
-
 var savingGame = false;
 var saveGameIndicationTime = 0;
 var shadowBossName = 'Shadow';
 var beastBossName = 'Beast';
-var evilPlayerBossName = 'Self';
+var finalBossName = 'Self';
 var illuminator;
 var finalBossPlatformTorches = [];
 var finalBossRoomTorches = [];
@@ -35,10 +34,12 @@ var angleToSaveLocation = 0;
 var showSaveArrow = false;
 var showHealArrow = false;
 var showArrow = false;
+var endGamePending = false;
+var endGameSequenceTime = 0;
 
 // DEBUG CONTROLS - TURN OFF FOR FINAL RELEASE
 var debugDrawCursorCoordinates = false;
-var debugSaveLoadFromAnywhere = true;
+var debugSaveLoadFromAnywhere = false;
 var debugDrawHitboxes = false;
 
 var Entities = [
@@ -194,7 +195,7 @@ function loadArtAndCollisionForBossDefeatedRooms() {
             var beastBoss = new BeastBoss();
 			beastBoss.addHealingStatue();
 		}
-		else if (boss == evilPlayerBossName) {
+		else if (boss == finalBossName) {
 			// load final boss room object collision data
 		}
     });
@@ -226,6 +227,82 @@ function startGame() {
 
 function updateAll() {
 	frameCounter++;
+	
+	// check if player is in a battleground & play tension music if they are and boss hasn't been defeated
+	var playerX = Player.centerX();
+	var playerY = Player.centerY();
+	var beastBattleGroundStartX = 5300;
+	var beastBattleGroundEndX = 6300;
+	var beastBattleGroundStartY = 2500;
+	var beastBattleGroundEndY = 3400;
+	var shadowBattleGroundStartX = 600;
+	var shadowBattleGroundEndX = 1600;
+	var shadowBattleGroundStartY = 2500;
+	var shadowBattleGroundEndY = 3400;
+	var finalBattleGroundStartX = 0;
+	var finalBattleGroundEndX = 3850;
+	var finalBattleGroundStartY = 850;
+	var finalBattleGroundEndY = 1850;
+	
+	if (playerX > beastBattleGroundStartX && playerX < beastBattleGroundEndX &&
+		playerY > beastBattleGroundStartY && playerY < beastBattleGroundEndY) {
+		
+			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[BEAST_BOSS].isPlaying()) {
+				var playMusic = true;
+		        Player.bossesKilled.forEach(boss => {
+		            if(boss == beastBossName) {
+		                playMusic = false;
+		            }
+		        });
+				if (playMusic) {
+					bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				}
+			}
+	}
+	else if (playerX > shadowBattleGroundStartX && playerX < shadowBattleGroundEndX &&
+		playerY > shadowBattleGroundStartY && playerY < shadowBattleGroundEndY) {
+		
+			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[SHADOW_BOSS].isPlaying()) {
+				var playMusic = true;
+		        Player.bossesKilled.forEach(boss => {
+		            if(boss == shadowBossName) {
+		                playMusic = false;
+		            }
+		        });
+				if (playMusic) {
+					bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				}
+			}
+	}
+	else if (playerX > finalBattleGroundStartX && playerX < finalBattleGroundEndX &&
+		playerY > finalBattleGroundStartY && playerY < finalBattleGroundEndY) {
+		
+			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[FINAL_BOSS].isPlaying()) {
+				var playMusic = true;
+		        Player.bossesKilled.forEach(boss => {
+		            if(boss == finalBossName) {
+		                playMusic = false;
+		            }
+		        });
+				if (playMusic) {
+					bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+				}
+				else {
+					// stop all music for final section
+					for (var i = 0; i < bg_music.length; i++) {
+						if (bg_music[i].isPlaying()) {
+							bg_music[i].fadeOut(BOSS_MUSIC_FADE_OUT_RATE);
+						}
+					}
+				}
+			}
+	}
+	else {
+		if (bg_music[AMBIENT_TENSION].isPlaying()) {
+			bg_music[AMBIENT_TENSION].fadeOut(AMBIENT_TENSION_FADE_IN_RATE);
+		}
+	}
+	// end of checking if player is in battleground
 
 	// update music (for fades)
 	for (var i = 0; i < bg_music.length; i++) {
@@ -276,6 +353,17 @@ function updateAll() {
 			}
 		}
 		
+		// end game sequence TODO: complete this
+		if (endGamePending) {
+			textDisplay("end game sequence coming soon", textDisplayTextColour, bossDefeatedTextBackgroundColour);
+			endGameSequenceTime++;
+			if (endGameSequenceTime > 150) {
+				endGameSequenceTime = 0;
+				endGamePending = false;
+				quitToMenu();
+			}
+		}
+		
 		if (playerHasHealed && playerHasSaved) {
 			tutorialIsActive = false;
 		}
@@ -304,12 +392,12 @@ function updateAll() {
 
 		colorText("Paused", canvas.width/2, 50, '#dacdc7');
 		colorText("Press Q to quit", canvas.width/2, 100, '#dacdc7');
-		colorText("Current Play Time", canvas.width/2,250, '#dacdc7');
-		colorText(playTimeISOFormat, canvas.width/2,300, '#dacdc7');
+		colorText("Current Play Time", canvas.width/2,canvas.height - 70, '#dacdc7');
+		colorText(playTimeISOFormat, canvas.width/2,canvas.height - 20, '#dacdc7');
 		strokeColorText("Paused", canvas.width/2, 50, 'black', 1.5);
 		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 1.5);
-		strokeColorText("Current Play Time", canvas.width/2,250, 'black', 1.5);
-		strokeColorText(playTimeISOFormat, canvas.width/2,300, 'black', 1.5);
+		strokeColorText("Current Play Time", canvas.width/2,canvas.height - 70, 'black', 1.5);
+		strokeColorText(playTimeISOFormat, canvas.width/2,canvas.height - 20, 'black', 1.5);
 		canvasContext.restore();
 	}
 }
@@ -722,6 +810,14 @@ function loadSortedArt() {
 		{x: 4608, y: 2875, imgName: "cage"},
 		{x: 4416, y: 2800, imgName: "ruins"},
 		{x: 2144, y: 3296, imgName: "ruins"},
+		{x: 3264, y: 672, imgName: "tree"},
+		{x: 3264, y: 480, imgName: "tree"},
+		{x: 3264, y: 288, imgName: "tree"},
+		{x: 3264, y: 96, imgName: "tree"},
+		{x: 3616, y: 672, imgName: "tree"},
+		{x: 3616, y: 480, imgName: "tree"},
+		{x: 3616, y: 288, imgName: "tree"},
+		{x: 3616, y: 96, imgName: "tree"},
 	];
 	
 	// fill in height (/2) for art that needs sorting
@@ -778,5 +874,15 @@ function loadOverlayingArt() {
 		finalBossPlatformTorches[1],
 		//
 		{x:3944, y:2500, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		// final path torches
+		{x:3267, y:640, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		{x:3267, y:448, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
+		{x:3267, y:256, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		{x:3619, y:640, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:206/255},
+		{x:3619, y:448, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
+		{x:3619, y:256, imgName: 'torchPic', range:100, r:70/255, g:1/255, b:130/255},
+		{x:3443, y:-25, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255},
+		{x:3453, y:-35, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255},
+		{x:3433, y:-35, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255},
 	];
 }

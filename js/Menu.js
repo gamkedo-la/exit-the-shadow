@@ -94,8 +94,9 @@ const Menu = new (function() {
 		    	return;
 	        }
 	        gameIsStarted = true;
-		    switchMusic(AMBIENT_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
-		    loadGame();
+			loadGame();
+			restartGame();
+			loadGame(); // need to do this before and after restart game - not ideal but works for now
 			disableTutorial();
 		    Menu.cursor1 = 0;
 		    break;
