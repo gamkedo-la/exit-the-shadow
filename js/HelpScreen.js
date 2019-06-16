@@ -21,8 +21,8 @@ var helpScreenLastTime = dt.getTime() / 1000.0;
 var controlsText = [
 	"W - Move Up",
 	"A - Move Left",
-	"S - Move Right",
-	"D - Move Down",
+	"S - Move Down",
+	"D - Move Right",
 	"E - Interact",
 	"Space - Dash",
 	"K - Attack",
@@ -31,17 +31,41 @@ var controlsText = [
 	"H - Help",
 ]
 
+function loadHelpScreen() {
+	mainGameState = false;
+	m_helpScreenTrasitioningOut = false;
+	helpScreen = true;
+	currHelpScreenTransition = helpScreenTransitions.BACKGROUND_START;
+}
+
+function exitHelpScreen() {
+	mainGameState = true;
+	gamePaused = false;
+	helpScreen = false;
+	m_helpScreenTrasitioningOut = true;
+	currHelpScreenTransition = helpScreenTransitions.TRANSITIONING_OUT;
+}
+
 function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _textHeight, _padTop)
 {
-	var textColor = "rgba(128, 30, 30, " + _textAlpha + ")";
+	var textColor = "rgba(217, 87, 99, " + _textAlpha + ")";
 	var textVPosShift = 0;
-	var padLeft = _leftBorder + (canvas.width * _padPercentSize);
+	//var padLeft = _leftBorder + (canvas.width * _padPercentSize);
+	var padLeft = canvas.width / 2;
 
 	saveFont();
-	setFont("bold", 40, "Arial");
-	
+	setFont("bold", 40, "Impact");
+	canvasContext.textAlign = "center";
 	for (var i = 0; i < controlsText.length; i++) {
-		colorText(controlsText[i], padLeft, _padTop + _topBorder + textVPosShift, textColor);
+		var text = controlsText[i];
+		
+		if (text == "H - Help") {
+			text = "H - Show / Hide Help Box";
+			textVPosShift += _textHeight;
+		}
+		
+		colorText(text, padLeft, _padTop + _topBorder + textVPosShift, textColor);
+		strokeColorText(text, padLeft, _padTop + _topBorder + textVPosShift, "rgba(0, 0, 0, " + _textAlpha + ")", 1.5);
 		textVPosShift += _textHeight;
 	}
 	
@@ -52,8 +76,8 @@ function helpBlock()
 {
 	var textHeight = 40;
 	var padPercentSize = 0.05;
-	var maxBackgroundRectAlpha = 0.4;
-	var maxTextAlpha = 1.0;
+	var maxBackgroundRectAlpha = 0.25;
+	var maxTextAlpha = 0.8;
 
 	var percentSize = 0.12;
 	var leftBorder = canvas.width * percentSize;
@@ -63,7 +87,7 @@ function helpBlock()
 	var bottomBorder = canvas.height - topBorder;
 	//var boxHeight = canvas.height - (topBorder * 2);
 	var padTop = (canvas.height * padPercentSize) + textHeight;
-	var boxHeight = (textHeight * 10) + (padTop * 1.25);
+	var boxHeight = (textHeight * 11) + (padTop * 1.25);
 
 	var d = new Date();
 	var currTime = d.getTime() / 1000.0;

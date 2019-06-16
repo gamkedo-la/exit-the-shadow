@@ -97,16 +97,9 @@ function keyPressed(evt) {
 	
 	if (evt.keyCode == helpScreenKey) {
 		if (helpScreen) {
-			mainGameState = true;
-			gamePaused = false;
-			helpScreen = false;
-			m_helpScreenTrasitioningOut = true;
-			currHelpScreenTransition = helpScreenTransitions.TRANSITIONING_OUT;
+			exitHelpScreen();
 		} else {
-			mainGameState = false;
-			m_helpScreenTrasitioningOut = false;
-			helpScreen = true;
-			currHelpScreenTransition = helpScreenTransitions.BACKGROUND_START;
+			loadHelpScreen();
 		}
 	}
 }

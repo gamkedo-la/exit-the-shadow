@@ -220,12 +220,12 @@ function updateAll() {
 	}
 	else {
 		canvasContext.save();
-		canvasContext.font = "30px Impact";
+		canvasContext.font = "35px Impact";
 		canvasContext.textAlign = "center";
 		colorText("Paused", canvas.width/2, 50, '#dacdc7');
 		colorText("Press Q to quit", canvas.width/2, 100, '#dacdc7');
-		strokeColorText("Paused", canvas.width/2, 50, 'black', 2);
-		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 2);
+		strokeColorText("Paused", canvas.width/2, 50, 'black', 1.5);
+		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 1.5);
 		canvasContext.restore();
 	}
 }
