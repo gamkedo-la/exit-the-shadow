@@ -83,8 +83,8 @@ const Menu = new (function() {
 		// MAIN PAGE
 		case "New Game":
 		    gameIsStarted = true;
+			restartGame();
 			loadHelpScreen();
-		    switchMusic(AMBIENT_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 		    this.cursor1 = 0;
 		    break;
 		case "Continue":
