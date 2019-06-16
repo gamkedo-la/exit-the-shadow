@@ -50,25 +50,15 @@ function AudioClass() {
 	let fadeInRate = 0.1;
 
 	this.load = function(file) {
-		this.altTurn = false;
 		this.sound = new Audio(file+audioFormat);
 		if (this.tag == 'music') {
 			this.sound.loop = true;
 		} 
-		this.altSound = new Audio(file+audioFormat);
 	}
 	
 	this.play = function() {
-		if(this.altTurn) {
-			this.altSound.currentTime = 0;
-			this.altSound.play();
-		}
-		else {
-			this.sound.currentTime = 0;
-			this.sound.play();
-		}
-		
-		this.altTurn = !this.altTurn;
+		this.sound.currentTime = 0;
+		this.sound.play();
 	}
 	
 	this.stop = function() {
