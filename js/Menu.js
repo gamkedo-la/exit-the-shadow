@@ -3,6 +3,8 @@ const Menu = new (function() {
 	const SETTINGS_PAGE = 1;
 	const HELP_PAGE = 2;
 	const CREDITS_PAGE = 3;
+	let menuTorches = [];
+	let twinkle = 0;
 	
 	let itemsX = null;
 	let topItemY = null;
@@ -10,6 +12,7 @@ const Menu = new (function() {
 	let rowHeight = 60;
 	
 	this.cursor1 = null;
+	let cursorPos;
 	let currentPage = 0;
 	
 	let textFontFace = "32px Impact";
@@ -50,8 +53,22 @@ const Menu = new (function() {
 			}, 200);
 		}
 		
-	    this.menuMouse();
+		this.menuMouse();
+
 	    this.draw();
+	}
+
+	this.resizingCanvas = function() {
+		if(logoPic.width > 0) {
+			itemsX = null;//forces recalculation of xPos for menu items
+
+			menuTorches = [];
+			menuTorches.push({x:cursorPos.x, y:canvas.height - cursorPos.y, imgName: 'torchPic', range:500, r:1, g:252/255, b:206/255});
+			menuTorches.push({x:(canvas.width/2)-(logoPic.width/2), y:canvas.height - 64, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255});
+			menuTorches.push({x:(canvas.width/2)+(logoPic.width/2), y:canvas.height - 64 - logoPic.height, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255});
+			menuTorches.push({x:canvas.width - 100, y:100, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255});
+			menuTorches.push({x:100, y:100, imgName: 'torchPic', range:100, r:1/255, g:25/255, b:206/255});
+		}
 	}
 	
 	this.changeMenuStateOnClick = function() {
@@ -125,9 +142,57 @@ const Menu = new (function() {
 			strokeColorText(menuPageText[currentPage][i], itemsX, topItemY + rowHeight * i, 'black', 7)
 	        colorText(menuPageText[currentPage][i], itemsX, topItemY + rowHeight * i, textColour);
 
-	        //Draw cursor
-	        canvasContext.drawImage(arrowPic, itemsX - 100, topItemY + (this.cursor1 * rowHeight) - 25);
+			//Draw cursor
+			cursorPos = {x: itemsX - 100, y: topItemY + (this.cursor1 * rowHeight) - 25};
+			canvasContext.drawImage(arrowPic, cursorPos.x, cursorPos.y);
+			if(menuTorches.length > 0) {
+				menuTorches[0].x = cursorPos.x;
+				menuTorches[0].y = canvas.height - cursorPos.y;	
+			}
 	    }
 		canvasContext.restore();
-	}	
+
+		if(menuTorches.length == 0) {
+			this.resizingCanvas();
+		}
+
+		//lights, colors, ranges, darks, darkRanges
+		const menuLights = [-1000, -1000];//no player => fake data
+		const menuColors = [];
+		const menuRanges = [];//no player => fake data
+		const menuDarks = [];
+		const menuDarkRanges = [];
+		
+		
+		for (let i = 0; i < maxLights; i++) {
+			if(i < menuTorches.length) {
+				let slowCounter = 0;
+				twinkle = Math.random();
+				if(twinkle < 0.25) {
+					slowCounter = 8 * Math.PI * twinkle;
+					twinkle = menuTorches[i].range / 500;
+				}
+				
+				menuLights.push(menuTorches[i].x + 10 * twinkle * (Math.sin(slowCounter)));
+				menuLights.push(menuTorches[i].y + 10 * twinkle * (Math.sin(slowCounter)));
+				menuColors.push(menuTorches[i].r);
+				menuColors.push(menuTorches[i].g);
+				menuColors.push(menuTorches[i].b);
+				menuRanges.push(menuTorches[i].range + (Math.sin(slowCounter)));
+			} else {
+				menuLights.push(-1000);
+				menuLights.push(-1000);
+				menuColors.push(0);
+				menuColors.push(0);
+				menuColors.push(0);
+				menuRanges.push(0);
+			}
+
+			menuDarks.push(0);
+			menuDarks.push(0);
+			menuDarkRanges.push(0);
+		} 
+		const shadowOverlay = illuminator.getShadowOverlay(menuLights, menuColors, menuRanges, menuDarks, menuDarkRanges);
+		canvasContext.drawImage(shadowOverlay, 0, 0);
+	}
 })();
