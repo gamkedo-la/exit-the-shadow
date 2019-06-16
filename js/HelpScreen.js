@@ -55,6 +55,7 @@ function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _
 
 	saveFont();
 	setFont("bold", 40, "Impact");
+	canvasContext.save();
 	canvasContext.textAlign = "center";
 	for (var i = 0; i < controlsText.length; i++) {
 		var text = controlsText[i];
@@ -70,6 +71,7 @@ function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _
 	}
 	
 	restoreFont();
+	canvasContext.restore();
 }
 
 function helpBlock()

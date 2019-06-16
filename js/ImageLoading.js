@@ -42,6 +42,13 @@ var debris7 = document.createElement("img");
 var debris8 = document.createElement("img");
 var debris9 = document.createElement("img");
 var tutorialArrow = document.createElement("img");
+var mothLamp = document.createElement("img");
+var typeWriterPlatform = document.createElement("img");
+var skeleton1 = document.createElement("img");
+var skeleton2 = document.createElement("img");
+var skeleton3 = document.createElement("img");
+var skeleton4 = document.createElement("img");
+var tree = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -96,6 +103,13 @@ function loadImages() {
 		{varName: cage, fileName: "cage_tileset.png"},
 		{varName: ruins, fileName: "ruins_1.png"},
 		{varName: tutorialArrow, fileName: "tutorial_arrow.png"},
+		{varName: mothLamp, fileName: "moth_lamp.png"},
+		{varName: typeWriterPlatform, fileName: "typewriter_platform.png"},
+		{varName: skeleton1, fileName: "skeleton_1.png"},
+		{varName: skeleton2, fileName: "skeleton_2.png"},
+		{varName: skeleton3, fileName: "skeleton_3.png"},
+		{varName: skeleton4, fileName: "skeleton_4.png"},
+		{varName: tree, fileName: "tree_1.png"},
 	];
 	
 	picsToLoad = imageList.length;

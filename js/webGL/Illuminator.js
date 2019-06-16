@@ -3,7 +3,7 @@ const ILLUM_OFFSET_X = 10;
 const ILLUM_OFFSET_Y = 10;
 
 const playerLightRange = 400; //based on visual appeal
-const torchRange = 200;
+const torchRange = 250;
 const maxLights = 12;
 
 //Make some webGL stuff here
