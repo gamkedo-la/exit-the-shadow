@@ -12,6 +12,7 @@ var bossIsDefeated = false;
 var showBossDefeated = function() {}
 var bossDefeatedScreenTime = 0;
 var frameCounter = 0;
+
 var savingGame = false;
 var saveGameIndicationTime = 0;
 var shadowBossName = 'Shadow';
@@ -54,6 +55,64 @@ var SortedDrawList = [];
 var LightSourcesThisFrame = [];
 
 var mouseX, mouseY;
+
+// PLAYTIME
+var playTimeSeconds = 0;
+var playTimeMinutes = 0;
+var playTimeHours = 0;
+var playTimeDate = new Date(null);
+var displayMinutes = 0;
+var displaySeconds = 0;
+var displayHours = 0;
+var playTimeISOFormat;
+
+function playTime() {
+	if (gamePaused == false) {
+		
+			// Get Minutes
+			if(playTimeSeconds > 60) {
+				playTimeMinutes = Math.floor(playTimeSeconds/60);
+			}
+			
+			// Get Hours
+			if(playTimeSeconds > 3600) {
+				playTimeHours = Math.floor(playTimeSeconds/3600);
+			}
+			
+			playTimeDate.setSeconds(playTimeSeconds);
+			playTimeDate.setMinutes(playTimeMinutes);
+			playTimeDate.setHours(playTimeHours);
+
+			displaySeconds = playTimeDate.getSeconds();
+			displayMinutes = playTimeDate.getMinutes();
+			displayHours =  playTimeDate.getHours();
+
+			// NOt displaying correctly, may be a bug or something else 
+			// if(displaySeconds < 10 && displayMinutes < 1 && displayHours < 1) {
+			// 	playTimeISOFormat = `00:00:0${displaySeconds}`
+			// } 
+			// if(displaySeconds > 10 && displayMinutes < 1 && displayHours < 1) {
+			// 	playTimeISOFormat = `00:00:${displaySeconds}`
+			// } 
+			// if(displaySeconds < 10 && displayMinutes < 10 && displayHours < 1) {
+			// 	playTimeISOFormat = `00:0${displayMinutes}:${displaySeconds}`
+			// }
+			// if(displaySeconds > 10 && displayMinutes > 10 && displayHours < 1) {
+			// 	playTimeISOFormat = `00:${displayMinutes}:${displaySeconds}`
+			// }
+			// if(displaySeconds < 10 && displayMinutes < 10 && displayHours < 10) {
+			// 	playTimeISOFormat = `0${displayHours}:0${displayMinutes}:0${displaySeconds}`
+			// }
+			// if(displaySeconds < 10 && displayMinutes < 10 && displayHours < 10) {
+			// 	playTimeISOFormat = `${displayHours}:${displayMinutes}:${displaySeconds}`
+			// }
+
+			playTimeSeconds++;
+			playTimeISOFormat = `${displayHours}:${displayMinutes}:${displaySeconds}`
+			console.log(playTimeISOFormat);
+	}
+}
+
 function displayMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
 	var root = document.documentElement;
@@ -159,6 +218,7 @@ function restartGame() {
 
 function startGame() {
 	setInterval(updateAll, 1000/framesPerSecond);
+	setInterval(playTime, 1000);
 
 	setUpInput();
 	startWorld();
@@ -166,7 +226,7 @@ function startGame() {
 
 function updateAll() {
 	frameCounter++;
-	
+
 	// update music (for fades)
 	for (var i = 0; i < bg_music.length; i++) {
 		bg_music[i].update();
@@ -181,7 +241,7 @@ function updateAll() {
 		drawAll();
 		moveAll();
 		camScreenshake();
-		
+
 		// death screen
 		if (gameRestartPending) {
 			textDisplay("no more are you", textDisplayTextColour, "rgba(128, 30, 30, 0.7)");
@@ -240,10 +300,16 @@ function updateAll() {
 		canvasContext.save();
 		canvasContext.font = "35px Impact";
 		canvasContext.textAlign = "center";
+		colorText("Paused", canvas.width/2, 50, 'grey');
+
 		colorText("Paused", canvas.width/2, 50, '#dacdc7');
 		colorText("Press Q to quit", canvas.width/2, 100, '#dacdc7');
+		colorText("Current Play Time", canvas.width/2,250, '#dacdc7');
+		colorText(playTimeISOFormat, canvas.width/2,300, '#dacdc7');
 		strokeColorText("Paused", canvas.width/2, 50, 'black', 1.5);
 		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 1.5);
+		strokeColorText("Current Play Time", canvas.width/2,250, 'black', 1.5);
+		strokeColorText(playTimeISOFormat, canvas.width/2,300, 'black', 1.5);
 		canvasContext.restore();
 	}
 }
