@@ -226,6 +226,49 @@ function startGame() {
 
 function updateAll() {
 	frameCounter++;
+	
+	// check if player is in a battleground
+	var playerX = Player.centerX();
+	var playerY = Player.centerY();
+	var beastBattleGroundStartX = 5300;
+	var beastBattleGroundEndX = 6300;
+	var beastBattleGroundStartY = 2500;
+	var beastBattleGroundEndY = 3400;
+	var shadowBattleGroundStartX = 600;
+	var shadowBattleGroundEndX = 1600;
+	var shadowBattleGroundStartY = 2500;
+	var shadowBattleGroundEndY = 3400;
+	var finalBattleGroundStartX = 3050;
+	var finalBattleGroundEndX = 3850;
+	var finalBattleGroundStartY = 850;
+	var finalBattleGroundEndY = 1850;
+	
+	if (playerX > beastBattleGroundStartX && playerX < beastBattleGroundEndX &&
+		playerY > beastBattleGroundStartY && playerY < beastBattleGroundEndY) {
+		
+			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[BEAST_BOSS].isPlaying()) {
+				bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+			}
+	}
+	else if (playerX > shadowBattleGroundStartX && playerX < shadowBattleGroundEndX &&
+		playerY > shadowBattleGroundStartY && playerY < shadowBattleGroundEndY) {
+		
+			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[SHADOW_BOSS].isPlaying()) {
+				bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+			}
+	}
+	else if (playerX > finalBattleGroundStartX && playerX < finalBattleGroundEndX &&
+		playerY > finalBattleGroundStartY && playerY < finalBattleGroundEndY) {
+		
+			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[FINAL_BOSS].isPlaying()) {
+				bg_music[AMBIENT_TENSION].fadeIn(AMBIENT_TENSION_FADE_IN_RATE);
+			}
+	}
+	else {
+		if (bg_music[AMBIENT_TENSION].isPlaying()) {
+			bg_music[AMBIENT_TENSION].fadeOut(AMBIENT_TENSION_FADE_IN_RATE);
+		}
+	}
 
 	// update music (for fades)
 	for (var i = 0; i < bg_music.length; i++) {

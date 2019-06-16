@@ -2,7 +2,7 @@ var audioType = undefined;
 var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
 
 const TOTAL_SFX = 3;
-const TOTAL_BG_MUSIC = 5;
+const TOTAL_BG_MUSIC = 6;
 
 var sfx = new Array(TOTAL_SFX);
 var bg_music = new Array(TOTAL_BG_MUSIC);
@@ -16,6 +16,7 @@ const FINAL_BOSS = 1;
 const SHADOW_BOSS = 2;
 const MENU_MUSIC = 3;
 const BEAST_BOSS = 4;
+const AMBIENT_TENSION = 5;
 
 var currentBackgroundMusic;
 
@@ -24,6 +25,8 @@ var musicVolume = 1;
 const BOSS_MUSIC_FADE_OUT_RATE = 0.02;
 const AMBIENT_MUSIC_FADE_IN_RATE =  0.005;
 const AMBIENT_MUSIC_FADE_OUT_RATE = 0.02;
+const AMBIENT_TENSION_FADE_IN_RATE =  0.02;
+const AMBIENT_TENSION_FADE_OUT_RATE =  0.02;
 
 //This will help set the correct format type based on browser
 var setAudioTypeAndSourceExtension = () => {
@@ -133,6 +136,7 @@ function loadAudio()
 	bg_music[SHADOW_BOSS].load("music/shadowBossBattleMusicV1");
 	bg_music[MENU_MUSIC].load("music/titleScreenMusic");
 	bg_music[BEAST_BOSS].load("music/finalBossBattleMusicV1"); // TODO: replace with beast boss music path when ready
+	bg_music[AMBIENT_TENSION].load("music/ambientTensionMusicV1");
 	
 	console.log("load audio");
 }
