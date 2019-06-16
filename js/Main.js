@@ -38,8 +38,8 @@ var endGamePending = false;
 var endGameSequenceTime = 0;
 
 // DEBUG CONTROLS - TURN OFF FOR FINAL RELEASE
-var debugDrawCursorCoordinates = true;
-var debugSaveLoadFromAnywhere = true;
+var debugDrawCursorCoordinates = false;
+var debugSaveLoadFromAnywhere = false;
 var debugDrawHitboxes = false;
 
 var Entities = [
