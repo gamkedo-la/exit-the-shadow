@@ -20,7 +20,7 @@ const Menu = new (function() {
 	let textColour = "#dacdc7"; // same as logo
 	
 	let classListMenu = ["New Game", "Continue", "Settings" , "Help", "Credits"];
-	let classListSettings = ["Volume", "Back"];
+	let classListSettings = ["Screen Shake", "Back"];
 	let classListHelp = ["Controls","Back"];
 	let classListCredits = ["Back"];
 	
@@ -78,7 +78,7 @@ const Menu = new (function() {
 	
 		switch(menuPageText[currentPage][Menu.cursor1]) {
 	
-		//MENU PAGE
+		// MAIN PAGE
 		case "New Game":
 		    gameIsStarted = true;
 		    switchMusic(AMBIENT_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
@@ -106,6 +106,13 @@ const Menu = new (function() {
 		    Menu.cursor1 = null;
 		    currentPage  = CREDITS_PAGE;
 		    break;
+			
+		// SETTINGS
+		case "Screen Shake":
+			camShakeOn = !camShakeOn;
+			break;
+			
+		// UNIVERSAL
 		case "Back":
 		    Menu.cursor1 = null;
 		    currentPage  = MENU_PAGE;
@@ -139,8 +146,20 @@ const Menu = new (function() {
 		canvasContext.textAlign = "center";
 	    for (let i = 0; i<menuPageText[currentPage].length; i++)
 	    {
-			strokeColorText(menuPageText[currentPage][i], itemsX, topItemY + rowHeight * i, 'black', 7)
-	        colorText(menuPageText[currentPage][i], itemsX, topItemY + rowHeight * i, textColour);
+			var text = menuPageText[currentPage][i];
+			
+			// update text to show current setting
+			if (text == "Screen Shake") {
+				if (camShakeOn) {
+					text += ": On";
+				}
+				else {
+					text += ": Off";
+				}
+			}
+			
+			strokeColorText(text, itemsX, topItemY + rowHeight * i, 'black', 7)
+	        colorText(text, itemsX, topItemY + rowHeight * i, textColour);
 
 			//Draw cursor
 			cursorPos = {x: itemsX - 100, y: topItemY + (this.cursor1 * rowHeight) - 25};
