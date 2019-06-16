@@ -25,9 +25,10 @@ function BeastBoss() {
 	this.moveSpeed = 0.5;
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
-	this.HP = 1;
+	this.HP = 40;
 	this.oldHP = this.HP;
 	this.maxHP = this.HP;
+	this.HP = 21;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
 
 	this.name = beastBossName;
@@ -35,7 +36,9 @@ function BeastBoss() {
 	
 	let phase = NOT_IN_BATTLE;
 	let behaviour = IDLE;
+	
 	let isDashing = false;
+	let distBeforeDashing = 250;
 
 	let attackCooldown = 0;
 	let Attack = null;
@@ -43,7 +46,7 @@ function BeastBoss() {
 	let attackHeight = 192;
 	let isAttacking = false;
 	let distBeforeAttacking = 80;
-	let minTimeBetweenAttacks = 30;
+	let minTimeBetweenAttacks = 40;
 	let timeSinceLastAttack = minTimeBetweenAttacks;
 	
 	let attackTime = 0;
@@ -55,12 +58,15 @@ function BeastBoss() {
 	let stunnedCooldown = 0;
 	let isStunned = false;
 	let stunned = false;
-	let stunTime = 75;
+	let stunTime = 100;
 	let stunThreshold;
 	let breathingOsc = 0; // oscillator, just advances for pulse effect
 	
 	let minTimesHitBeforeGettingStunned = 2;
 	let maxTimesHitBeforeGettingStunned = 5;
+	
+	let amountToChangeHairColor = 30;
+	let changeHairColor = amountToChangeHairColor;
 
 	this.prepHair = function () {
 		for(var eachHair=0;eachHair<70;eachHair++) {
@@ -71,13 +77,18 @@ function BeastBoss() {
 											ang: (Math.random() - 0.5) * 2,
 											vel: (Math.random() - 0.5) * 0.005,
 											hei: (Math.random()*3+0.7) * (i<bendDownJoint ? 1 : -0.7),
-											col: randCol};
+											r: r,
+											g: g,
+											b: b};
 			}
-			 var r = 70+75*Math.random()|0,
-			        g = 20+60*Math.random()|0,
-			        b = 5*Math.random()|0;
-			var randCol = 'rgb(' + r + ',' + g + ',' + b + ')';
-			this.beastHair[eachHair][0].col = randCol;
+			
+	 	   	var r = 70+75*Math.random()|0,
+	       	    g = 20+60*Math.random()|0,
+	       		b = 5*Math.random()|0;
+
+			this.beastHair[eachHair][0].r = r;
+			this.beastHair[eachHair][0].g = g;
+			this.beastHair[eachHair][0].b = b;
 			this.beastHair[eachHair][0].ang = Math.random() * Math.PI * 2.0;
 		}
 	}
@@ -168,6 +179,10 @@ function BeastBoss() {
 			
 			this.updateBehaviour();
 			EntityClass.prototype.move.call(this); // call superclass function
+			
+			if (this.HP <= this.maxHP / 2 && phase == PHASE_1) {
+				this.progressPhase();
+			}
 		}
 		else if (phase == PLAYER_DEAD) {
 			timeSincePlayerDeath++;
@@ -201,7 +216,7 @@ function BeastBoss() {
 		if(isDashing || isStunned){
 			return;
 		}
-		else if (distFromPlayer > 250){
+		else if (distFromPlayer > distBeforeDashing){
 			behaviour = DASHING;
 			isDashing = true;
 		}
@@ -334,7 +349,7 @@ function BeastBoss() {
 				wiggleMult = 10;
 				for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 					for(var i=1; i < this.beastHair[eachHair].length; i++) { // skipping root [0]
-						this.beastHair[eachHair][i].ang *= 0.8;
+						this.beastHair[eachHair][i].ang *= 0.7;
 					}
 					this.beastHair[eachHair][0].ang += (Math.cos(breathingOsc)) * 0.03; // spin whole thing
 				}
@@ -384,7 +399,7 @@ function BeastBoss() {
 		canvasContext.lineWidth = 1.5;
 		for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
 			canvasContext.beginPath();
-			canvasContext.strokeStyle = this.beastHair[eachHair][0].col;
+			canvasContext.strokeStyle = 'rgb(' + this.beastHair[eachHair][0].r + ',' + this.beastHair[eachHair][0].g + ',' + this.beastHair[eachHair][0].b + ')';
 			currX = this.x + this.width*0.5;
 			currY = this.y + this.height*0.5;
 			rAng = 0;
@@ -401,6 +416,15 @@ function BeastBoss() {
 		}
 		canvasContext.lineWidth = 1;
 		// EntityClass.prototype.draw.call(this);
+		
+		if (changeHairColor < amountToChangeHairColor) {
+			for(var eachHair=0; eachHair < this.beastHair.length; eachHair++) {
+				this.beastHair[eachHair][0].r -= 0.2;
+				this.beastHair[eachHair][0].g -= 1;
+				this.beastHair[eachHair][0].b -= 1;
+			}
+			changeHairColor++;
+		}
 	}
 	
 	this.progressPhase = function() {
@@ -409,7 +433,14 @@ function BeastBoss() {
 			this.isActive = true;
 		}
 		else if (phase == PHASE_1) {
-			phase = phase_2;
+			phase = PHASE_2;
+			this.followSpeed *= 2;
+			minTimesHitBeforeGettingStunned++;
+			maxTimesHitBeforeGettingStunned++;
+			stunTime /= 1.5;
+			distBeforeDashing /= 1.5;
+			changeHairColor = 0;
+			//isDashing = true;
 		}
 	}
 	
