@@ -41,6 +41,7 @@ var debris6 = document.createElement("img");
 var debris7 = document.createElement("img");
 var debris8 = document.createElement("img");
 var debris9 = document.createElement("img");
+var tutorialArrow = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -94,6 +95,7 @@ function loadImages() {
 		{varName: shadowHealingStatue, fileName: "healing_statue_2.png"},
 		{varName: cage, fileName: "cage_tileset.png"},
 		{varName: ruins, fileName: "ruins_1.png"},
+		{varName: tutorialArrow, fileName: "tutorial_arrow.png"},
 	];
 	
 	picsToLoad = imageList.length;

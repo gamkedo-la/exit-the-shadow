@@ -270,6 +270,7 @@ function PlayerClass() {
 					let objectWidth = window[object.imgName].width;
 					let objectHeight = window[object.imgName].height;
 					let objectCenterX = object.x + objectWidth / 2;
+					let objectCenterY = object.y + objectHeight / 2;
 					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
@@ -282,12 +283,20 @@ function PlayerClass() {
 							strokeColorText("Hold E To Heal", objectCenterX, object.y - 50, 'black', 1.5);
 							canvasContext.restore();
 					}
+					else if (distanceX < objectWidth && distanceY < objectHeight) {
+						showHealArrow = false;
+					}
+					else {
+						showHealArrow = true;
+						angleToHealLocation = Math.atan2(this.centerY() - objectCenterY, this.centerX() - objectCenterX);
+					}
 				}
 				else if (SortedArt[i].imgName == "typewriter") {
 					let object = SortedArt[i];
 					let objectWidth = window[object.imgName].width;
 					let objectHeight = window[object.imgName].height;
 					let objectCenterX = object.x + objectWidth / 2;
+					let objectCenterY = object.y + objectHeight / 2;
 					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
@@ -299,6 +308,13 @@ function PlayerClass() {
 							colorText("Press E To Save", objectCenterX, object.y - 50, '#dacdc7');
 							strokeColorText("Press E To Save", objectCenterX, object.y - 50, 'black', 1.5);
 							canvasContext.restore();
+					}
+					else if (distanceX < objectWidth*2 && distanceY < objectHeight*2) {
+						showSaveArrow = false;
+					}
+					else {
+						showSaveArrow = true;
+						angleToSaveLocation = Math.atan2(this.centerY() - objectCenterY, this.centerX() - objectCenterX);
 					}
 				}
 			}

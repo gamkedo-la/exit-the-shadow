@@ -30,6 +30,11 @@ var textDisplayTextColour = "rgba(255, 255, 255, 0.3)";
 var tutorialIsActive = false;
 var playerHasHealed = false;
 var playerHasSaved = false;
+var angleToHealLocation = 0;
+var angleToSaveLocation = 0;
+var showSaveArrow = false;
+var showHealArrow = false;
+var showArrow = false;
 
 var Entities = [
 	Player
@@ -207,14 +212,8 @@ function updateAll() {
 			}
 		}
 		
-		// show help text
-		if (tutorialIsActive) {
-			if (!playerHasHealed) {
-				// point player towards healing statue
-			}
-			else if (!playerHasSaved) {
-				// point player towards typewriter
-			}
+		if (playerHasHealed && playerHasSaved) {
+			tutorialIsActive = false;
 		}
 
 		if(savingGame) {
@@ -261,6 +260,37 @@ function drawGame() {
 
 	drawFloorTiles();
 	visibleTileEntities = getVisibleTileEntities();
+	
+	// show tutorial arrow
+	canvasContext.save();
+	canvasContext.translate(Player.centerX() - camPanX, Player.centerY() - camPanY);
+	if (tutorialIsActive) {
+		if (!playerHasHealed) {
+			if (showHealArrow) {
+				canvasContext.rotate(angleToHealLocation);
+				showArrow = true;
+			}
+			else {
+				showArrow = false;
+			}
+		}
+		else if (!playerHasSaved) {
+			if (showSaveArrow) {
+				canvasContext.rotate(angleToSaveLocation);
+				showArrow = true;
+			}
+			else {
+				showArrow = false;
+			}
+		}
+		
+		if (showArrow) {
+			var arrowWidth = 50;
+			var arrowHeight = 25;
+			canvasContext.drawImage(tutorialArrow, -arrowWidth / 2 - 45, -arrowHeight / 2, arrowWidth, arrowHeight);
+		}
+	}
+	canvasContext.restore();
 
 	canvasContext.save();
 	canvasContext.translate(-camPanX, -camPanY);
@@ -342,7 +372,7 @@ function drawGame() {
 			100-Math.sin(i*1234+frameCounter*1.331),
 			100-Math.sin(i*1234+frameCounter/2.012)*2.5);
 	}
-
+	
 	canvasContext.restore();
 
 	const lightPoses = [Player.x - camPanX, canvas.height - (Player.y - camPanY)];
