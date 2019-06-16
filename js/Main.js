@@ -382,7 +382,7 @@ function handleDeadEntities() {
 function quitToMenu() {
 	gameIsStarted = false;
 	gamePaused = false;
-	switchMusic(MENU_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
+	switchMusic(MENU_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 }
 
 function loadArt() {

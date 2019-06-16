@@ -49,7 +49,7 @@ const Menu = new (function() {
 		if (!menuMusicStarted) {
 			menuMusicStarted = true;
 			setTimeout(function() {
-				switchMusic(MENU_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
+				switchMusic(MENU_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 			}, 200);
 		}
 		
@@ -81,7 +81,7 @@ const Menu = new (function() {
 		// MAIN PAGE
 		case "New Game":
 		    gameIsStarted = true;
-		    switchMusic(AMBIENT_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
+		    switchMusic(AMBIENT_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 		    this.cursor1 = 0;
 		    break;
 		case "Continue":
@@ -90,7 +90,7 @@ const Menu = new (function() {
 		    	return;
 	        }
 	        gameIsStarted = true;
-		    switchMusic(AMBIENT_MUSIC, 1, AMBIENT_MUSIC_FADE_IN_RATE);
+		    switchMusic(AMBIENT_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 		    loadGame();
 		    Menu.cursor1 = 0;
 		    break;
@@ -164,7 +164,7 @@ const Menu = new (function() {
 			if (menuPageText[currentPage][Menu.cursor1] == menuPageText[currentPage][i]) {
 				//Draw cursor
 				var textWidth = canvasContext.measureText(text).width;
-				cursorPos = {x: itemsX - textWidth / 2 - 30, y: topItemY + (this.cursor1 * rowHeight) - 25};
+				cursorPos = {x: itemsX - textWidth / 2 - 30, y: topItemY + (this.cursor1 * rowHeight) - 27};
 				canvasContext.drawImage(arrowPic, cursorPos.x, cursorPos.y);
 			
 				if(menuTorches.length > 0) {

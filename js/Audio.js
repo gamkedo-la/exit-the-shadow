@@ -22,6 +22,7 @@ var musicVolume = 1;
 
 const BOSS_MUSIC_FADE_OUT_RATE = 0.02;
 const AMBIENT_MUSIC_FADE_IN_RATE =  0.005;
+const AMBIENT_MUSIC_FADE_OUT_RATE = 0.02;
 
 //This will help set the correct format type based on browser
 var setAudioTypeAndSourceExtension = () => {
