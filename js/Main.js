@@ -304,12 +304,12 @@ function updateAll() {
 
 		colorText("Paused", canvas.width/2, 50, '#dacdc7');
 		colorText("Press Q to quit", canvas.width/2, 100, '#dacdc7');
-		colorText("Current Play Time", canvas.width/2,250, '#dacdc7');
-		colorText(playTimeISOFormat, canvas.width/2,300, '#dacdc7');
+		colorText("Current Play Time", canvas.width/2,canvas.height - 70, '#dacdc7');
+		colorText(playTimeISOFormat, canvas.width/2,canvas.height - 20, '#dacdc7');
 		strokeColorText("Paused", canvas.width/2, 50, 'black', 1.5);
 		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 1.5);
-		strokeColorText("Current Play Time", canvas.width/2,250, 'black', 1.5);
-		strokeColorText(playTimeISOFormat, canvas.width/2,300, 'black', 1.5);
+		strokeColorText("Current Play Time", canvas.width/2,canvas.height - 70, 'black', 1.5);
+		strokeColorText(playTimeISOFormat, canvas.width/2,canvas.height - 20, 'black', 1.5);
 		canvasContext.restore();
 	}
 }
