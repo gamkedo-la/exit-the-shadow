@@ -19,14 +19,16 @@ const Menu = new (function() {
 	let textFontFaceCredits = "28px Impact";
 	let textColour = "#dacdc7"; // same as logo
 	
-	let classListMenu = ["New Game", "Continue", "Settings" , "Help", "Credits"];
+	let classListMenu = ["New Game", "Continue", "Settings" , "Controls", "Credits"];
 	let classListSettings = ["Screen Shake", "Back"];
-	let classListHelp = ["Controls","Back"];
+	let classListHelp = ["Back"];
 	let classListCredits = ["Back"];
 	
 	let menuPageText = [classListMenu, classListSettings, classListHelp, classListCredits];
 	
 	let menuMusicStarted = false;
+	
+	var displayControls = false;
 	
 	this.menuMouse = function(){
 	    for (let i=0; i<menuPageText[currentPage].length; i++){
@@ -98,9 +100,10 @@ const Menu = new (function() {
 		    Menu.cursor1 = 0;
 		    currentPage = SETTINGS_PAGE;
 		    break;
-		case "Help":
+		case "Controls":
 		    Menu.cursor1 = 0;
 		    currentPage  = HELP_PAGE;
+			displayControls = true;
 		    break;
 		case "Credits":
 		    Menu.cursor1 = 0;
@@ -116,6 +119,7 @@ const Menu = new (function() {
 		case "Back":
 		    Menu.cursor1 = null;
 		    currentPage  = MENU_PAGE;
+			displayControls = false;
 		    break;
 		}
 	}
@@ -144,6 +148,8 @@ const Menu = new (function() {
         canvasContext.save();
         canvasContext.font = textFontFace;
 		canvasContext.textAlign = "center";
+		var yOffset = topItemY;
+		var cursorOffset = topItemY - 27;
 	    for (let i = 0; i<menuPageText[currentPage].length; i++)
 	    {
 			var text = menuPageText[currentPage][i];
@@ -158,18 +164,41 @@ const Menu = new (function() {
 				}
 			}
 			
-			strokeColorText(text, itemsX, topItemY + rowHeight * i, 'black', 7)
-	        colorText(text, itemsX, topItemY + rowHeight * i, textColour);
+			if (displayControls) {
+				var xOffset = 120
+				for (var j = 0; j < controlsText.length; j++) {
+					strokeColorText(controlsText[j], itemsX - xOffset, yOffset, 'black', 3);
+					colorText(controlsText[j], itemsX - xOffset, yOffset, textColour);
+					j++;
+					if (j == controlsText.length) {
+						break;
+					}
+					strokeColorText(controlsText[j], itemsX + xOffset, yOffset, 'black', 3);
+					colorText(controlsText[j], itemsX + xOffset, yOffset, textColour);
+					yOffset += rowHeight;
+					cursorOffset += rowHeight;
+				}
+			}
+			
+			strokeColorText(text, itemsX, yOffset, 'black', 6)
+	        colorText(text, itemsX, yOffset, textColour);
+			yOffset += rowHeight;
 
 			if (menuPageText[currentPage][Menu.cursor1] == menuPageText[currentPage][i]) {
 				//Draw cursor
 				var textWidth = canvasContext.measureText(text).width;
-				cursorPos = {x: itemsX - textWidth / 2 - 30, y: topItemY + (this.cursor1 * rowHeight) - 27};
+				cursorPos = {x: itemsX - textWidth / 2 - 30, y: (this.cursor1 * rowHeight) + cursorOffset};
 				canvasContext.drawImage(arrowPic, cursorPos.x, cursorPos.y);
 			
 				if(menuTorches.length > 0) {
-					menuTorches[0].x = cursorPos.x;
-					menuTorches[0].y = canvas.height - cursorPos.y;	
+					if (displayControls) {
+						menuTorches[0].x = canvas.width / 2;
+						menuTorches[0].y = canvas.height / 2;	
+					}
+					else {
+						menuTorches[0].x = cursorPos.x;
+						menuTorches[0].y = canvas.height - cursorPos.y;	
+					}
 				}
 			}
 	    }

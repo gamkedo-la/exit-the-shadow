@@ -18,6 +18,19 @@ var helpScreenElapsedTime;
 var dt = new Date();
 var helpScreenLastTime = dt.getTime() / 1000.0;
 
+var controlsText = [
+	"W - Move Up",
+	"A - Move Left",
+	"S - Move Right",
+	"D - Move Down",
+	"E - Interact",
+	"Space - Dash",
+	"K - Attack",
+	"L - Shield",
+	"P - Pause",
+	"H - Help",
+]
+
 function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _textHeight, _padTop)
 {
 	var textColor = "rgba(128, 30, 30, " + _textAlpha + ")";
@@ -26,26 +39,12 @@ function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _
 
 	saveFont();
 	setFont("bold", 40, "Arial");
-	colorText("W - Move Up", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("A - Move Left", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("S - Move Right", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("D - Move Down", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("Space (while pressing a direction) - Dash", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("E - Interact", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("K - Attack facing direction", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("L - Shield", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("P - Pause", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
-	colorText("H - This highly informative help box!", padLeft, _padTop + _topBorder + textVPosShift, textColor);
-	textVPosShift += _textHeight;
+	
+	for (var i = 0; i < controlsText.length; i++) {
+		colorText(controlsText[i], padLeft, _padTop + _topBorder + textVPosShift, textColor);
+		textVPosShift += _textHeight;
+	}
+	
 	restoreFont();
 }
 
