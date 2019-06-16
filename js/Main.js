@@ -38,7 +38,7 @@ var showArrow = false;
 
 // DEBUG CONTROLS - TURN OFF FOR FINAL RELEASE
 var debugDrawCursorCoordinates = false;
-var debugSaveLoadFromAnywhere = false;
+var debugSaveLoadFromAnywhere = true;
 var debugDrawHitboxes = false;
 
 var Entities = [
