@@ -70,12 +70,12 @@ function playTime() {
 	if (gamePaused == false) {
 		
 			// Get Minutes
-			if(playTimeSeconds > 60) {
+			if(playTimeSeconds >= 60) {
 				playTimeMinutes = Math.floor(playTimeSeconds/60);
 			}
 			
 			// Get Hours
-			if(playTimeSeconds > 3600) {
+			if(playTimeSeconds >= 3600) {
 				playTimeHours = Math.floor(playTimeSeconds/3600);
 			}
 			
