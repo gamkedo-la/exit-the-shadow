@@ -12,7 +12,6 @@ var bossIsDefeated = false;
 var showBossDefeated = function() {}
 var bossDefeatedScreenTime = 0;
 var frameCounter = 0;
-
 var savingGame = false;
 var saveGameIndicationTime = 0;
 var shadowBossName = 'Shadow';
@@ -35,9 +34,11 @@ var angleToSaveLocation = 0;
 var showSaveArrow = false;
 var showHealArrow = false;
 var showArrow = false;
+var endGamePending = false;
+var endGameSequenceTime = 0;
 
 // DEBUG CONTROLS - TURN OFF FOR FINAL RELEASE
-var debugDrawCursorCoordinates = false;
+var debugDrawCursorCoordinates = true;
 var debugSaveLoadFromAnywhere = true;
 var debugDrawHitboxes = false;
 
@@ -349,6 +350,17 @@ function updateAll() {
 			if(upgradeAcquiredScreenTime > 90) {
 				upgradeAcquiredScreenTime = 0;
 				upgradeAcquired = false;
+			}
+		}
+		
+		// end game sequence TODO: complete this
+		if (endGamePending) {
+			textDisplay("end game sequence coming soon", textDisplayTextColour, bossDefeatedTextBackgroundColour);
+			endGameSequenceTime++;
+			if (endGameSequenceTime > 150) {
+				endGameSequenceTime = 0;
+				endGamePending = false;
+				quitToMenu();
 			}
 		}
 		
@@ -798,6 +810,14 @@ function loadSortedArt() {
 		{x: 4608, y: 2875, imgName: "cage"},
 		{x: 4416, y: 2800, imgName: "ruins"},
 		{x: 2144, y: 3296, imgName: "ruins"},
+		{x: 3264, y: 672, imgName: "tree"},
+		{x: 3264, y: 480, imgName: "tree"},
+		{x: 3264, y: 288, imgName: "tree"},
+		{x: 3264, y: 96, imgName: "tree"},
+		{x: 3616, y: 672, imgName: "tree"},
+		{x: 3616, y: 480, imgName: "tree"},
+		{x: 3616, y: 288, imgName: "tree"},
+		{x: 3616, y: 96, imgName: "tree"},
 	];
 	
 	// fill in height (/2) for art that needs sorting
@@ -854,5 +874,15 @@ function loadOverlayingArt() {
 		finalBossPlatformTorches[1],
 		//
 		{x:3944, y:2500, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		// final path torches
+		{x:3267, y:640, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		{x:3267, y:448, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:20/255},
+		{x:3267, y:256, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255},
+		{x:3619, y:640, imgName: 'torchPic', range:100, r:1/255, g:252/255, b:206/255},
+		{x:3619, y:448, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
+		{x:3619, y:256, imgName: 'torchPic', range:100, r:70/255, g:1/255, b:130/255},
+		{x:3443, y:-25, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255},
+		{x:3453, y:-35, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255},
+		{x:3433, y:-35, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255},
 	];
 }
