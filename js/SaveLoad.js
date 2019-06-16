@@ -87,7 +87,7 @@ function saveGame() {
 
     // debug
     console.log("saving game");
-    console.log(save);
+    //console.log(save);
 }
 
 function loadGame() {

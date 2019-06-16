@@ -27,6 +27,9 @@ var upgradeAcquired = false;
 var upgradeAcquiredScreenTime = 0;
 var bossDefeatedTextBackgroundColour = "rgba(0, 0, 0, 0.7)";
 var textDisplayTextColour = "rgba(255, 255, 255, 0.3)";
+var tutorialIsActive = false;
+var playerHasHealed = false;
+var playerHasSaved = false;
 
 var Entities = [
 	Player
@@ -201,6 +204,16 @@ function updateAll() {
 			if(upgradeAcquiredScreenTime > 90) {
 				upgradeAcquiredScreenTime = 0;
 				upgradeAcquired = false;
+			}
+		}
+		
+		// show help text
+		if (tutorialIsActive) {
+			if (!playerHasHealed) {
+				// point player towards healing statue
+			}
+			else if (!playerHasSaved) {
+				// point player towards typewriter
 			}
 		}
 
@@ -400,6 +413,12 @@ function quitToMenu() {
 	gameIsStarted = false;
 	gamePaused = false;
 	switchMusic(MENU_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
+}
+
+function startTutorial() {
+	tutorialIsActive = true;
+	playerHasHealed = false;
+	playerHasSaved = false;
 }
 
 function loadArt() {

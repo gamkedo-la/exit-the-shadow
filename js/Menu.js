@@ -85,6 +85,7 @@ const Menu = new (function() {
 		    gameIsStarted = true;
 			restartGame();
 			loadHelpScreen();
+			startTutorial();
 		    this.cursor1 = 0;
 		    break;
 		case "Continue":

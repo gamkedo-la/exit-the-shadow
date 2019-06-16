@@ -263,6 +263,47 @@ function PlayerClass() {
 			}
 		}
 		
+		if ((!playerHasHealed || !playerHasSaved) && tutorialIsActive) {
+			for (var i = 0; i < SortedArt.length; i++) {
+				if (SortedArt[i].imgName == "healingStatue") {
+					let object = SortedArt[i];
+					let objectWidth = window[object.imgName].width;
+					let objectHeight = window[object.imgName].height;
+					let objectCenterX = object.x + objectWidth / 2;
+					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+							canvasContext.save();
+							canvasContext.translate(-camPanX, -camPanY);
+							canvasContext.font = "35px Impact";
+							canvasContext.textAlign = "center";
+							colorText("Hold E To Heal", objectCenterX, object.y - 50, '#dacdc7');
+							strokeColorText("Hold E To Heal", objectCenterX, object.y - 50, 'black', 1.5);
+							canvasContext.restore();
+					}
+				}
+				else if (SortedArt[i].imgName == "typewriter") {
+					let object = SortedArt[i];
+					let objectWidth = window[object.imgName].width;
+					let objectHeight = window[object.imgName].height;
+					let objectCenterX = object.x + objectWidth / 2;
+					let distanceX = distanceBetweenEntityObjectX(this, object.x, objectWidth);
+					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
+					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
+						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+							canvasContext.save();
+							canvasContext.translate(-camPanX, -camPanY);
+							canvasContext.font = "35px Impact";
+							canvasContext.textAlign = "center";
+							colorText("Press E To Save", objectCenterX, object.y - 50, '#dacdc7');
+							strokeColorText("Press E To Save", objectCenterX, object.y - 50, 'black', 1.5);
+							canvasContext.restore();
+					}
+				}
+			}
+		}
+		
 		if (this.keyHeld_Interact) {
 			// interact with nearby things here
 			for (var i = 0; i < SortedArt.length; i++) {
@@ -274,6 +315,7 @@ function PlayerClass() {
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+							playerHasHealed = true;
 							this.regainHealthMeter++;
 					}
 				}
@@ -285,6 +327,7 @@ function PlayerClass() {
 					let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 					if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 						distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
+							playerHasSaved = true;
 							savingGame = true;
 					}
 				}
