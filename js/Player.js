@@ -106,6 +106,8 @@ function PlayerClass() {
 		this.regainHealthMeter = 0;
 		this.isDead = false;
 		phase = PHASE_PLAYABLE;
+		this.bossesKilled = [];
+		this.maxHP = 3;
 	}
 	
 	this.move = function () {
