@@ -34,15 +34,20 @@ const Menu = new (function() {
 	    for (let i=0; i<menuPageText[currentPage].length; i++){
 	        if(mouseX > itemsX - (itemsWidth / 2) && mouseX < itemsX + (itemsWidth / 2) && mouseY > topItemY + (i*rowHeight) - (rowHeight / 2) &&
 	         mouseY < topItemY + (i+1) * rowHeight - (rowHeight / 2)){
-	            this.cursor1 = i;
+//	            this.cursor1 = i;
+				this.setCursorIndex(i);
 	        } 
 	    }
-		
-	    if (this.cursor1 < 0){
+	}
+
+	this.setCursorIndex = function(index) {
+		this.cursor1 = index;
+
+		if (this.cursor1 < 0){
 	        this.cursor1 = menuPageText[currentPage].length -1;
 	    }
 	
-	    if (this.cursor1 > menuPageText[currentPage].length){
+	    if (this.cursor1 >= menuPageText[currentPage].length){
 	        this.cursor1 = 0;
 	    }
 	}
@@ -54,8 +59,6 @@ const Menu = new (function() {
 				switchMusic(MENU_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 			}, 200);
 		}
-		
-		this.menuMouse();
 
 	    this.draw();
 	}
@@ -77,6 +80,8 @@ const Menu = new (function() {
 		if (gameIsStarted) { 
 			return;
 		}
+
+		console.log(`Current Page: ${currentPage}, Cursor: ${Menu.cursor1}`);
 	
 		switch(menuPageText[currentPage][Menu.cursor1]) {
 	
@@ -121,7 +126,7 @@ const Menu = new (function() {
 			
 		// UNIVERSAL
 		case "Back":
-		    Menu.cursor1 = null;
+		    Menu.cursor1 = 0;
 		    currentPage  = MENU_PAGE;
 			displayControls = false;
 		    break;

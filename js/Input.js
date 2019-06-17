@@ -9,6 +9,7 @@ const KEY_L = 76; // SHIELD
 const KEY_P = 80; // PAUSE
 const KEY_H = 72; // HELP SCREEN KEY
 const KEY_Q = 81; // QUIT KEY
+const KEY_ENTER = 13;
 
 const LOG_MOUSE_CLICKS = false; // debug or level editing only
 
@@ -49,7 +50,16 @@ function setUpInput() {
 var gamePaused = false;
 
 function keySet(evt, player, isPressed) {
-  	if (isPressed && evt.keyCode == KEY_P) {
+	if(!gameIsStarted) {
+		if ((!isPressed && evt.keyCode == KEY_ENTER) || (!isPressed && evt.keyCode == KEY_SPACE)) {
+			Menu.changeMenuStateOnClick();
+		} else if(!isPressed && evt.keyCode == KEY_S) {
+			Menu.setCursorIndex(Menu.cursor1 + 1);
+		} else if(!isPressed && evt.keyCode == KEY_W) {
+			Menu.setCursorIndex(Menu.cursor1 - 1);
+		}
+	}
+	if (isPressed && evt.keyCode == KEY_P) {
   		gamePaused = !gamePaused;
   	}
   	if (isPressed && evt.keyCode == KEY_Q && gamePaused) {
@@ -97,10 +107,12 @@ function keyPressed(evt) {
 	keySet(evt, Player, true);
 	var helpScreenKey = KEY_H;
 	
-	if (evt.keyCode == helpScreenKey) {
-		if (helpScreen) {
+	if (helpScreen) {
+		if ((evt.keyCode == helpScreenKey) || (evt.keyCode == KEY_ENTER)) {
 			exitHelpScreen();
-		} else {
+		}
+	} else {
+		if(evt.keyCode == helpScreenKey) {
 			loadHelpScreen();
 		}
 	}
