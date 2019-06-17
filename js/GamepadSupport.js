@@ -30,9 +30,9 @@ function GamepadSupport() {
     let SIMULATED_KEY_DOWN = KEY_S;
     let SIMULATED_KEY_LEFT = KEY_A;
     let SIMULATED_KEY_RIGHT = KEY_D;
-    let SIMULATED_KEY_B_BUTTON = KEY_SPACE;
+    let SIMULATED_KEY_B_BUTTON = KEY_E;//KEY_SPACE;
     let SIMULATED_KEY_A_BUTTON = KEY_SPACE;
-    let SIMULATED_KEY_X_BUTTON = KEY_SPACE;
+    let SIMULATED_KEY_X_BUTTON = KEY_K;//KEY_SPACE;
     let SIMULATED_KEY_Y_BUTTON = KEY_SPACE;
 
     window.addEventListener("gamepadconnected", function (e) {
