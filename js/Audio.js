@@ -135,7 +135,7 @@ function loadAudio()
 	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");
 	bg_music[SHADOW_BOSS].load("music/shadowBossBattleMusicV1");
 	bg_music[MENU_MUSIC].load("music/titleScreenMusic");
-	bg_music[BEAST_BOSS].load("music/finalBossBattleMusicV1"); // TODO: replace with beast boss music path when ready
+	bg_music[BEAST_BOSS].load("music/beastBossBattleMusicV1"); // TODO: replace with beast boss music path when ready
 	bg_music[AMBIENT_TENSION].load("music/ambientTensionMusicV1");
 	
 	console.log("load audio");
