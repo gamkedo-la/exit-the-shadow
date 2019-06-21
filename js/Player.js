@@ -105,6 +105,8 @@ function PlayerClass() {
 		this.HP = 1;
 		this.regainHealthMeter = 0;
 		this.isDead = false;
+		isDashing = false;
+		dashCooldown = 0;
 		phase = PHASE_PLAYABLE;
 		this.bossesKilled = [];
 		this.maxHP = 3;

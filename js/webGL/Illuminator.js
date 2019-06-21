@@ -114,7 +114,7 @@ function Illuminator() {
                 darkAlpha += (thisDarkAlpha / 2.2);
             }
 
-            gl_FragColor.a = max(1.0 - gl_FragColor.a + darkAlpha, 0.25);
+            gl_FragColor.a = max(1.0 - gl_FragColor.a + darkAlpha, 0.35);
         }
         `;
     }
