@@ -16,7 +16,7 @@ const Menu = new (function() {
 	let currentPage = 0;
 	
 	let textFontFace = "32px Impact";
-	let textFontFaceCredits = "28px Impact";
+	let textFontFaceCredits = "14px Impact";
 	let textColour = "#dacdc7"; // same as logo
 	
 	let classListMenu = ["New Game", "Continue", "Settings" , "Controls", "Credits"];
@@ -24,6 +24,27 @@ const Menu = new (function() {
 	let classListHelp = ["Back"];
 	let classListCredits = ["Back"];
 	
+	let creditsList = [
+"Praneil Kamat: Project lead, main gameplay code, base enemy and attack functionality, shielding, map layout, push attacks, camera shake toggle, final boss variant of player sprite, healthbar hookups, healthy recovery, additional art integration, many bug fixes, shadow boss and final boss behavior, player harmed sounds, Safari sound fixes",
+"H Trayford: Floor tile implementation (based on Ygor art), webGL dynamic colored lighting, camera clamping, collision improvements, improved depth sorting support, platform support, shadow boss sprites, gamepad improvements, menu key interactions",
+"Ygor Dimas: Art direction, platform sprite, environment tiles, healing statue, typewriter, typewriter room and platform, ruins, cage, moth lamp, skeleton, tree",
+"Alan Zaring: All music (ambient, final boss, beast boss, shadow boss, title screen) and ambient tension",
+"Bilal A. Cheema: Player sprite and all animations, attack sound, vignette effect, player shield graphics",
+"Christer \"McFunkypants\" Kaitila: Canvas resizing, gamepad support, motion blur dash trail, tile sorting optimization, light glow effects, early player shadows, wall torch sprite, debris adaptation (based on Ygor art) and debris placement, webGL lighting adjustments, game logo",
+"Vaan Hope Khani: Font integration, main menu code, beast boss behavior code",
+"Lukas: Save and load functionality, save menu (not in final game), boss death text, last boss death check, typewriter sound effect and integration",
+"Simon J Hoffiz: Screen shake functionality, player UI for lives",
+"Bryan Pope: Help screen plus transitions, death text, respawn",
+"Terrence McDonnell: Additional menu codeetup, music loop support, dash and trail tuning",
+"Vince McKeown: Help screen improvements, game pauses if not in focus",
+"Ryan Malm: Collision velocity resolution code",
+"Chris DeLeon: Beast Boss procedrual hair",
+"Ryan Gaillard: Play timer functionality",
+"Matt Piwowarczyk: Pause functionality",
+"",
+"Special thanks: Randy Tan Shaoxian and Brian Nielsen. Game made in Gamkedo Club!"
+	];
+
 	let menuPageText = [classListMenu, classListSettings, classListHelp, classListCredits];
 	
 	let menuMusicStarted = false;
@@ -153,10 +174,28 @@ const Menu = new (function() {
 		}
 		
         canvasContext.save();
-        canvasContext.font = textFontFace;
+
+        if(currentPage == CREDITS_PAGE) {
+	        canvasContext.font = textFontFaceCredits;
+			canvasContext.textAlign = "center";
+			var yOffset = topItemY;
+			var cursorOffset = topItemY - 27;
+
+			for (let i = 0; i<creditsList.length; i++)
+		    {
+		    	var line = creditsList[i];
+		    	var lineX = canvas.width/2;
+		    	strokeColorText(line, lineX, yOffset, 'black', 3)
+		        colorText(line, lineX, yOffset, textColour);
+				yOffset += 14;
+		    }
+		}
+
+		canvasContext.font = textFontFace;
 		canvasContext.textAlign = "center";
-		var yOffset = topItemY;
-		var cursorOffset = topItemY - 27;
+		yOffset = topItemY;
+		cursorOffset = topItemY - 27;
+
 	    for (let i = 0; i<menuPageText[currentPage].length; i++)
 	    {
 			var text = menuPageText[currentPage][i];
