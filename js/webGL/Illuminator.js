@@ -4,7 +4,7 @@ const ILLUM_OFFSET_Y = 10;
 
 const playerLightRange = 400; //based on visual appeal
 const torchRange = 250;
-const maxLights = 12;
+const maxLights = 13;
 
 //Make some webGL stuff here
 function Illuminator() {
@@ -35,14 +35,16 @@ function Illuminator() {
     }
 
     const getFragmentShaderString = function() {
+        console.log("Browser Agent:");
+        console.log(navigator.userAgent);
         return `
         precision mediump float;
 
         uniform vec2 playerPosition;
         uniform float playerLightRange;
-        uniform vec2 lights[12];
-        uniform float lightRanges[12];
-        uniform vec3 colors[12];
+        uniform vec2 lights[13];
+        uniform float lightRanges[13];
+        uniform vec3 colors[13];
         uniform vec2 darks[3];
         uniform float darkRanges[3];
 
@@ -51,7 +53,7 @@ function Illuminator() {
 
             gl_FragColor.a = 1.0 - min(length(playerToFrag) / playerLightRange, 1.0);
 
-            for(int i = 0; i < 12; i++) {
+            for(int i = 0; i < 13; i++) {
                 vec2 fragToLight = lights[i] - gl_FragCoord.xy;
 
                 float thisLightAlpha = 1.0 - min(length(fragToLight) / lightRanges[i], 1.0);
@@ -74,12 +76,59 @@ function Illuminator() {
         `;
     }
 
+    const getFirefoxFragmentShaderString = function() {
+        return `
+        precision mediump float;
+
+        uniform vec2 playerPosition;
+        uniform float playerLightRange;
+        uniform vec2 lights[13];
+        uniform float lightRanges[13];
+        uniform vec3 colors[13];
+        uniform vec2 darks[3];
+        uniform float darkRanges[3];
+
+        void main() {
+            vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
+
+            gl_FragColor.a = 1.0 - min(length(playerToFrag) / playerLightRange, 1.0);
+            float minLightDist = 1.0 - gl_FragColor.a;
+
+            for(int i = 0; i < 13; i++) {
+                vec2 fragToLight = lights[i] - gl_FragCoord.xy;
+
+                float thisLightAlpha = min(length(fragToLight) / lightRanges[i], 1.0);
+                minLightDist = min(minLightDist, thisLightAlpha);
+                thisLightAlpha = 1.0 - thisLightAlpha;
+                gl_FragColor.rgb += (colors[i] * thisLightAlpha / 3.0);                
+            }
+
+            gl_FragColor.a += (1.0 - minLightDist);
+
+            float darkAlpha = 0.0;
+            for(int j = 0; j < 3; j++) {
+                vec2 fragToDark = darks[j] - gl_FragCoord.xy;
+
+                float thisDarkAlpha = 1.0 - min(length(fragToDark) / darkRanges[j], 1.0);
+
+                darkAlpha += (thisDarkAlpha / 2.2);
+            }
+
+            gl_FragColor.a = max(1.0 - gl_FragColor.a + darkAlpha, 0.25);
+        }
+        `;
+    }
+
     const getWebGLProgram = function() {
         const vertexShader = gl.createShader(gl.VERTEX_SHADER);
         const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
 
         gl.shaderSource(vertexShader, getVertexShaderString());
-        gl.shaderSource(fragmentShader, getFragmentShaderString());
+        if(navigator.userAgent.includes("Firefox")) {
+            gl.shaderSource(fragmentShader, getFirefoxFragmentShaderString());
+        } else {
+            gl.shaderSource(fragmentShader, getFragmentShaderString());
+        }
 
         gl.compileShader(vertexShader);
         if(!gl.getShaderParameter(vertexShader, gl.COMPILE_STATUS)) {

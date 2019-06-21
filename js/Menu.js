@@ -93,12 +93,11 @@ const Menu = new (function() {
 		if(logoPic.width > 0) {
 			itemsX = null;//forces recalculation of xPos for menu items
 
-			menuTorches = [];
-			menuTorches.push({x:cursorPos.x, y:canvas.height - cursorPos.y, imgName: 'torchPic', range:500, r:1, g:252/255, b:206/255});
-			menuTorches.push({x:(canvas.width/2)-(logoPic.width/2), y:canvas.height - 64, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255});
-			menuTorches.push({x:(canvas.width/2)+(logoPic.width/2), y:canvas.height - 64 - logoPic.height, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255});
-			menuTorches.push({x:canvas.width - 100, y:100, imgName: 'torchPic', range:100, r:1, g:25/255, b:20/255});
-			menuTorches.push({x:100, y:100, imgName: 'torchPic', range:100, r:1/255, g:25/255, b:206/255});
+			menuTorches = [{x:cursorPos.x, y:canvas.height - cursorPos.y}];//first light is just the 'player position' light (using the cursor position here in the menu)
+			menuTorches.push({x:100 + (canvas.width/2)-(logoPic.width/2), y:canvas.height - 64, imgName: 'torchPic', range:200, r:1/255, g:252/255, b:20/255});
+			menuTorches.push({x:(canvas.width/2)+(logoPic.width/2), y:canvas.height - 64 - logoPic.height, imgName: 'torchPic', range:200, r:1, g:252/255, b:206/255});
+			menuTorches.push({x:canvas.width - 100, y:100, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
+			menuTorches.push({x:100, y:100, imgName: 'torchPic', range:200, r:1/255, g:25/255, b:206/255});
 		}
 	}
 	
@@ -260,9 +259,9 @@ const Menu = new (function() {
 		}
 
 		//lights, colors, ranges, darks, darkRanges
-		const menuLights = [-1000, -1000];//no player => fake data
+		const menuLights = [cursorPos.x, canvas.height - cursorPos.y];
 		const menuColors = [];
-		const menuRanges = [];//no player => fake data
+		const menuRanges = [];
 		const menuDarks = [];
 		const menuDarkRanges = [];
 		
@@ -283,8 +282,8 @@ const Menu = new (function() {
 				menuColors.push(menuTorches[i].b);
 				menuRanges.push(menuTorches[i].range + (Math.sin(slowCounter)));
 			} else {
-				menuLights.push(-1000);
-				menuLights.push(-1000);
+				menuLights.push(0);
+				menuLights.push(0);
 				menuColors.push(0);
 				menuColors.push(0);
 				menuColors.push(0);
@@ -295,6 +294,7 @@ const Menu = new (function() {
 			menuDarks.push(0);
 			menuDarkRanges.push(0);
 		} 
+
 		const shadowOverlay = illuminator.getShadowOverlay(menuLights, menuColors, menuRanges, menuDarks, menuDarkRanges);
 		canvasContext.drawImage(shadowOverlay, 0, 0);
 	}
