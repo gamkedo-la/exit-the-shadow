@@ -1,3 +1,6 @@
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext(); // safari fix for delayed audio
+
 var audioType = undefined;
 var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
 
