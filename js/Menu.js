@@ -100,7 +100,6 @@ const Menu = new (function() {
 			loadGame();
 			restartGame();
 			loadGame(); // need to do this before and after restart game - not ideal but works for now
-			exitHelpScreen();
 			disableTutorial();
 		    Menu.cursor1 = 0;
 		    break;

@@ -156,6 +156,9 @@ function restartGame() {
 	resetPlayer();
 	resetPlayStats();
 	startWorld();
+	
+	mainGameState = true; 
+	helpScreen = false; // disable help screen in case it's on
 
 	removeDefeatedBosses();
 	loadArtAndCollisionForBossDefeatedRooms();
@@ -740,6 +743,32 @@ function loadGroundArt() {
 		{x:4396, y:3039, imgName: 'debris9'},
 		{x:3473, y:1796, imgName: 'debris9'},
 		{x:3414, y:1798, imgName: 'debris9'},
+		// Path to shadow boss
+		{x: 2000, y: 2930, imgName: "skeleton1"},
+		{x: 2080, y: 2980, imgName: "skeleton4"},
+		{x: 2200, y: 3000, imgName: "skeleton2"},
+		{x: 2200, y: 2900, imgName: "skeleton3"},
+		{x: 2300, y: 2950, imgName: "skeleton4"},
+		{x: 2400, y: 2910, imgName: "skeleton2"},
+		{x: 2420, y: 3000, imgName: "skeleton3"},
+		// Path to beast boss
+		{x: 4190, y: 2830, imgName: "skeleton1"},
+		{x: 4270, y: 2820, imgName: "skeleton4"},
+		{x: 4340, y: 2810, imgName: "skeleton2"},
+		{x: 4630, y: 2830, imgName: "skeleton3"},
+		{x: 4720, y: 2810, imgName: "skeleton1"},
+		// Path to final boss
+		{x: 3000, y: 2180, imgName: "skeleton1"},
+		{x: 3100, y: 2280, imgName: "skeleton4"},
+		{x: 3200, y: 2180, imgName: "skeleton2"},
+		{x: 3080, y: 2150, imgName: "skeleton3"},
+		{x: 3210, y: 2070, imgName: "skeleton1"},
+		{x: 3150, y: 2230, imgName: "skeleton4"},
+		{x: 3230, y: 2260, imgName: "skeleton2"},
+		{x: 3080, y: 2030, imgName: "skeleton3"},
+		{x: 3210, y: 1950, imgName: "skeleton3"},
+		{x: 3000, y: 1960, imgName: "skeleton1"},
+		{x: 3150, y: 2000, imgName: "skeleton4"},
 	];
 }
 
@@ -749,15 +778,16 @@ function loadSortedArt() {
 		{x: 3652, y: 3040, imgName: "typewriter"},
 		{x: 3738, y: 3040, imgName: "bed"},
 		{x: 3686, y: 3055, imgName: "plant"},
-		{x: 1900, y: 2900, imgName: "plant"},
-		{x: 1931, y: 2896, imgName: "plant"},
-		{x: 1899, y: 2882, imgName: "plant"},
-		{x: 1936, y: 2923, imgName: "plant"},
-		{x: 1894, y: 2931, imgName: "plant"},
+		{x: 2530, y: 2980, imgName: "plant"},
+		{x: 2530, y: 2940, imgName: "plant"},
+		{x: 1894, y: 2980, imgName: "plant"},
+		{x: 1894, y: 2940, imgName: "plant"},
 		{x: 3710, y: 3030, imgName: "table"},
 		{x: 3680, y: 2144, imgName: "entrance"},
 		{x: 2144, y: 2624, imgName: "entrance"},
 		{x: 3296, y: 2920, imgName: "gateway"},
+		{x: 3555, y: 2770, imgName: "mothLamp"},
+		{x: 3325, y: 2770, imgName: "mothLamp"},
 		{x: 4192, y: 2875, imgName: "cage"},
 		{x: 4608, y: 2875, imgName: "cage"},
 		{x: 4416, y: 2800, imgName: "ruins"},
