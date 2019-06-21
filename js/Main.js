@@ -57,61 +57,55 @@ var LightSourcesThisFrame = [];
 
 var mouseX, mouseY;
 
-// PLAYTIME
+// PLAYSTATS
 var playTimeSeconds = 0;
-var playTimeMinutes = 0;
-var playTimeHours = 0;
-var playTimeDate = new Date(null);
-var displayMinutes = 0;
-var displaySeconds = 0;
-var displayHours = 0;
-var playTimeISOFormat;
+var playTimeISOFormat = setPlayTimeDisplayText();
+var totalDeaths = 0;
 
 function playTime() {
-	if (gamePaused == false) {
-		
-			// Get Minutes
-			if(playTimeSeconds >= 60) {
-				playTimeMinutes = Math.floor(playTimeSeconds/60);
-			}
-			
-			// Get Hours
-			if(playTimeSeconds >= 3600) {
-				playTimeHours = Math.floor(playTimeSeconds/3600);
-			}
-			
-			playTimeDate.setSeconds(playTimeSeconds);
-			playTimeDate.setMinutes(playTimeMinutes);
-			playTimeDate.setHours(playTimeHours);
-
-			displaySeconds = playTimeDate.getSeconds();
-			displayMinutes = playTimeDate.getMinutes();
-			displayHours =  playTimeDate.getHours();
-
-			// NOt displaying correctly, may be a bug or something else 
-			// if(displaySeconds < 10 && displayMinutes < 1 && displayHours < 1) {
-			// 	playTimeISOFormat = `00:00:0${displaySeconds}`
-			// } 
-			// if(displaySeconds > 10 && displayMinutes < 1 && displayHours < 1) {
-			// 	playTimeISOFormat = `00:00:${displaySeconds}`
-			// } 
-			// if(displaySeconds < 10 && displayMinutes < 10 && displayHours < 1) {
-			// 	playTimeISOFormat = `00:0${displayMinutes}:${displaySeconds}`
-			// }
-			// if(displaySeconds > 10 && displayMinutes > 10 && displayHours < 1) {
-			// 	playTimeISOFormat = `00:${displayMinutes}:${displaySeconds}`
-			// }
-			// if(displaySeconds < 10 && displayMinutes < 10 && displayHours < 10) {
-			// 	playTimeISOFormat = `0${displayHours}:0${displayMinutes}:0${displaySeconds}`
-			// }
-			// if(displaySeconds < 10 && displayMinutes < 10 && displayHours < 10) {
-			// 	playTimeISOFormat = `${displayHours}:${displayMinutes}:${displaySeconds}`
-			// }
-
-			playTimeSeconds++;
-			playTimeISOFormat = `${displayHours}:${displayMinutes}:${displaySeconds}`
-			console.log(playTimeISOFormat);
+	if (!gamePaused && gameIsStarted) {
+		setPlayTimeDisplayText();
+		playTimeSeconds++;
 	}
+}
+
+function setPlayTimeDisplayText() {
+	var playTimeMinutes = 0;
+	var playTimeHours = 0;
+	var playTimeDate = new Date(null);
+	var displayMinutes = 0;
+	var displaySeconds = 0;
+	var displayHours = 0;
+
+	// Get Minutes
+	if(playTimeSeconds >= 60) {
+		playTimeMinutes = Math.floor(playTimeSeconds/60);
+	}
+	
+	// Get Hours
+	if(playTimeSeconds >= 3600) {
+		playTimeHours = Math.floor(playTimeSeconds/3600);
+	}
+	
+	playTimeDate.setSeconds(playTimeSeconds);
+	playTimeDate.setMinutes(playTimeMinutes);
+	playTimeDate.setHours(playTimeHours);
+
+	displaySeconds = playTimeDate.getSeconds();
+	displayMinutes = playTimeDate.getMinutes();
+	displayHours =  playTimeDate.getHours();
+	
+	if (displayHours   < 10) {displayHours   = "0"+displayHours;}
+	if (displayMinutes < 10) {displayMinutes = "0"+displayMinutes;}
+	if (displaySeconds < 10) {displaySeconds = "0"+displaySeconds;}
+
+	playTimeISOFormat = `${displayHours}:${displayMinutes}:${displaySeconds}`
+}
+
+function resetPlayStats() {
+	playTimeSeconds = 0;
+	totalDeaths = 0;
+	setPlayTimeDisplayText();
 }
 
 function displayMousePos(evt) {
@@ -323,12 +317,12 @@ function updateAll() {
 
 		colorText("Paused", canvas.width/2, 50, '#dacdc7');
 		colorText("Press Q to quit", canvas.width/2, 100, '#dacdc7');
-		colorText("Current Play Time", canvas.width/2,canvas.height - 70, '#dacdc7');
-		colorText(playTimeISOFormat, canvas.width/2,canvas.height - 20, '#dacdc7');
+		colorText("Play Time / Deaths", canvas.width/2,canvas.height - 70, '#dacdc7');
+		colorText(playTimeISOFormat + " / " + totalDeaths, canvas.width/2,canvas.height - 20, '#dacdc7');
 		strokeColorText("Paused", canvas.width/2, 50, 'black', 1.5);
 		strokeColorText("Press Q to quit", canvas.width/2, 100, 'black', 1.5);
-		strokeColorText("Current Play Time", canvas.width/2,canvas.height - 70, 'black', 1.5);
-		strokeColorText(playTimeISOFormat, canvas.width/2,canvas.height - 20, 'black', 1.5);
+		strokeColorText("Play Time / Deaths", canvas.width/2,canvas.height - 70, 'black', 1.5);
+		strokeColorText(playTimeISOFormat + " / " + totalDeaths, canvas.width/2,canvas.height - 20, 'black', 1.5);
 		canvasContext.restore();
 	}
 }

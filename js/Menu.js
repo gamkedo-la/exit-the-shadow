@@ -89,6 +89,7 @@ const Menu = new (function() {
 		case "New Game":
 		    gameIsStarted = true;
 			restartGame();
+			resetPlayStats();
 			loadHelpScreen();
 			startTutorial();
 		    this.cursor1 = 0;

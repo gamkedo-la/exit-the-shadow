@@ -584,6 +584,7 @@ function PlayerClass() {
 	{
 		if (this.isDead)
 		{
+			totalDeaths++;
 			gameRestartPending = true;
 			return true;
 		}

@@ -74,12 +74,11 @@ function SaveData(name, positionX, positionY, health, bossesKilled, heartsAcquir
 	this.heartsAcquired = heartsAcquired;
     this.deaths = deaths;
     this.timePlayed = timePlayed;
-    this.dateTimeSaved = Date.now();
 }
 
 function saveGame() {
     sfx[SAVE_SFX].play();
-    var save = new SaveData("save1", Player.x + Player.width / 2, Player.y + Player.height / 2, Player.HP, Player.bossesKilled, Player.heartsAcquired, 0, 0);
+    var save = new SaveData("save1", Player.x + Player.width / 2, Player.y + Player.height / 2, Player.HP, Player.bossesKilled, Player.heartsAcquired, totalDeaths, playTimeSeconds);
     var savesArray = new Array();
     savesArray.push(save);
 
@@ -124,6 +123,10 @@ function restoreValues(save) {
 	Player.heartsAcquired = save.heartsAcquired;
 	Player.updateMaxHP();
 	Player.updateDamage();
+	
+	totalDeaths = save.deaths;
+	playTimeSeconds = save.timePlayed;
+	setPlayTimeDisplayText();
 
     removeDefeatedBosses();
 }
