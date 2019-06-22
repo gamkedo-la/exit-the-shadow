@@ -170,13 +170,13 @@ const Menu = new (function() {
 	    this.redraw();
 	
 		canvasContext.drawImage(titlePic, 0,0);
-		canvasContext.drawImage(logoPic, (canvas.width/2)-(logoPic.width/2),canvas.height/2 - 220);
+		canvasContext.drawImage(logoPic, (canvas.width/2)-(logoPic.width/2),canvas.height/2 - 280);
 		
 		if (itemsX == null) {
 			itemsX = canvas.width / 2;
 		}
 		if (topItemY == null) {
-			topItemY = canvas.height/2 - 220 + logoPic.height + 64;
+			topItemY = canvas.height/2 - 280 + logoPic.height + 64;
 		}
 		
         canvasContext.save();
