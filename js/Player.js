@@ -108,6 +108,9 @@ function PlayerClass() {
 		isDashing = false;
 		dashCooldown = 0;
 		phase = PHASE_PLAYABLE;
+		this.directionFacing = UP;
+		this.forceX = 0;
+		this.forceY = 0;
 	}
 
 	this.resetStats = function () {
@@ -122,6 +125,9 @@ function PlayerClass() {
 		this.damage = 1;
 		this.heartsAcquired.shadowHeartAcquired = false;
 		this.heartsAcquired.beastHeartAcquired = false;
+		this.directionFacing = UP;
+		this.forceX = 0;
+		this.forceY = 0;
 	}
 	
 	this.move = function () {
