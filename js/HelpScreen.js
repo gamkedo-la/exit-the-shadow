@@ -1,3 +1,5 @@
+// gitty up hubba dubba dot com!
+
 var m_backgroundTransitionTime = 0.25;
 var m_textTransitionTime = 0.3;
 var m_transitioningOutTime = 0.5;
@@ -59,17 +61,17 @@ function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _
 	canvasContext.textAlign = "center";
 	for (var i = 0; i < controlsText.length; i++) {
 		var text = controlsText[i];
-		
+
 		if (text == "H - Help") {
 			text = "H - Show / Hide Help Box";
 			textVPosShift += _textHeight;
 		}
-		
+
 		colorText(text, padLeft, _padTop + _topBorder + textVPosShift, textColor);
 		strokeColorText(text, padLeft, _padTop + _topBorder + textVPosShift, "rgba(0, 0, 0, " + _textAlpha + ")", 1.5);
 		textVPosShift += _textHeight;
 	}
-	
+
 	restoreFont();
 	canvasContext.restore();
 }
