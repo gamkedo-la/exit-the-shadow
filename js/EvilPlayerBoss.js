@@ -152,14 +152,16 @@ function EvilPlayerBoss() {
 				}
 			}
 			else if (behaviour == SIMPLE_ATTACK) {
-				attackTime++;
-				if (attackTime < attackChargeTime) {
-					isChargingAttack = true;
-				}
-				else if (attackTime >= attackChargeTime) {
-					isChargingAttack = false;
-					attackTime = 0;
-					this.initiateAttack();
+				if (attackCooldown <= 0) {
+					attackTime++;
+					if (attackTime < attackChargeTime) {
+						isChargingAttack = true;
+					}
+					else if (attackTime >= attackChargeTime) {
+						isChargingAttack = false;
+						attackTime = 0;
+						this.initiateAttack();
+					}
 				}
 			}
 			else if (behaviour == SHIELD) {
