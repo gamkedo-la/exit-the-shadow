@@ -156,6 +156,15 @@ function loadArtAndCollisionForBossDefeatedRooms() {
 	generateFloorTiles();
 }
 
+
+addHealingStatueCollisionData = function(xCollisionStart, xCollisionEnd, yCollisionStart, yCollisionEnd) {
+	for (var i = yCollisionStart * TILE_COLS; i <= yCollisionEnd * TILE_COLS; i += TILE_COLS) {
+		for (var j = xCollisionStart; j <= xCollisionEnd; j++) {
+			tileGrid[i + j] = 64;
+		}
+	}
+}
+
 function restartGame(fullPlayerReset) {
 	gameRestartPending = false;
 	if (fullPlayerReset) {

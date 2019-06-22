@@ -470,21 +470,21 @@ function BeastBoss(name) {
 	
 	this.addHealingStatue = function() {
 		let xPos = 5760, yPos = 2592;
-		SortedArt.push({x: xPos, y: yPos, imgName: "beastHealingStatue", height: window["beastHealingStatue"].height});
+		let xCollisionStart = 180, xCollisionEnd = 181, yCollisionStart = 83, yCollisionEnd = 84;
+		if ((Player.x + Player.width) < (xCollisionStart * TILE_W) || Player.x > (xCollisionEnd * TILE_W + TILE_W) ||
+			(Player.y + Player.height) < (yCollisionStart * TILE_H) || Player.y - (Player.collisionBoxHeight - Player.height) > (yCollisionEnd * TILE_H + TILE_H)) {
+				SortedArt.push({x: xPos, y: yPos, imgName: "beastHealingStatue", height: window["beastHealingStatue"].height});
 		
-		OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
+				OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
 		
-		this.addHealingStatueCollisionData();
+				addHealingStatueCollisionData(xCollisionStart, xCollisionEnd, yCollisionStart, yCollisionEnd);
 		
-		generateTileEntities();
-		generateFloorTiles();
-	}
-	
-	this.addHealingStatueCollisionData = function() {
-		for (var i = 83 * TILE_COLS; i <= 84 * TILE_COLS; i += TILE_COLS) {
-			for (var j = 180; j <= 181; j++) {
-				tileGrid[i + j] = 64;
+				generateTileEntities();
+				generateFloorTiles();
 			}
+		else {
+			beastBoss = new BeastBoss();
+			setTimeout(beastBoss.addHealingStatue, 100);
 		}
 	}
 
