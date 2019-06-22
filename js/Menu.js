@@ -92,6 +92,7 @@ const Menu = new (function() {
 	this.resizingCanvas = function() {
 		if(logoPic.width > 0) {
 			itemsX = null;//forces recalculation of xPos for menu items
+			topItemY = null;
 
 			menuTorches = [];
 			menuTorches.push({x:100 + (canvas.width/2)-(logoPic.width/2), y:canvas.height - 64, imgName: 'torchPic', range:200, r:1/255, g:252/255, b:20/255});
@@ -169,13 +170,13 @@ const Menu = new (function() {
 	    this.redraw();
 	
 		canvasContext.drawImage(titlePic, 0,0);
-		canvasContext.drawImage(logoPic, (canvas.width/2)-(logoPic.width/2),64);
+		canvasContext.drawImage(logoPic, (canvas.width/2)-(logoPic.width/2),canvas.height/2 - 220);
 		
 		if (itemsX == null) {
 			itemsX = canvas.width / 2;
 		}
 		if (topItemY == null) {
-			topItemY = 64 + logoPic.height + 64;
+			topItemY = canvas.height/2 - 220 + logoPic.height + 64;
 		}
 		
         canvasContext.save();
