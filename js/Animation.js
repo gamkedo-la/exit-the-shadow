@@ -1,5 +1,7 @@
-function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animationSpriteHeight, animationSpritePadding, animationStates) {
-	
+function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animationSpriteHeight, animationSpritePadding, animationStates, name) {
+
+	this.name = name;
+
 	let spriteSheet = animationSpriteSheet;
 	let spriteWidth = animationSpriteWidth;
 	let spriteHeight = animationSpriteHeight;
@@ -7,15 +9,15 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 
 	let totalWidth = spriteWidth + (spritePadding*2);
 	let totalHeight = spriteHeight + (spritePadding*2);
-	
+
 	let states = animationStates;
 	let currentState = states[Object.keys(states)[0]];
-	
+
 	let frameCol = currentState.startFrame;
 	let frameRow = 0;
 	let tickCount = 0;
 	let ticksPerFrame = Math.round(1 / currentState.animationSpeed);
-	
+
 	this.render = function() {
 		canvasContext.drawImage(
 			spriteSheet,
@@ -29,13 +31,13 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 			totalHeight
 		)
 	}
-	
+
 	this.update = function() {
 		tickCount++;
-		
+
 		if (tickCount > ticksPerFrame) {
 			tickCount = 0;
-			
+
 			if (frameCol < currentState.startFrame) { // catch being out of bounds
 				frameCol = currentState.startFrame;
 			}
@@ -47,18 +49,25 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 			}
 		}
 	}
-	
+
 	this.changeState = function(stateName) {
 		var newState = states[stateName];
-		
+
 		if (newState != currentState && newState != null) {
 			currentState = newState;
-			
+
 			frameCol = currentState.startFrame;
 			ticksPerFrame = Math.round(1 / currentState.animationSpeed);
 		}
+
+		// console.log(stateName);
+		// console.log(this.name);
+		// if (this.name === "Player" /*&& newState === "walk"*/) {
+		// 	console.log("hello walking conditional check");
+		// 	setInterval(playMultiSound(arrayOfFootstepSounds), 250);
+		// }
 	}
-	
+
 	this.setEntityDirection = function(spriteSheetFrameCol) {
 		frameRow = spriteSheetFrameCol;
 	}

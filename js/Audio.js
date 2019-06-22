@@ -4,7 +4,7 @@ const audioCtx = new AudioContext(); // safari fix for delayed audio
 var audioType = undefined;
 var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
 
-const TOTAL_SFX = 3;
+const TOTAL_SFX = 10;
 const TOTAL_BG_MUSIC = 6;
 
 var sfx = new Array(TOTAL_SFX);
@@ -13,6 +13,13 @@ var bg_music = new Array(TOTAL_BG_MUSIC);
 const ATTACK_SFX = 0;
 const SAVE_SFX = 1;
 const GOT_HIT_SFX = 2;
+const FOOTSTEP1 = 3;
+const FOOTSTEP2 = 4;
+const FOOTSTEP3 = 5;
+const FOOTSTEP4 = 6;
+const FOOTSTEP5 = 7;
+const FOOTSTEP6 = 8;
+const FOOTSTEP7 = 9;
 
 const AMBIENT_MUSIC = 0;
 const FINAL_BOSS = 1;
@@ -53,7 +60,7 @@ function AudioClass() {
 	this.tag = '';
 	this.fadingOut = false;
 	let fadeOutRate = 0.1;
-	
+
 	this.fadingIn = false;
 	let fadeInRate = 0.1;
 
@@ -61,35 +68,35 @@ function AudioClass() {
 		this.sound = new Audio(file+audioFormat);
 		if (this.tag == 'music') {
 			this.sound.loop = true;
-		} 
+		}
 	}
-	
+
 	this.play = function() {
 		this.sound.currentTime = 0;
 		this.sound.play();
 	}
-	
+
 	this.stop = function() {
 		this.sound.pause();
 		this.sound.currentTime = 0;
 	}
-	
+
 	this.fadeOut = function(fadeOutRate_) {
 		fadeOutRate = fadeOutRate_;
 	    this.fadingOut = true;
 	}
-	
+
 	this.fadeIn = function(fadeInRate_) {
 		fadeInRate = fadeInRate_;
 		this.sound.volume = 0;
 		this.play();
 	    this.fadingIn = true;
 	}
-	
+
 	this.isPlaying = function() {
 		return !this.sound.paused;
 	}
-	
+
 	this.update = function() {
 		if (this.fadingOut) {
 			if (this.sound.volume <= fadeOutRate) {
@@ -119,7 +126,7 @@ function initAudio()
 		sfx[i] = new AudioClass();
 		sfx[i].tag = 'sfx';
 	}
-		
+
 	for(var i = 0; i < TOTAL_BG_MUSIC; i++) {
 		bg_music[i] = new AudioClass();
 		bg_music[i].tag = 'music';
@@ -131,6 +138,13 @@ function loadAudio()
 	sfx[ATTACK_SFX].load("sfx/attack");
 	sfx[SAVE_SFX].load("sfx/typewriter");
 	sfx[GOT_HIT_SFX].load("sfx/got_hit");
+	sfx[FOOTSTEP1].load("sfx/footstep1");
+	sfx[FOOTSTEP2].load("sfx/footstep2");
+	sfx[FOOTSTEP3].load("sfx/footstep3");
+	sfx[FOOTSTEP4].load("sfx/footstep4");
+	sfx[FOOTSTEP5].load("sfx/footstep5");
+	sfx[FOOTSTEP6].load("sfx/footstep6");
+	sfx[FOOTSTEP7].load("sfx/footstep7");
 
 	bg_music[AMBIENT_MUSIC].load("music/ambientBackgroundMusic");
 	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");
@@ -146,6 +160,33 @@ function switchMusic(newMusic, fadeOutRate, fadeInRate) {
 			bg_music[i].fadeOut(fadeOutRate);
 		}
 	}
-	
+
 	bg_music[newMusic].fadeIn(fadeInRate);
+}
+
+function getRandomInt(min, max) {
+  let randomInt = min + Math.floor(Math.random() * (max - min + 1));
+  return randomInt;
+}
+
+let arrayOfFootstepSounds = [];
+
+function initializeArrayOfFootstepSounds() {
+	arrayOfFootstepSounds = [sfx[FOOTSTEP1], sfx[FOOTSTEP2], sfx[FOOTSTEP3], sfx[FOOTSTEP4],
+																sfx[FOOTSTEP5], sfx[FOOTSTEP6], sfx[FOOTSTEP7]];
+}
+//multisound is the name of the function from FMOD that is intended to add variety to repetitive sounds to help increase
+//aural aesthetics and prevent ear fatigue, this is a basic version using pitch shifted audio files based on the original
+//sound and volume randomization
+function playMultiSound(arrayOfSoundsToVarietize) {
+	console.log("arrayOfSoundsToVarietize, " + arrayOfSoundsToVarietize );
+  let arrayLength = arrayOfSoundsToVarietize.length;
+  let randomArrayIndex = getRandomInt(0, arrayLength - 1);
+  let randomSoundFromArray = arrayOfSoundsToVarietize[randomArrayIndex].sound;
+  let randomVolume = getRandomInt(8,10);
+//  console.log("base volume: " + randomSoundFromArray.volume + ", random volume: " + randomVolume);
+console.log(randomSoundFromArray);
+  randomVolume = Math.min(randomVolume/10, randomSoundFromArray.volume);
+  randomSoundFromArray.volume = randomVolume;
+  randomSoundFromArray.play();
 }

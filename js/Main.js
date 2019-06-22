@@ -58,7 +58,7 @@ var mouseX, mouseY;
 function displayMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
 	var root = document.documentElement;
-	
+
 	mouseX = evt.clientX - rect.left - root.scrollLeft;
 	mouseY = evt.clientY - rect.top - root.scrollTop;
 
@@ -66,13 +66,13 @@ function displayMousePos(evt) {
 		Menu.menuMouse();
 	}
 }
-	
+
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
 
 	illuminator = new Illuminator();
-	
+
 	window.addEventListener("resize", resizeCanvas);
 	window.addEventListener('focus', function () {
 		gamePaused = false;
@@ -86,13 +86,14 @@ window.onload = function() {
 	resizeCanvas();
 
 	colorRect(0,0, canvas.width,canvas.height, 'white');
-	
+
 	loadImages();
-	
+
 	canvas.addEventListener('mousemove', displayMousePos);
-	
+
 	initAudio();
 	loadAudio();
+	initializeArrayOfFootstepSounds();
 }
 
 function resizeCanvas() {
@@ -123,7 +124,7 @@ function startWorld() {
 function removeDefeatedBosses() {
     for(var i=Entities.length-1; i>=0;i--) {
         var entity = Entities[i];
-        
+
         Player.bossesKilled.forEach(boss => {
             if(entity.name == boss) {
                 Entities.splice(i, 1);
@@ -148,7 +149,7 @@ function loadArtAndCollisionForBossDefeatedRooms() {
 			// load final boss room object collision data
 		}
     });
-	
+
 	generateTileEntities();
 	generateFloorTiles();
 }
@@ -172,13 +173,13 @@ function restartGame(fullPlayerReset) {
 		partialResetPlayer();
 	}
 	startWorld();
-	
-	mainGameState = true; 
+
+	mainGameState = true;
 	helpScreen = false; // disable help screen in case it's on
 
 	removeDefeatedBosses();
 	loadArtAndCollisionForBossDefeatedRooms();
-	
+
 	if (!bg_music[AMBIENT_MUSIC].isPlaying()) {
 		switchMusic(AMBIENT_MUSIC, BOSS_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 	}
@@ -208,7 +209,7 @@ function updateAll() {
 		Menu.update();
 		mainLightRange = menuLightRange;
 		return;
-	}	
+	}
 	if (gamePaused == false) { //Updates only if the game is not paused
 		animateAll();
 		drawAll();
@@ -239,7 +240,7 @@ function updateAll() {
 			bossDefeatedScreenTime = 0;
 			bossIsDefeated = false;
 		}
-		
+
 		if (upgradeAcquired) {
 			textDisplay("max hp and damage increased", textDisplayTextColour, "rgba(0, 64, 64, 0.7)");
 			upgradeAcquiredScreenTime++;
@@ -248,11 +249,11 @@ function updateAll() {
 				upgradeAcquired = false;
 			}
 		}
-		
+
 		if (endGamePending) {
 			endGameUpdate();
 		}
-		
+
 		if (playerHasHealed && playerHasSaved) {
 			tutorialIsActive = false;
 		}
@@ -270,7 +271,7 @@ function updateAll() {
 				savingGame = false;
 			}
 		}
-		
+
 		drawHelpBox(); // do this last as we want it over everything
 	}
 	else {
@@ -316,9 +317,9 @@ function drawGame() {
 	{
 		canvasContext.drawImage(window[GroundArt[i].imgName], GroundArt[i].x, GroundArt[i].y);
 	}
-	
+
 	canvasContext.restore()
-	
+
 	// show tutorial arrow
 	canvasContext.save();
 	canvasContext.translate(Player.centerX() - camPanX - 1, Player.centerY() - camPanY + 5);
@@ -341,7 +342,7 @@ function drawGame() {
 				showArrow = false;
 			}
 		}
-		
+
 		if (showArrow) {
 			var scale = 0.3;
 			var arrowWidth = tutorialArrow.width * scale;
@@ -351,7 +352,7 @@ function drawGame() {
 		}
 	}
 	canvasContext.restore();
-	
+
 	canvasContext.save();
 	canvasContext.translate(-camPanX, -camPanY);
 
@@ -369,12 +370,12 @@ function drawGame() {
 
 			// candles glow and flicker
 			if (SortedDrawList[i].imgName=="table") {
-				
+
 				// defer glows till after player is drawn
 				LightSourcesThisFrame.push([SortedDrawList[i].x-42, SortedDrawList[i].y-50]);
-				
+
 				/*
-				// works, but gets drawn UNDERNEATH the player gradient 
+				// works, but gets drawn UNDERNEATH the player gradient
 				canvasContext.drawImage(
 					glowPic,0,0,100,100,
 					SortedDrawList[i].x-42, SortedDrawList[i].y-50,
@@ -395,17 +396,17 @@ function drawGame() {
 	for (i = 0; i < OverlayingArt.length; i++)
 	{
 		canvasContext.drawImage(window[OverlayingArt[i].imgName], OverlayingArt[i].x, OverlayingArt[i].y);
-		
+
 		// an overlay that glows - like a wall torch
 		if (OverlayingArt[i].imgName == 'torchPic') {
 			LightSourcesThisFrame.push([OverlayingArt[i].x-36, OverlayingArt[i].y-42]);
 			if((OverlayingArt[i].x-36 - camPanX >= -torchRange) && (OverlayingArt[i].x-36 - camPanX <= canvas.width + torchRange)) {
 				if((OverlayingArt[i].y-42 - camPanY >= -torchRange) && (OverlayingArt[i].y-42 - camPanY <= canvas.height + torchRange)) {
 					onscreenLights.push([
-						OverlayingArt[i].x+ILLUM_OFFSET_X, 
+						OverlayingArt[i].x+ILLUM_OFFSET_X,
 						OverlayingArt[i].y+ILLUM_OFFSET_Y,
-						OverlayingArt[i].r, 
-						OverlayingArt[i].g, 
+						OverlayingArt[i].r,
+						OverlayingArt[i].g,
 						OverlayingArt[i].b,
 						OverlayingArt[i].range
 					]);
@@ -426,7 +427,7 @@ function drawGame() {
 			100-Math.sin(i*1234+frameCounter*1.331),
 			100-Math.sin(i*1234+frameCounter/2.012)*2.5);
 	}
-	
+
 	canvasContext.restore();
 
 	const lightPoses = [Player.x - camPanX + ILLUM_OFFSET_X, canvas.height - (Player.y - camPanY) - ILLUM_OFFSET_Y];
@@ -450,7 +451,7 @@ function drawGame() {
 			lightRanges.push(0);//range of this light
 		}
 	}
-	
+
 	const darkPoses = [
 		shadowBossDarks[0].x - camPanX, canvas.height + camPanY - shadowBossDarks[0].y,
 		shadowBossDarks[1].x - camPanX, canvas.height + camPanY - shadowBossDarks[1].y,
@@ -468,7 +469,7 @@ function drawGame() {
 	if (debugDrawCursorCoordinates) {
 		colorText((mouseX + camPanX) + ', ' + (mouseY + camPanY), mouseX, mouseY, 'white');
 	}
-	
+
 	if (endGamePending) {
 		endGameDraw();
 	}
@@ -477,7 +478,7 @@ function drawGame() {
 function drawHelpBox() {
 	if (helpScreen && !mainGameState) {
 		helpBlock();
-	} 
+	}
 }
 
 function drawAll() {
@@ -536,10 +537,10 @@ function updateTensionMusic() {
 	var finalBattleGroundEndX = 3850;
 	var finalBattleGroundStartY = 850;
 	var finalBattleGroundEndY = 1850;
-	
+
 	if (playerX > beastBattleGroundStartX && playerX < beastBattleGroundEndX &&
 		playerY > beastBattleGroundStartY && playerY < beastBattleGroundEndY) {
-		
+
 			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[BEAST_BOSS].isPlaying()) {
 				var playMusic = true;
 		        Player.bossesKilled.forEach(boss => {
@@ -554,7 +555,7 @@ function updateTensionMusic() {
 	}
 	else if (playerX > shadowBattleGroundStartX && playerX < shadowBattleGroundEndX &&
 		playerY > shadowBattleGroundStartY && playerY < shadowBattleGroundEndY) {
-		
+
 			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[SHADOW_BOSS].isPlaying()) {
 				var playMusic = true;
 		        Player.bossesKilled.forEach(boss => {
@@ -569,7 +570,7 @@ function updateTensionMusic() {
 	}
 	else if (playerX > finalBattleGroundStartX && playerX < finalBattleGroundEndX &&
 		playerY > finalBattleGroundStartY && playerY < finalBattleGroundEndY) {
-		
+
 			if (!bg_music[AMBIENT_TENSION].isPlaying() && !bg_music[FINAL_BOSS].isPlaying()) {
 				var playMusic = true;
 		        Player.bossesKilled.forEach(boss => {
@@ -818,7 +819,7 @@ function loadSortedArt() {
 		{x: 3616, y: 288, imgName: "tree"},
 		{x: 3616, y: 96, imgName: "tree"},
 	];
-	
+
 	// fill in height (/2) for art that needs sorting
 	SortedArt.forEach(function(art) {
 		art.height = window[art.imgName].height;
@@ -839,7 +840,7 @@ function loadOverlayingArt() {
 
 	OverlayingArt = [
 		{x: 3750, y: 3018, imgName: "painting"},
-	
+
 		// torches
 		{x:3484, y:3535, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
 		{x:3405, y:3535, imgName: 'torchPic', range:100, r:1, g:252/255, b:206/255},
