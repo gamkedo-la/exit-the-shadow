@@ -131,7 +131,7 @@ function PlayerClass() {
 	}
 	
 	this.move = function () {
-		if (this.y < 100) {
+		if (this.y < 200) {
 			phase = PHASE_END_GAME;
 		}
 		this.movementDirection = [false, false, false, false]; // up, left, down, right
@@ -413,7 +413,13 @@ function PlayerClass() {
 			this.checkForRegainHealth();
 		}
 		else if (phase == PHASE_END_GAME) {
-			endGamePending = true;
+			if (endGameSequenceTime == 0) {
+				endGamePending = true;
+			}
+			if (endGameSequenceTime > 60) {
+				this.moveSpeed = 2;
+				this.movementDirection[UP] = true;
+			}
 		}
 		this.updateState(); // update animation state
 		EntityClass.prototype.move.call(this); // call superclass function

@@ -3,7 +3,7 @@ var playTimeISOFormat = setPlayTimeDisplayText();
 var totalDeaths = 0;
 
 function playTime() {
-	if (!gamePaused && gameIsStarted) {
+	if (!gamePaused && gameIsStarted && !endGamePending) {
 		setPlayTimeDisplayText();
 		playTimeSeconds++;
 	}

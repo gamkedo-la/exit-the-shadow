@@ -34,12 +34,10 @@ var angleToSaveLocation = 0;
 var showSaveArrow = false;
 var showHealArrow = false;
 var showArrow = false;
-var endGamePending = false;
-var endGameSequenceTime = 0;
 
 // DEBUG CONTROLS - TURN OFF FOR FINAL RELEASE
 var debugDrawCursorCoordinates = false;
-var debugSaveLoadFromAnywhere = false;
+var debugSaveLoadFromAnywhere = true;
 var debugDrawHitboxes = false;
 
 var Entities = [
@@ -251,15 +249,8 @@ function updateAll() {
 			}
 		}
 		
-		// end game sequence TODO: complete this
 		if (endGamePending) {
-			textDisplay("end game sequence coming soon", textDisplayTextColour, bossDefeatedTextBackgroundColour);
-			endGameSequenceTime++;
-			if (endGameSequenceTime > 150) {
-				endGameSequenceTime = 0;
-				endGamePending = false;
-				quitToMenu();
-			}
+			endGameUpdate();
 		}
 		
 		if (playerHasHealed && playerHasSaved) {
@@ -476,6 +467,10 @@ function drawGame() {
 
 	if (debugDrawCursorCoordinates) {
 		colorText((mouseX + camPanX) + ', ' + (mouseY + camPanY), mouseX, mouseY, 'white');
+	}
+	
+	if (endGamePending) {
+		endGameDraw();
 	}
 }
 
