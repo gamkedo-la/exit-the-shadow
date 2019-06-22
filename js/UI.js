@@ -41,7 +41,7 @@ function playerLife() {
 
 function bossHealthBar(boss, bossNumber) {
 	canvasContext.save();
-	canvasContext.font = "20px Arial";
+	canvasContext.font = "20px Impact";
 	
 	width = canvas.width - 192;
 	height = 18;
@@ -50,7 +50,8 @@ function bossHealthBar(boss, bossNumber) {
 	y -= (height + 24) * bossNumber;
 	canvasContext.drawImage(bossHealthBarOutline, x,y, width, height);
 	
-	colorText(boss.name, x,y-4, "#d0d0d0");
+	colorText(boss.name, x+6,y-4, "#d0d0d0");
+	strokeColorText(boss.name, x+6,y-4, "black", 1);
 	
 	healthLeft = width-4;
 	healthLeft *= boss.HP / boss.maxHP;
