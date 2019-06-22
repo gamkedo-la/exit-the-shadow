@@ -2,7 +2,7 @@
 BeastBoss.prototype = new EntityClass();
 BeastBoss.prototype.constructor = BeastBoss;
 
-function BeastBoss() {
+function BeastBoss(name) {
 	// PHASES
 	const NOT_IN_BATTLE = 0;
 	const PHASE_1 = 1;
@@ -30,7 +30,7 @@ function BeastBoss() {
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
 
-	this.name = beastBossName;
+	this.name = name;
 	this.isActive = false;
 	
 	let phase = NOT_IN_BATTLE;
@@ -68,11 +68,20 @@ function BeastBoss() {
 	let changeHairColor = amountToChangeHairColor;
 
 	this.prepHair = function () {
-		for(var eachHair=0;eachHair<70;eachHair++) {
+		let numberOfHairs, maxLength;
+		if (this.name == beastBossName) {
+			numberOfHairs = 70;
+			maxLength = 10;
+		}
+		else {
+			numberOfHairs = 30;
+			maxLength = 6;
+		}
+		for(var eachHair=0;eachHair<numberOfHairs;eachHair++) {
 			this.beastHair[eachHair] = [];
 			var bendDownJoint = Math.random() * 6+12;
 			for(var i=0;i<20;i++) {
-				this.beastHair[eachHair][i] = {len: Math.random() * 7 + 3,
+				this.beastHair[eachHair][i] = {len: Math.random() * (maxLength*0.7) + (maxLength*0.3),
 											ang: (Math.random() - 0.5) * 2,
 											vel: (Math.random() - 0.5) * 0.005,
 											hei: (Math.random()*3+0.7) * (i<bendDownJoint ? 1 : -0.7),
@@ -95,7 +104,7 @@ function BeastBoss() {
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
 		if (phase == NOT_IN_BATTLE) {
-			if (distanceBetweenEntities(this, Player) < 200) {
+			if (distanceBetweenEntities(this, Player) < 200 && this.name == beastBossName) {
 				switchMusic(BEAST_BOSS, 1, 1);
 				this.progressPhase();
 				this.closeArena();

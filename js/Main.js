@@ -444,9 +444,10 @@ function drawGame() {
 		shadowBossDarks[0].x - camPanX, canvas.height + camPanY - shadowBossDarks[0].y,
 		shadowBossDarks[1].x - camPanX, canvas.height + camPanY - shadowBossDarks[1].y,
 		shadowBossDarks[2].x - camPanX, canvas.height + camPanY - shadowBossDarks[2].y,
+		shadowBossDarks[3].x - camPanX, canvas.height + camPanY - shadowBossDarks[3].y,
 	];
 
-	const darkRanges = [shadowBossDarks[0].range, shadowBossDarks[1].range, shadowBossDarks[2].range];
+	const darkRanges = [shadowBossDarks[0].range, shadowBossDarks[1].range, shadowBossDarks[2].range, shadowBossDarks[3].range];
 
 	const shadowOverlay = illuminator.getShadowOverlay(lightPoses, lightColors, lightRanges, darkPoses, darkRanges);
 	canvasContext.drawImage(shadowOverlay, 0, 0);
@@ -769,6 +770,9 @@ function loadGroundArt() {
 		{x: 3210, y: 1950, imgName: "skeleton3"},
 		{x: 3000, y: 1960, imgName: "skeleton1"},
 		{x: 3150, y: 2000, imgName: "skeleton4"},
+		// beast cages
+		{x: 4192, y: 2875, imgName: "cage"},
+		{x: 4608, y: 2875, imgName: "cage"},
 	];
 }
 
@@ -788,8 +792,6 @@ function loadSortedArt() {
 		{x: 3296, y: 2920, imgName: "gateway"},
 		{x: 3555, y: 2770, imgName: "mothLamp"},
 		{x: 3325, y: 2770, imgName: "mothLamp"},
-		{x: 4192, y: 2875, imgName: "cage"},
-		{x: 4608, y: 2875, imgName: "cage"},
 		{x: 4416, y: 2800, imgName: "ruins"},
 		{x: 2144, y: 3296, imgName: "ruins"},
 		{x: 3264, y: 672, imgName: "tree"},

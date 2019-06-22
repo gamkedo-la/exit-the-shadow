@@ -45,8 +45,8 @@ function Illuminator() {
         uniform vec2 lights[13];
         uniform float lightRanges[13];
         uniform vec3 colors[13];
-        uniform vec2 darks[3];
-        uniform float darkRanges[3];
+        uniform vec2 darks[4];
+        uniform float darkRanges[4];
 
         void main() {
             vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
@@ -63,7 +63,7 @@ function Illuminator() {
             }
 
             float darkAlpha = 0.0;
-            for(int j = 0; j < 3; j++) {
+            for(int j = 0; j < 4; j++) {
                 vec2 fragToDark = darks[j] - gl_FragCoord.xy;
 
                 float thisDarkAlpha = 1.0 - min(length(fragToDark) / darkRanges[j], 1.0);
@@ -85,8 +85,8 @@ function Illuminator() {
         uniform vec2 lights[13];
         uniform float lightRanges[13];
         uniform vec3 colors[13];
-        uniform vec2 darks[3];
-        uniform float darkRanges[3];
+        uniform vec2 darks[4];
+        uniform float darkRanges[4];
 
         void main() {
             vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
@@ -106,7 +106,7 @@ function Illuminator() {
             gl_FragColor.a += (1.0 - minLightDist);
 
             float darkAlpha = 0.0;
-            for(int j = 0; j < 3; j++) {
+            for(int j = 0; j < 4; j++) {
                 vec2 fragToDark = darks[j] - gl_FragCoord.xy;
 
                 float thisDarkAlpha = 1.0 - min(length(fragToDark) / darkRanges[j], 1.0);
