@@ -205,9 +205,11 @@ function updateAll() {
 
 	if (gameIsStarted) {
 		updateTensionMusic();
+		mainLightRange = playerLightRange;
 	}
 	else {
 		Menu.update();
+		mainLightRange = menuLightRange;
 		return;
 	}	
 	if (gamePaused == false) { //Updates only if the game is not paused
@@ -437,7 +439,7 @@ function drawGame() {
 	
 	canvasContext.restore();
 
-	const lightPoses = [Player.x - camPanX, canvas.height - (Player.y - camPanY)];
+	const lightPoses = [Player.x - camPanX + ILLUM_OFFSET_X, canvas.height - (Player.y - camPanY) - ILLUM_OFFSET_Y];
 	const lightColors = [];
 	const lightRanges = [];
 	const slowCounter = frameCounter / 3;

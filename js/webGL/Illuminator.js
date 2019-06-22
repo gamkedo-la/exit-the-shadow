@@ -2,7 +2,9 @@
 const ILLUM_OFFSET_X = 10;
 const ILLUM_OFFSET_Y = 10;
 
-const playerLightRange = 400; //based on visual appeal
+const menuLightRange = 500;
+const playerLightRange = 400;
+var mainLightRange = menuLightRange; //based on visual appeal
 const torchRange = 250;
 const maxLights = 13;
 
@@ -41,7 +43,7 @@ function Illuminator() {
         precision mediump float;
 
         uniform vec2 playerPosition;
-        uniform float playerLightRange;
+        uniform float mainLightRange;
         uniform vec2 lights[13];
         uniform float lightRanges[13];
         uniform vec3 colors[13];
@@ -51,7 +53,7 @@ function Illuminator() {
         void main() {
             vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
 
-            gl_FragColor.a = 1.0 - min(length(playerToFrag) / playerLightRange, 1.0);
+            gl_FragColor.a = 1.0 - min(length(playerToFrag) / mainLightRange, 1.0);
 
             for(int i = 0; i < 13; i++) {
                 vec2 fragToLight = lights[i] - gl_FragCoord.xy;
@@ -81,7 +83,7 @@ function Illuminator() {
         precision mediump float;
 
         uniform vec2 playerPosition;
-        uniform float playerLightRange;
+        uniform float mainLightRange;
         uniform vec2 lights[13];
         uniform float lightRanges[13];
         uniform vec3 colors[13];
@@ -91,7 +93,7 @@ function Illuminator() {
         void main() {
             vec2 playerToFrag = playerPosition - gl_FragCoord.xy;
 
-            gl_FragColor.a = 1.0 - min(length(playerToFrag) / playerLightRange, 1.0);
+            gl_FragColor.a = 1.0 - min(length(playerToFrag) / mainLightRange, 1.0);
             float minLightDist = 1.0 - gl_FragColor.a;
 
             for(int i = 0; i < 13; i++) {
@@ -173,8 +175,8 @@ function Illuminator() {
         const playerPositionUniformLocation = gl.getUniformLocation(program, 'playerPosition');
         gl.uniform2fv(playerPositionUniformLocation, new Float32Array([allLights[0], allLights[1]]));
 
-        const playerLightRangeUniformLocation = gl.getUniformLocation(program, 'playerLightRange');
-        gl.uniform1fv(playerLightRangeUniformLocation, new Float32Array([playerLightRange]));
+        const mainLightRangeUniformLocation = gl.getUniformLocation(program, 'mainLightRange');
+        gl.uniform1fv(mainLightRangeUniformLocation, new Float32Array([mainLightRange]));
 
         const lightsUniformLocation = gl.getUniformLocation(program, 'lights');
         allLights.splice(0, 2);//remove player light information

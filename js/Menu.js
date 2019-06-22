@@ -259,10 +259,10 @@ const Menu = new (function() {
 		//lights, colors, ranges, darks, darkRanges
 		let menuLights;
 		if (displayControls || currentPage == CREDITS_PAGE) {
-			menuLights = [canvas.width / 2, canvas.height / 2];
+			menuLights = [canvas.width / 2 + ILLUM_OFFSET_X, canvas.height / 2 - ILLUM_OFFSET_Y];
 		}
 		else {
-			menuLights = [cursorPos.x, canvas.height - cursorPos.y];
+			menuLights = [cursorPos.x + ILLUM_OFFSET_X, canvas.height - cursorPos.y - ILLUM_OFFSET_Y];
 		}
 		const menuColors = [];
 		const menuRanges = [];
