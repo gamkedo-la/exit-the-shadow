@@ -483,7 +483,7 @@ function BeastBoss(name) {
 				generateFloorTiles();
 			}
 		else {
-			beastBoss = new BeastBoss();
+			let beastBoss = new BeastBoss();
 			setTimeout(beastBoss.addHealingStatue, 100);
 		}
 	}

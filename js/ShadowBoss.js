@@ -25,7 +25,7 @@ function ShadowBoss(name, id) {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	this.HP = 30;
+	this.HP = 1;
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
@@ -485,21 +485,21 @@ function ShadowBoss(name, id) {
 	
 	this.addHealingStatue = function() {
 		let xPos = 1088, yPos = 2592;
-		SortedArt.push({x: xPos, y: yPos, imgName: "shadowHealingStatue", height: window["shadowHealingStatue"].height});
+		let xCollisionStart = 34, xCollisionEnd = 35, yCollisionStart = 83, yCollisionEnd = 84;
+		if ((Player.x + Player.width) < (xCollisionStart * TILE_W) || Player.x > (xCollisionEnd * TILE_W + TILE_W) ||
+			(Player.y + Player.height) < (yCollisionStart * TILE_H) || Player.y - (Player.collisionBoxHeight - Player.height) > (yCollisionEnd * TILE_H + TILE_H)) {
+				SortedArt.push({x: xPos, y: yPos, imgName: "shadowHealingStatue", height: window["shadowHealingStatue"].height});
 		
-		OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
+				OverlayingArt.push({x: xPos + 19, y: yPos + 32, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
 		
-		this.addHealingStatueCollisionData();
+				addHealingStatueCollisionData(xCollisionStart, xCollisionEnd, yCollisionStart, yCollisionEnd);
 		
-		generateTileEntities();
-		generateFloorTiles();
-	}
-	
-	this.addHealingStatueCollisionData = function() {
-		for (var i = 83 * TILE_COLS; i <= 84 * TILE_COLS; i += TILE_COLS) {
-			for (var j = 34; j <= 35; j++) {
-				tileGrid[i + j] = 64;
+				generateTileEntities();
+				generateFloorTiles();
 			}
+		else {
+			let shadowBoss = new ShadowBoss(1);
+			setTimeout(shadowBoss.addHealingStatue, 100);
 		}
 	}
 
