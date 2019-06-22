@@ -25,7 +25,7 @@ function ShadowBoss(name, id) {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	this.HP = 1;
+	this.HP = 30;
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
