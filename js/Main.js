@@ -109,6 +109,11 @@ function resetPlayer() {
 	Entities = [Player];
 }
 
+function partialResetPlayer() {
+	Player.partialResetStats();
+	Entities = [Player];
+}
+
 function startWorld() {
 	resetWorld();
 	loadLevel(levelOne);
@@ -151,10 +156,15 @@ function loadArtAndCollisionForBossDefeatedRooms() {
 	generateFloorTiles();
 }
 
-function restartGame() {
+function restartGame(fullPlayerReset) {
 	gameRestartPending = false;
-	resetPlayer();
-	resetPlayStats();
+	if (fullPlayerReset) {
+		resetPlayer();
+		resetPlayStats();
+	}
+	else {
+		partialResetPlayer();
+	}
 	startWorld();
 	
 	mainGameState = true; 
@@ -203,7 +213,7 @@ function updateAll() {
 			deathScreenTime++;
 			if (deathScreenTime > 150) {
 				deathScreenTime = 0;
-				restartGame();
+				restartGame(false);
 			}
 		}
 

@@ -111,9 +111,10 @@ const Menu = new (function() {
 		// MAIN PAGE
 		case "New Game":
 		    gameIsStarted = true;
-			restartGame();
+			restartGame(true);
 			loadHelpScreen();
 			startTutorial();
+			Player.HP = 1;
 		    this.cursor1 = 0;
 		    break;
 		case "Continue":
@@ -123,7 +124,7 @@ const Menu = new (function() {
 	        }
 	        gameIsStarted = true;
 			loadGame();
-			restartGame();
+			restartGame(true);
 			loadGame(); // need to do this before and after restart game - not ideal but works for now
 			disableTutorial();
 		    Menu.cursor1 = 0;

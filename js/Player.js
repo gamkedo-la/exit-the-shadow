@@ -100,6 +100,15 @@ function PlayerClass() {
 		this.controlKeyAttack = attackKey;
 		this.controlKeyShield = shieldKey;
 	}
+	
+	this.partialResetStats = function () {
+		this.HP = this.maxHP;
+		this.regainHealthMeter = 0;
+		this.isDead = false;
+		isDashing = false;
+		dashCooldown = 0;
+		phase = PHASE_PLAYABLE;
+	}
 
 	this.resetStats = function () {
 		this.HP = 1;
@@ -110,6 +119,9 @@ function PlayerClass() {
 		phase = PHASE_PLAYABLE;
 		this.bossesKilled = [];
 		this.maxHP = 3;
+		this.damage = 1;
+		this.heartsAcquired.shadowHeartAcquired = false;
+		this.heartsAcquired.beastHeartAcquired = false;
 	}
 	
 	this.move = function () {
@@ -369,7 +381,7 @@ function PlayerClass() {
 							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
 								if (!this.heartsAcquired.shadowHeartAcquired) {
 									this.heartsAcquired.shadowHeartAcquired = true;
-									restartGame();
+									restartGame(false);
 									this.increaseAttributes();
 								}
 						}
@@ -384,7 +396,7 @@ function PlayerClass() {
 							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
 								if (!this.heartsAcquired.beastHeartAcquired) {
 									this.heartsAcquired.beastHeartAcquired = true;
-									restartGame();
+									restartGame(false);
 									this.increaseAttributes();
 								}
 						}
