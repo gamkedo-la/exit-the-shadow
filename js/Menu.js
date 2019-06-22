@@ -93,7 +93,7 @@ const Menu = new (function() {
 		if(logoPic.width > 0) {
 			itemsX = null;//forces recalculation of xPos for menu items
 
-			menuTorches = [{x:cursorPos.x, y:canvas.height - cursorPos.y}];//first light is just the 'player position' light (using the cursor position here in the menu)
+			menuTorches = [];
 			menuTorches.push({x:100 + (canvas.width/2)-(logoPic.width/2), y:canvas.height - 64, imgName: 'torchPic', range:200, r:1/255, g:252/255, b:20/255});
 			menuTorches.push({x:(canvas.width/2)+(logoPic.width/2), y:canvas.height - 64 - logoPic.height, imgName: 'torchPic', range:200, r:1, g:252/255, b:206/255});
 			menuTorches.push({x:canvas.width - 100, y:100, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
@@ -183,8 +183,8 @@ const Menu = new (function() {
         if(currentPage == CREDITS_PAGE) {
 	        canvasContext.font = textFontFaceCredits;
 			canvasContext.textAlign = "center";
-			var yOffset = topItemY + 35;
-			var cursorOffset = topItemY + 57;
+			var yOffset = topItemY -15;
+			var cursorOffset = topItemY -15;
 
 			for (let i = 0; i<creditsList.length; i++)
 		    {
@@ -216,7 +216,7 @@ const Menu = new (function() {
 			}
 			
 			if (displayControls) {
-				var xOffset = 120
+				var xOffset = 120;
 				for (var j = 0; j < controlsText.length; j++) {
 					strokeColorText(controlsText[j], itemsX - xOffset, yOffset, 'black', 3);
 					colorText(controlsText[j], itemsX - xOffset, yOffset, textColour);
@@ -229,6 +229,14 @@ const Menu = new (function() {
 					yOffset += rowHeight;
 					cursorOffset += rowHeight;
 				}
+				strokeColorText("Gamepad Supported", itemsX, yOffset, 'black', 4);
+				colorText("Gamepad Supported", itemsX, yOffset, textColour);
+				yOffset += rowHeight;
+				cursorOffset += rowHeight;
+			}
+			if (currentPage == CREDITS_PAGE) {
+				yOffset += (rowHeight * 6);
+				cursorOffset += (rowHeight * 6);
 			}
 			
 			strokeColorText(text, itemsX, yOffset, 'black', 6)
@@ -240,17 +248,6 @@ const Menu = new (function() {
 				var textWidth = canvasContext.measureText(text).width;
 				cursorPos = {x: itemsX - textWidth / 2 - 30, y: (this.cursor1 * rowHeight) + cursorOffset};
 				canvasContext.drawImage(arrowPic, cursorPos.x, cursorPos.y);
-			
-				if(menuTorches.length > 0) {
-					if (displayControls) {
-						menuTorches[0].x = canvas.width / 2;
-						menuTorches[0].y = canvas.height / 2;	
-					}
-					else {
-						menuTorches[0].x = cursorPos.x;
-						menuTorches[0].y = canvas.height - cursorPos.y;	
-					}
-				}
 			}
 	    }
 		canvasContext.restore();
@@ -260,7 +257,13 @@ const Menu = new (function() {
 		}
 
 		//lights, colors, ranges, darks, darkRanges
-		const menuLights = [cursorPos.x, canvas.height - cursorPos.y];
+		let menuLights;
+		if (displayControls || currentPage == CREDITS_PAGE) {
+			menuLights = [canvas.width / 2, canvas.height / 2];
+		}
+		else {
+			menuLights = [cursorPos.x, canvas.height - cursorPos.y];
+		}
 		const menuColors = [];
 		const menuRanges = [];
 		const menuDarks = [];
