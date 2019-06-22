@@ -83,14 +83,9 @@ function saveGame() {
     savesArray.push(save);
 
     localStorage.setItem('exit-the-shadow-saves', JSON.stringify(savesArray));
-
-    // debug
-    console.log("saving game");
-    //console.log(save);
 }
 
 function loadGame() {
-    console.log("loading game");
     if(listSaves == null) {
         // No saves available
         return;

@@ -27,7 +27,6 @@ function debugOnClick(e) {
 	
 	// clickspam level editor for overlays
 	window.debugClickLocations += "{x:"+spritex+", y:"+spritey+", imgName: 'debris9'},\n";
-	console.log(window.debugClickLocations);
 
 	// show live while playing
 	GroundArt.push({x:spritex, y:spritey, imgName: 'debris9'});
@@ -103,12 +102,13 @@ function keySet(evt, player, isPressed) {
 	evt.preventDefault();
 }
 
-function keyPressed(evt) {	
+function keyPressed(evt) {
 	keySet(evt, Player, true);
 	var helpScreenKey = KEY_H;
 	
 	if (helpScreen) {
-		if ((evt.keyCode == helpScreenKey) || (evt.keyCode == KEY_ENTER)) {
+		if ((evt.keyCode == helpScreenKey) || (evt.keyCode == KEY_ENTER) ||
+		(evt.keyCode == KEY_E) || (evt.keyCode == KEY_SPACE)) {
 			exitHelpScreen();
 		}
 	} else {

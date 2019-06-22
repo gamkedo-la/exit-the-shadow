@@ -98,7 +98,6 @@ window.onload = function() {
 }
 
 function resizeCanvas() {
-	console.log("resizing canvas");
     canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	Menu.resizingCanvas();

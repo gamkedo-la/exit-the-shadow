@@ -37,8 +37,6 @@ function Illuminator() {
     }
 
     const getFragmentShaderString = function() {
-        console.log("Browser Agent:");
-        console.log(navigator.userAgent);
         return `
         precision mediump float;
 

@@ -124,8 +124,6 @@ function initAudio()
 		bg_music[i] = new AudioClass();
 		bg_music[i].tag = 'music';
 	}
-
-	console.log("init audio");
 }
 
 function loadAudio()
@@ -140,8 +138,6 @@ function loadAudio()
 	bg_music[MENU_MUSIC].load("music/titleScreenMusic");
 	bg_music[BEAST_BOSS].load("music/beastBossBattleMusicV1"); // TODO: replace with beast boss music path when ready
 	bg_music[AMBIENT_TENSION].load("music/ambientTensionMusicV1");
-	
-	console.log("load audio");
 }
 
 function switchMusic(newMusic, fadeOutRate, fadeInRate) {
