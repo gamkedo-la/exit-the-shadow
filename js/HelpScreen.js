@@ -1,5 +1,3 @@
-// gitty up hubba dubba dot com!
-
 var m_backgroundTransitionTime = 0.25;
 var m_textTransitionTime = 0.3;
 var m_transitioningOutTime = 0.5;
