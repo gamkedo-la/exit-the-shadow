@@ -2,7 +2,7 @@
 ShadowBoss.prototype = new EntityClass();
 ShadowBoss.prototype.constructor = ShadowBoss;
 
-function ShadowBoss(id) {
+function ShadowBoss(name, id) {
 	//IDs
 	const LEFT_SHADOW = 0;
 	const MIDDLE_SHADOW = 1;
@@ -29,7 +29,7 @@ function ShadowBoss(id) {
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
-	this.name = shadowBossName;
+	this.name = name;
 	this.isActive = false;
 	
 	let timeForAttackInFrames = 40;
@@ -77,7 +77,7 @@ function ShadowBoss(id) {
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
 		if (phase == NOT_IN_BATTLE) {
-			if (distanceBetweenEntities(this, Player) < 200) {
+			if (distanceBetweenEntities(this, Player) < 200 && this.name == shadowBossName) {
 				switchMusic(SHADOW_BOSS, 1, 1);
 				this.progressPhaseTogether();
 				this.closeArena();
