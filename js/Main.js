@@ -193,6 +193,8 @@ function startGame() {
 	startWorld();
 }
 
+let footstepsPlaying = false;
+
 function updateAll() {
 	frameCounter++;
 
@@ -290,6 +292,15 @@ function updateAll() {
 		strokeColorText(playTimeISOFormat + " / " + totalDeaths, canvas.width/2,canvas.height - 20, 'black', 1.5);
 		canvasContext.restore();
 	}
+
+	if (Player.isWalking && !footstepsPlaying) {
+		playMultiSound(arrayOfFootstepSounds);
+		footstepsPlaying === true;
+	} else {
+		footstepsPlaying === false;
+	}
+	console.log("Player.isWalking === " + Player.isWalking);
+
 }
 
 function moveAll() {

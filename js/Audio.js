@@ -174,18 +174,25 @@ let arrayOfFootstepSounds = [];
 function initializeArrayOfFootstepSounds() {
 	arrayOfFootstepSounds = [sfx[FOOTSTEP1], sfx[FOOTSTEP2], sfx[FOOTSTEP3], sfx[FOOTSTEP4],
 																sfx[FOOTSTEP5], sfx[FOOTSTEP6], sfx[FOOTSTEP7]];
-}
+	// for (let i = 0; i < arrayOfFootstepSounds.length - 1; i++) {
+	// 	arrayOfFootstepSounds[i].onEnded = function() {
+	// 		setTimeout(function() {
+	// 			playMultiSound(arrayOfFootstepSounds);
+	// 		}, 250)
+	// 	}
+	}
+//}
 //multisound is the name of the function from FMOD that is intended to add variety to repetitive sounds to help increase
 //aural aesthetics and prevent ear fatigue, this is a basic version using pitch shifted audio files based on the original
 //sound and volume randomization
 function playMultiSound(arrayOfSoundsToVarietize) {
-	console.log("arrayOfSoundsToVarietize, " + arrayOfSoundsToVarietize );
+	//console.log("arrayOfSoundsToVarietize, " + arrayOfSoundsToVarietize );
   let arrayLength = arrayOfSoundsToVarietize.length;
   let randomArrayIndex = getRandomInt(0, arrayLength - 1);
   let randomSoundFromArray = arrayOfSoundsToVarietize[randomArrayIndex].sound;
   let randomVolume = getRandomInt(8,10);
 //  console.log("base volume: " + randomSoundFromArray.volume + ", random volume: " + randomVolume);
-console.log(randomSoundFromArray);
+//console.log(randomSoundFromArray);
   randomVolume = Math.min(randomVolume/10, randomSoundFromArray.volume);
   randomSoundFromArray.volume = randomVolume;
   randomSoundFromArray.play();

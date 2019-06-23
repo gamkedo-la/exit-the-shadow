@@ -43,15 +43,22 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 			}
 			else if (frameCol < currentState.endFrame) {
 				frameCol++;
+
 			}
 			else {
 				frameCol = currentState.startFrame;
 			}
 		}
+		// console.log("frameCol " + frameCol)
+		// if (this.name === "Player" && currentState === Player.states.walk && (frameCol === 4 || frameCol === 6)) {
+		// 	playMultiSound(arrayOfFootstepSounds);
+		// }
 	}
 
 	this.changeState = function(stateName) {
 		var newState = states[stateName];
+		//if (this.name === "Player"){console.log(newState);};
+		//console.log(newState);
 
 		if (newState != currentState && newState != null) {
 			currentState = newState;
@@ -61,10 +68,11 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 		}
 
 		// console.log(stateName);
-		// console.log(this.name);
-		// if (this.name === "Player" /*&& newState === "walk"*/) {
+		 //console.log(this.name);
+		 //console.log(newState);
+		// if (this.name === "Player" && newState === Player.states.walk) {
 		// 	console.log("hello walking conditional check");
-		// 	setInterval(playMultiSound(arrayOfFootstepSounds), 250);
+		// 	playMultiSound(arrayOfFootstepSounds);
 		// }
 	}
 
