@@ -164,6 +164,7 @@ function PlayerClass() {
 			   (this.movementDirection[UP] || this.movementDirection[DOWN] || this.movementDirection[RIGHT] || this.movementDirection[LEFT])) {
 				isDashing = true;
 				dashDirection = this.calculateDashDirection(this.movementDirection);
+				sfx[DASH].play();
 			}
 			if (isDashing) {
 				dashRemaining--;

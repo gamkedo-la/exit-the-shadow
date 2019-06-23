@@ -4,7 +4,7 @@ const audioCtx = new AudioContext(); // safari fix for delayed audio
 var audioType = undefined;
 var audioFormat = ".ogg";
 
-const TOTAL_SFX = 17;
+const TOTAL_SFX = 19;
 const TOTAL_BG_MUSIC = 6;
 
 var sfx = new Array(TOTAL_SFX);
@@ -27,6 +27,8 @@ const FOOTSTEP11 = 13;
 const FOOTSTEP12 = 14;
 const FOOTSTEP13 = 15;
 const FOOTSTEP14 = 16;
+const DASH = 17;
+const ABSORB = 18;
 
 const AMBIENT_MUSIC = 0;
 const FINAL_BOSS = 1;
@@ -161,6 +163,8 @@ function loadAudio()
 	sfx[FOOTSTEP12].load("sfx/footstep5");
 	sfx[FOOTSTEP13].load("sfx/footstep6");
 	sfx[FOOTSTEP14].load("sfx/footstep7");
+	sfx[DASH].load("sfx/dash");
+	sfx[ABSORB].load("sfx/absorb");
 
 	bg_music[AMBIENT_MUSIC].load("music/ambientBackgroundMusic");
 	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");

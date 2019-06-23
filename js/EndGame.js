@@ -73,6 +73,9 @@ const EndGame = new (function() {
 				playerAbsorbTorchRange += 1.2;
 				playerAbsorbTorchX = canvas.width/2;
 				this.initialiseLights();
+				if (endGameSequenceTime == 880) {
+					sfx[ABSORB].play();
+				}
 			}
 		}
 		else if (endGameSequenceTime < 1100){
