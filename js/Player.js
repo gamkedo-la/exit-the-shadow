@@ -14,7 +14,7 @@ const HIDE_PLAYER_WHEN_DASHING = false;
 PlayerClass.prototype = new EntityClass();
 PlayerClass.prototype.constructor = PlayerClass;
 const PHASE_PLAYABLE = 0;
-const PHASE_END_GAME = 1;
+const PHASE_END_GAME = 100;
 
 function PlayerClass() {
 
@@ -133,6 +133,7 @@ function PlayerClass() {
 		this.directionFacing = UP;
 		this.forceX = 0;
 		this.forceY = 0;
+		this.moveSpeed = 5;
 	}
 
 	this.move = function () {

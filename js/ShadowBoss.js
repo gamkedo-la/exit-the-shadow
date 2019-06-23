@@ -43,6 +43,7 @@ function ShadowBoss(name, id) {
 	
 	let spritePadding = 64;
 	this.AnimatedSprite = new AnimatedSpriteClass(shadowSheet, this.width, this.height, spritePadding, this.states);
+	this.AnimatedSprite.opacity = 0.7;
 	let darkRange = 200;
 	this.dark = {x:0, y:0, imgName: 'torchPic', range:darkRange, r:0, g:0, b:0};
 	shadowBossDarks.push(this.dark);

@@ -57,7 +57,7 @@ function EvilPlayerBoss() {
 	// motion blur trail effect
 	this.trail = new TrailFX(bossTrailImage);
 
-	let phase = PRE_NOT_IN_BATTLE;
+	this.phase = PRE_NOT_IN_BATTLE;
 	let behaviour = FOLLOW;
 	
 	let isDashing = false;
@@ -103,7 +103,7 @@ function EvilPlayerBoss() {
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
-		if (phase == PRE_NOT_IN_BATTLE) {
+		if (this.phase == PRE_NOT_IN_BATTLE) {
 			if (Player.y < 1900) {
 				teleportTime++;
 				if (teleportTime < 5) {
@@ -122,14 +122,14 @@ function EvilPlayerBoss() {
 				}
 			}
 		}
-		if (phase == NOT_IN_BATTLE) {
+		if (this.phase == NOT_IN_BATTLE) {
 			if (distanceBetweenEntities(this, Player) < 150) {
 				switchMusic(FINAL_BOSS, 1, 1);
 				this.progressPhase();
 				this.closeArena();
 			}
 		}
-		if (phase == PHASE_1 || phase == PHASE_2) {
+		if (this.phase == PHASE_1 || this.phase == PHASE_2) {
 			if (behaviour == FOLLOW) {
 				if (Math.abs(Player.y - this.y) > 2) {
 					if (Player.y < this.y) {
@@ -265,7 +265,7 @@ function EvilPlayerBoss() {
 				this.progressPhase();
 			}
 		}
-		if (phase == PLAYER_DEAD) {
+		if (this.phase == PLAYER_DEAD) {
 			timeSincePlayerDeath++;
 			if (timeSincePlayerDeath > 50) {
 				// move back to original position
@@ -292,6 +292,14 @@ function EvilPlayerBoss() {
 				if (this.startX - this.x <= 2 && this.startY - this.y <= 2) {
 					this.directionFacing = DOWN;
 				}
+			}
+		}
+		if (this.phase == PHASE_END_GAME) {
+			this.moveSpeed = 2;
+			this.movementDirection[UP] = true;
+			if (this.centerY() < canvas.height/2 - 5) {
+				this.movementDirection[UP] = false;
+				this.directionFacing = DOWN;
 			}
 		}
 		
@@ -387,15 +395,15 @@ function EvilPlayerBoss() {
 	}
 	
 	this.progressPhase = function() {
-		if (phase == PRE_NOT_IN_BATTLE) {
-			phase = NOT_IN_BATTLE;
+		if (this.phase == PRE_NOT_IN_BATTLE) {
+			this.phase = NOT_IN_BATTLE;
 		}
-		else if (phase == NOT_IN_BATTLE) {
-			phase = PHASE_1;
+		else if (this.phase == NOT_IN_BATTLE) {
+			this.phase = PHASE_1;
 			this.isActive = true;
 		}
-		else if (phase == PHASE_1) {
-			phase = PHASE_2;
+		else if (this.phase == PHASE_1) {
+			this.phase = PHASE_2;
 		}
 	}
 	
@@ -413,7 +421,7 @@ function EvilPlayerBoss() {
 			shield = false;
 			behaviour = SHIELD;
 		}
-		else if (timeSinceLastHeavyAttack > 100 && phase == PHASE_2 && this.playerIsInAttackRange(false)) {
+		else if (timeSinceLastHeavyAttack > 100 && this.phase == PHASE_2 && this.playerIsInAttackRange(false)) {
 			if (heavyAttackTime > 60) {
 				heavyAttackTime = 0;
 			}
@@ -423,7 +431,7 @@ function EvilPlayerBoss() {
 			this.directionFacing = this.playerIsInAttackRange(true);
 			behaviour = SIMPLE_ATTACK;
 		}
-		else if (timeSinceLastTeleport > 300 && phase == PHASE_2) {
+		else if (timeSinceLastTeleport > 300 && this.phase == PHASE_2) {
 			if (teleportTime > 55) {
 				teleportTime = 0;
 			}
@@ -684,7 +692,7 @@ function EvilPlayerBoss() {
 		if (!playerAlive) {
 			isAttacking = false;
 			isHeavyAttacking = false;
-			phase = PLAYER_DEAD;
+			this.phase = PLAYER_DEAD;
 			timeSincePlayerDeath = 0;
 		}
 	}

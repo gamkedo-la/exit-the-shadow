@@ -1,6 +1,7 @@
 function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animationSpriteHeight, animationSpritePadding, animationStates, name) {
 
 	this.name = name;
+	this.opacity = 1;
 
 	let spriteSheet = animationSpriteSheet;
 	let spriteWidth = animationSpriteWidth;
@@ -19,6 +20,9 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 	let ticksPerFrame = Math.round(1 / currentState.animationSpeed);
 
 	this.render = function() {
+		canvasContext.save();
+		canvasContext.globalAlpha = this.opacity;
+		
 		canvasContext.drawImage(
 			spriteSheet,
 			frameCol*totalWidth,
@@ -30,6 +34,8 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 			totalWidth,
 			totalHeight
 		)
+		
+		canvasContext.restore();
 	}
 
 	this.update = function() {
