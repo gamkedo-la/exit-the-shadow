@@ -99,6 +99,7 @@ function resizeCanvas() {
     canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
 	Menu.resizingCanvas();
+	EndGame.resizingCanvas();
 }
 
 function resetPlayer() {
@@ -250,7 +251,7 @@ function updateAll() {
 		}
 		
 		if (endGamePending) {
-			endGameUpdate();
+			EndGame.update();
 		}
 		
 		if (playerHasHealed && playerHasSaved) {
@@ -470,7 +471,7 @@ function drawGame() {
 	}
 	
 	if (endGamePending) {
-		endGameDraw();
+		EndGame.draw();
 	}
 }
 
