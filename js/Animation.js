@@ -55,16 +55,10 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 				frameCol = currentState.startFrame;
 			}
 		}
-		// console.log("frameCol " + frameCol)
-		// if (this.name === "Player" && currentState === Player.states.walk && (frameCol === 4 || frameCol === 6)) {
-		// 	playMultiSound(arrayOfFootstepSounds);
-		// }
 	}
 
 	this.changeState = function(stateName) {
 		var newState = states[stateName];
-		//if (this.name === "Player"){console.log(newState);};
-		//console.log(newState);
 
 		if (newState != currentState && newState != null) {
 			currentState = newState;
@@ -72,14 +66,6 @@ function AnimatedSpriteClass(animationSpriteSheet, animationSpriteWidth, animati
 			frameCol = currentState.startFrame;
 			ticksPerFrame = Math.round(1 / currentState.animationSpeed);
 		}
-
-		// console.log(stateName);
-		 //console.log(this.name);
-		 //console.log(newState);
-		// if (this.name === "Player" && newState === Player.states.walk) {
-		// 	console.log("hello walking conditional check");
-		// 	playMultiSound(arrayOfFootstepSounds);
-		// }
 	}
 
 	this.setEntityDirection = function(spriteSheetFrameCol) {

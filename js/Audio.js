@@ -2,9 +2,9 @@ const AudioContext = window.AudioContext || window.webkitAudioContext;
 const audioCtx = new AudioContext(); // safari fix for delayed audio
 
 var audioType = undefined;
-var audioFormat = ".ogg"; // TODO: Add both ogg and mp3 versions of sfx/music
+var audioFormat = ".ogg";
 
-const TOTAL_SFX = 10;
+const TOTAL_SFX = 17;
 const TOTAL_BG_MUSIC = 6;
 
 var sfx = new Array(TOTAL_SFX);
@@ -20,6 +20,13 @@ const FOOTSTEP4 = 6;
 const FOOTSTEP5 = 7;
 const FOOTSTEP6 = 8;
 const FOOTSTEP7 = 9;
+const FOOTSTEP8 = 10;
+const FOOTSTEP9 = 11;
+const FOOTSTEP10 = 12;
+const FOOTSTEP11 = 13;
+const FOOTSTEP12 = 14;
+const FOOTSTEP13 = 15;
+const FOOTSTEP14 = 16;
 
 const AMBIENT_MUSIC = 0;
 const FINAL_BOSS = 1;
@@ -37,6 +44,8 @@ const AMBIENT_MUSIC_FADE_IN_RATE =  0.005;
 const AMBIENT_MUSIC_FADE_OUT_RATE = 0.02;
 const AMBIENT_TENSION_FADE_IN_RATE =  0.02;
 const AMBIENT_TENSION_FADE_OUT_RATE =  0.02;
+
+var footstepsPlaying = false;
 
 //This will help set the correct format type based on browser
 var setAudioTypeAndSourceExtension = () => {
@@ -145,12 +154,19 @@ function loadAudio()
 	sfx[FOOTSTEP5].load("sfx/footstep5");
 	sfx[FOOTSTEP6].load("sfx/footstep6");
 	sfx[FOOTSTEP7].load("sfx/footstep7");
+	sfx[FOOTSTEP8].load("sfx/footstep1"); // double up footsteps to reduce chance of all being played
+	sfx[FOOTSTEP9].load("sfx/footstep2");
+	sfx[FOOTSTEP10].load("sfx/footstep3");
+	sfx[FOOTSTEP11].load("sfx/footstep4");
+	sfx[FOOTSTEP12].load("sfx/footstep5");
+	sfx[FOOTSTEP13].load("sfx/footstep6");
+	sfx[FOOTSTEP14].load("sfx/footstep7");
 
 	bg_music[AMBIENT_MUSIC].load("music/ambientBackgroundMusic");
 	bg_music[FINAL_BOSS].load("music/finalBossBattleMusicV1");
 	bg_music[SHADOW_BOSS].load("music/shadowBossBattleMusicV1");
 	bg_music[MENU_MUSIC].load("music/titleScreenMusic");
-	bg_music[BEAST_BOSS].load("music/beastBossBattleMusicV1"); // TODO: replace with beast boss music path when ready
+	bg_music[BEAST_BOSS].load("music/beastBossBattleMusicV1");
 	bg_music[AMBIENT_TENSION].load("music/ambientTensionMusicV1");
 }
 
@@ -172,28 +188,22 @@ function getRandomInt(min, max) {
 let arrayOfFootstepSounds = [];
 
 function initializeArrayOfFootstepSounds() {
-	arrayOfFootstepSounds = [sfx[FOOTSTEP1], sfx[FOOTSTEP2], sfx[FOOTSTEP3], sfx[FOOTSTEP4],
-																sfx[FOOTSTEP5], sfx[FOOTSTEP6], sfx[FOOTSTEP7]];
-	// for (let i = 0; i < arrayOfFootstepSounds.length - 1; i++) {
-	// 	arrayOfFootstepSounds[i].onEnded = function() {
-	// 		setTimeout(function() {
-	// 			playMultiSound(arrayOfFootstepSounds);
-	// 		}, 250)
-	// 	}
-	}
-//}
+	arrayOfFootstepSounds = [sfx[FOOTSTEP1], sfx[FOOTSTEP2], sfx[FOOTSTEP3], sfx[FOOTSTEP4],sfx[FOOTSTEP5], sfx[FOOTSTEP6], sfx[FOOTSTEP7]];
+}
+
 //multisound is the name of the function from FMOD that is intended to add variety to repetitive sounds to help increase
 //aural aesthetics and prevent ear fatigue, this is a basic version using pitch shifted audio files based on the original
 //sound and volume randomization
 function playMultiSound(arrayOfSoundsToVarietize) {
-	//console.log("arrayOfSoundsToVarietize, " + arrayOfSoundsToVarietize );
   let arrayLength = arrayOfSoundsToVarietize.length;
-  let randomArrayIndex = getRandomInt(0, arrayLength - 1);
-  let randomSoundFromArray = arrayOfSoundsToVarietize[randomArrayIndex].sound;
-  let randomVolume = getRandomInt(8,10);
-//  console.log("base volume: " + randomSoundFromArray.volume + ", random volume: " + randomVolume);
-//console.log(randomSoundFromArray);
-  randomVolume = Math.min(randomVolume/10, randomSoundFromArray.volume);
-  randomSoundFromArray.volume = randomVolume;
-  randomSoundFromArray.play();
+  for (let i = 0; i < arrayLength*10; i++) { // TODO: make this more efficient - only needs to run for the length of the array and 'check off' each sound it tries as it goes
+	  let randomArrayIndex = getRandomInt(0, arrayLength - 1);
+	  let randomSoundFromArray = arrayOfSoundsToVarietize[randomArrayIndex];
+	  if (!randomSoundFromArray.isPlaying()) {
+		  randomSoundFromArray.sound.volume = 0.05;
+		  randomSoundFromArray.play();
+		  console.log("play");
+		  break;
+	  }
+  }
 }
