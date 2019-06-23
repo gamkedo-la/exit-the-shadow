@@ -200,7 +200,9 @@ function playMultiSound(arrayOfSoundsToVarietize) {
 	  let randomArrayIndex = getRandomInt(0, arrayLength - 1);
 	  let randomSoundFromArray = arrayOfSoundsToVarietize[randomArrayIndex];
 	  if (!randomSoundFromArray.isPlaying()) {
-		  randomSoundFromArray.sound.volume = 0.05;
+			let randomVolume = getRandomInt(5,15);
+			randomVolume = randomVolume/100;
+		  randomSoundFromArray.sound.volume = randomVolume;
 		  randomSoundFromArray.play();
 		  break;
 	  }
