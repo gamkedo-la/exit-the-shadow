@@ -309,9 +309,9 @@ function updateAll() {
 
 	if (Player.isWalking && !footstepsPlaying) {
 		playMultiSound(arrayOfFootstepSounds);
-		footstepsPlaying === true;
+		footstepsPlaying = true;
 	} else {
-		footstepsPlaying === false;
+		footstepsPlaying = false;
 	}
 	//console.log("Player.isWalking === " + Player.isWalking);
 

@@ -490,25 +490,25 @@ function PlayerClass() {
 	this.updateState = function() {
 		if (isDashing) {
 			this.AnimatedSprite.changeState("dash");
-			Player.isWalking === false;
+			Player.isWalking = false;
 		}
 		else if (Attack != null) {
 			this.AnimatedSprite.changeState("attack");
-			Player.isWalking === false;
+			Player.isWalking = false;
 		}
 		else if (isShielding) {
 			this.AnimatedSprite.changeState("shield");
-			Player.isWalking === false;
+			Player.isWalking = false;
 		}
 		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
 			this.AnimatedSprite.changeState("walk");
 			//console.log("hello?");
-			Player.isWalking === true;
+			Player.isWalking = true;
 			//playMultiSound(arrayOfFootstepSounds);
 		}
 		else {
 			this.AnimatedSprite.changeState("idle");
-			Player.isWalking === false;
+			Player.isWalking = false;
 		}
 	}
 
