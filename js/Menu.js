@@ -27,7 +27,7 @@ const Menu = new (function() {
 	let creditsList = [
 "• Praneil Kamat: Project lead, main gameplay code, base enemy and attack functionality, shielding, map layout, push attacks,",
 "  camera shake toggle, final boss variant of player sprite, healthbar hookups, healthy recovery, additional art integration,",
-"  many bug fixes, shadow boss and final boss behavior, player harmed sounds, Safari sound fixes",
+"  many bug fixes, shadow boss and final boss behavior, player harmed sounds, Safari sound fixes, end sequence",
 "• H Trayford: Floor tile implementation (based on Ygor art), webGL dynamic colored lighting, camera clamping, collision",
 "  improvements, improved depth sorting support, platform support, shadow boss sprites, gamepad improvements, menu key support",
 "• Ygor Dimas: Art direction, platform sprite, environment tiles, healing statue, typewriter, typewriter room and platform,",
@@ -44,10 +44,11 @@ const Menu = new (function() {
 "• Terrence McDonnell: Additional menu codeetup, music loop support, dash and trail tuning",
 "• Vince McKeown: Help screen improvements, game pauses if not in focus",
 "• Ryan Malm: Collision velocity resolution code",
+"• Stebs: Footstep sounds and integration",
 "• Chris DeLeon: Beast Boss procedrual hair",
 "• Ryan Gaillard: Play timer functionality",
 "• Matt Piwowarczyk: Pause functionality",
-"Special thanks: Randy Tan Shaoxian and Brian Nielsen. Game made in Gamkedo Club!"
+"Special thanks: Randy Tan Shaoxian, Brian Nielsen, and Anthony Free. Game made in Gamkedo Club! Join us at gamkedo.com"
 	];
 
 	let menuPageText = [classListMenu, classListSettings, classListHelp, classListCredits];
