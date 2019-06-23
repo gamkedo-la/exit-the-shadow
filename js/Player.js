@@ -505,7 +505,16 @@ function PlayerClass() {
 	}
 	
 	this.playFootsteps = function() {
-		if (!footstepsPlaying) {
+		let inBattle = false;
+		for (let i = 0; i < Entities.length; i++) {
+			if (Entities[i] == Player) {
+				continue;
+			}
+			if (Entities[i].isActive) {
+				inBattle = true;
+			}
+		}
+		if (!footstepsPlaying && !inBattle) {
 			playMultiSound(arrayOfFootstepSounds);
 			setTimeout(function() { footstepsPlaying = false; }, 210);
 			footstepsPlaying = true;
