@@ -93,6 +93,7 @@ const EndGame = new (function() {
 			endGameSequenceTime = 0;
 			endGamePending = false;
 			quitToMenu();
+			menuFadeInAlpha = 1;
 			return;
 		}
 		
@@ -153,13 +154,13 @@ const EndGame = new (function() {
 		canvasContext.textAlign = "center";
 		colorText("Play Time: ", canvas.width/2 + currentStatsXOffset, canvas.height/2 + (ySpaceBetween*-1.5), '#dacdc7');
 		colorText("Deaths: ", canvas.width/2 + currentStatsXOffset, canvas.height/2 + (ySpaceBetween*0.5), '#dacdc7');
-		strokeColorText("Play Time: ", canvas.width/2 + currentStatsXOffset, canvas.height/2 + (ySpaceBetween*-1.5), '#black', 1.5);
-		strokeColorText("Deaths: ", canvas.width/2 + currentStatsXOffset, canvas.height/2 + (ySpaceBetween*0.5), '#black', 1.5);
+		strokeColorText("Play Time: ", canvas.width/2 + currentStatsXOffset, canvas.height/2 + (ySpaceBetween*-1.5), 'black', 1.5);
+		strokeColorText("Deaths: ", canvas.width/2 + currentStatsXOffset, canvas.height/2 + (ySpaceBetween*0.5), 'black', 1.5);
 		
 		colorText("Best Time: ", canvas.width/2 + topStatsXOffset, canvas.height/2 + (ySpaceBetween*-1.5), '#dacdc7');
 		colorText("Lowest Deaths: ", canvas.width/2 + topStatsXOffset, canvas.height/2 + (ySpaceBetween*0.5), '#dacdc7');
-		strokeColorText("Best Time: ", canvas.width/2 + topStatsXOffset, canvas.height/2 + (ySpaceBetween*-1.5), '#black', 1.5);
-		strokeColorText("Lowest Deaths: ", canvas.width/2 + topStatsXOffset, canvas.height/2 + (ySpaceBetween*0.5), '#black', 1.5);
+		strokeColorText("Best Time: ", canvas.width/2 + topStatsXOffset, canvas.height/2 + (ySpaceBetween*-1.5), 'black', 1.5);
+		strokeColorText("Lowest Deaths: ", canvas.width/2 + topStatsXOffset, canvas.height/2 + (ySpaceBetween*0.5), 'black', 1.5);
 		
 		updateSavedStats();
 		let bestPlayTime = playTimeSecondsToHHMMSS(getSavedPlayTime());

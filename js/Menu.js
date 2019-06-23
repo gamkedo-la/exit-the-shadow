@@ -302,5 +302,7 @@ const Menu = new (function() {
 
 		const shadowOverlay = illuminator.getShadowOverlay(menuLights, menuColors, menuRanges, menuDarks, menuDarkRanges);
 		canvasContext.drawImage(shadowOverlay, 0, 0);
+		
+		colorRect(0,0, canvas.width,canvas.height, "rgba(0, 0, 0, " + menuFadeInAlpha + ")");
 	}
 })();

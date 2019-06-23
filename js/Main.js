@@ -34,6 +34,7 @@ var angleToSaveLocation = 0;
 var showSaveArrow = false;
 var showHealArrow = false;
 var showArrow = false;
+var menuFadeInAlpha = 1;
 
 // DEBUG CONTROLS - TURN OFF FOR FINAL RELEASE
 var debugDrawCursorCoordinates = false;
@@ -85,7 +86,8 @@ window.onload = function() {
 	);
 	resizeCanvas();
 
-	colorRect(0,0, canvas.width,canvas.height, 'white');
+	// show black screen before assets are ready
+	colorRect(0,0, canvas.width,canvas.height, 'black');
 
 	loadImages();
 
@@ -202,6 +204,13 @@ let footstepsPlaying = false;
 
 function updateAll() {
 	frameCounter++;
+	
+	if (menuFadeInAlpha > 0) {
+		menuFadeInAlpha -= 0.01;
+	}
+	else {
+		menuFadeInAlpha = 0;
+	}
 
 	// update music (for fades)
 	for (var i = 0; i < bg_music.length; i++) {
