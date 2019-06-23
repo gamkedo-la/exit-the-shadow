@@ -25,7 +25,7 @@ function ShadowBoss(name, id) {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	this.HP = 30;
+	this.HP = 50;
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	
@@ -61,8 +61,8 @@ function ShadowBoss(name, id) {
 	let attackTime = 0;
 	let isChargingAttack = false;
 	let isAttacking = false;
-	let maxAttackCooldown = 150;
-	let minAttackCooldown = 50;
+	let maxAttackCooldown = 120;
+	let minAttackCooldown = 30;
 	let attackCooldown = Math.round(Math.random()*(maxAttackCooldown-minAttackCooldown)) + minAttackCooldown;
 	let attackPadding = 32;
 	let attackWidth = this.width + (attackPadding*2);
@@ -259,6 +259,8 @@ function ShadowBoss(name, id) {
 		}
 		else if (phase == PHASE_1) {
 			phase = PHASE_2;
+			minAttackCooldown = 15;
+			maxAttackCooldown = 60;
 		}
 	}
 	
@@ -285,8 +287,14 @@ function ShadowBoss(name, id) {
 	this.setAttackDestination = function() {
 		let playerX = Player.centerX();
 		let playerY = Player.centerY();
-		attackDestinationX = playerX + (relativeDistanceBetweenEntitiesX(this, Player) * 100); // multiply by large enough number so that 
-		attackDestinationY = playerY + (relativeDistanceBetweenEntitiesY(this, Player) * 100); // we always move in one direction
+		if (phase == PHASE_1) {
+			attackDestinationX = playerX + (relativeDistanceBetweenEntitiesX(this, Player) * 100); // multiply by large enough number so that 
+			attackDestinationY = playerY + (relativeDistanceBetweenEntitiesY(this, Player) * 100); // we always move in one direction
+		}
+		else {
+			attackDestinationX = playerX + relativeDistanceBetweenEntitiesX(this, Player);
+			attackDestinationY = playerY + relativeDistanceBetweenEntitiesY(this, Player);
+		}
 	}
 	
 	this.chargeAttackTowardsAttackDestination = function() {
@@ -303,25 +311,23 @@ function ShadowBoss(name, id) {
 		this.nextX += speed * Math.cos(angle);
 		this.nextY += speed * Math.sin(angle);
 		
-		if (Math.abs(attackDestinationY - y) > 10) {
-			if (attackDestinationY < y) {
-				this.movementDirection[UP] = true;
-			}
-
-			if (attackDestinationY > y) {
-				this.movementDirection[DOWN] = true;
-			}
+		let angleDegrees = angle * (180/Math.PI);
+		angleDegrees += 90; // not sure why I need this to get the angle right??
+		
+		// calculate direction facing based on angle
+		if (angleDegrees > 30 && angleDegrees < 150) {
+			this.movementDirection[RIGHT] = true;
 		}
-
-		if (Math.abs(attackDestinationX - x) > 10) {
-			if (attackDestinationX > x) {
-				this.movementDirection[RIGHT] = true;
-			}
-
-			if (attackDestinationX < x) {
-				this.movementDirection[LEFT] = true;
-			}
+		else if (angleDegrees > 150 && angleDegrees < 210) {
+			this.movementDirection[DOWN] = true;
 		}
+		else if ((angleDegrees > 210 && angleDegrees < 330) || angleDegrees < -30) {
+			this.movementDirection[LEFT] = true;
+		}
+		else {
+			this.movementDirection[UP] = true;
+		}
+		
 		this.moveSpeed = 0; // set to zero so that setting movement direction doesn't move us (we want to override movement)
 	}
 	

@@ -26,7 +26,7 @@ function EvilPlayerBoss() {
 	this.collisionBoxHeight = this.width;
 	
 	this.moveSpeed = 2;
-	this.HP = 150;
+	this.HP = 120;
 	this.maxHP = this.HP;
 	this.weight = 2; // 0-10 (10 means can't be pushed by anything)
 	

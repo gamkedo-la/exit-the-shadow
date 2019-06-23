@@ -116,6 +116,7 @@ const Menu = new (function() {
 			loadHelpScreen();
 			startTutorial();
 			Player.HP = 1;
+			menuFadeInAlpha = 0;
 		    this.cursor1 = 0;
 		    break;
 		case "Continue":
@@ -128,6 +129,7 @@ const Menu = new (function() {
 			restartGame(true);
 			loadGame(); // need to do this before and after restart game - not ideal but works for now
 			disableTutorial();
+			menuFadeInAlpha = 0;
 		    Menu.cursor1 = 0;
 		    break;
 		case "Settings":
