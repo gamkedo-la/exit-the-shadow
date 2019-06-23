@@ -202,7 +202,6 @@ function playMultiSound(arrayOfSoundsToVarietize) {
 	  if (!randomSoundFromArray.isPlaying()) {
 		  randomSoundFromArray.sound.volume = 0.05;
 		  randomSoundFromArray.play();
-		  console.log("play");
 		  break;
 	  }
   }
