@@ -57,9 +57,15 @@ const EndGame = new (function() {
 		else if (endGameSequenceTime < 880) {
 			if (endGameSequenceTime > 550) {
 				currentStatsTorchX = canvas.width/2 + currentStatsXOffset;
+				if (endGameSequenceTime == 551) {
+					sfx[SPOTLIGHT].play();
+				}
 			}
 			if (endGameSequenceTime > 610) {
 				topStatsTorchX = canvas.width/2 + topStatsXOffset;
+				if (endGameSequenceTime == 611) {
+					sfx[SPOTLIGHT2].play();
+				}
 			}
 			this.initialiseLights();
 		}
@@ -80,9 +86,15 @@ const EndGame = new (function() {
 		}
 		else if (endGameSequenceTime < 1100){
 			if (endGameSequenceTime > 1000) {
+				if (endGameSequenceTime == 1001) {
+					sfx[SPOTLIGHT].play();
+				}
 				currentStatsTorchX = -10000;
 			}
 			if (endGameSequenceTime > 1025) {
+				if (endGameSequenceTime == 1026) {
+					sfx[SPOTLIGHT2].play();
+				}
 				topStatsTorchX = -10000;
 			}
 			if (endGameSequenceTime > 1040) {
