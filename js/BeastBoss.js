@@ -25,7 +25,7 @@ function BeastBoss(name) {
 	this.moveSpeed = 0.5;
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
-	this.HP = 40;
+	this.HP = 50;
 	this.oldHP = this.HP;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)
