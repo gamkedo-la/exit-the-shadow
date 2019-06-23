@@ -41,7 +41,7 @@ const Menu = new (function() {
 "• Lukas: Save and load functionality, save menu (not in final game), boss death text, last boss death check, typewriter sound",
 "• Simon J Hoffiz: Screen shake functionality, player UI for lives",
 "• Bryan Pope: Help screen plus transitions, death text, respawn",
-"• Terrence McDonnell: Additional menu codeetup, music loop support, dash and trail tuning",
+"• Terrence McDonnell: Additional menu code setup, music loop support, dash and trail tuning",
 "• Vince McKeown: Help screen improvements, game pauses if not in focus",
 "• Ryan Malm: Collision velocity resolution code",
 "• Stebs: Footstep sounds and integration",
