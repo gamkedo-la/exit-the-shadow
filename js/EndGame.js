@@ -5,10 +5,11 @@ var blackScreenAlpha = 0.0;
 
 const EndGame = new (function() {
 	let endGameTorches = [];
+	let endGamePlayer = null;
 	
 	this.resizingCanvas = function() {
 		endGameTorches = [];
-		endGameTorches.push({x:canvas.width/2, y:canvas.height/2, imgName: 'torchPic', range:0, r:1/255, g:1/255, b:1/255});
+		endGameTorches.push({x:canvas.width/2, y:canvas.height/2, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255});
 		//endGameTorches.push({x:100 + (canvas.width/2)-(logoPic.width/2), y:canvas.height - 64, imgName: 'torchPic', range:200, r:1/255, g:252/255, b:20/255});
 		//endGameTorches.push({x:(canvas.width/2)+(logoPic.width/2), y:canvas.height - 64 - logoPic.height, imgName: 'torchPic', range:200, r:1, g:252/255, b:206/255});
 		//endGameTorches.push({x:canvas.width - 100, y:100, imgName: 'torchPic', range:200, r:1, g:25/255, b:20/255});
@@ -24,49 +25,65 @@ const EndGame = new (function() {
 		}
 		else if (endGameSequenceTime < 300) {
 			blackScreenAlpha += 0.02;
-			//whiteScreenAlpha -= 0.02;
+		}
+		
+		if (endGamePlayer != null) {
+			endGamePlayer.move();
+			endGamePlayer.animate();
 		}
 		endGameSequenceTime++;
 	}
 	
 	this.draw = function() {
-		canvasContext.save();
-		canvasContext.font = "30px Impact";
-		canvasContext.textAlign = "center";
-		
 		if (endGameSequenceTime < 300) {
 			colorRect(0, 0, canvas.width, canvas.height, "rgba(255, 255, 255, " + whiteScreenAlpha + ")");
 			colorRect(0, 0, canvas.width, canvas.height, "rgba(0, 0, 0, " + blackScreenAlpha + ")");
 		}
 		if (endGameSequenceTime >= 300) {
 			canvasContext.drawImage(titlePic, 0,0);
+			canvasContext.drawImage(typewriterPlatform, canvas.width/2 - typewriterPlatform.width/2, canvas.height/2 - typewriterPlatform.height/2);
 			
-			colorText("Play Time: ", canvas.width/2, canvas.height/2 - 275, '#dacdc7');
-			colorText("Deaths: ", canvas.width/2, canvas.height/2 - 125, '#dacdc7');
-			strokeColorText("Play Time: ", canvas.width/2, canvas.height/2 - 275, '#black', 1.5);
-			strokeColorText("Deaths: ", canvas.width/2, canvas.height/2 - 125, '#black', 1.5);
+			if (endGamePlayer != null) {
+				endGamePlayer.draw();
+			}
 			
-			colorText("Best Time: ", canvas.width/2, canvas.height/2 + 25, '#dacdc7');
-			colorText("Lowest Deaths: ", canvas.width/2, canvas.height/2 + 175, '#dacdc7');
-			strokeColorText("Best Time: ", canvas.width/2, canvas.height/2 + 25, '#black', 1.5);
-			strokeColorText("Lowest Deaths: ", canvas.width/2, canvas.height/2 + 175, '#black', 1.5);
-			
-			updateSavedStats();
-			let bestPlayTime = playTimeSecondsToHHMMSS(getSavedPlayTime());
-			let lowestDeaths = getSavedTotalDeaths();
-			
-			setPlayTimeDisplayText();
-			canvasContext.save();
-			canvasContext.font = "40px Impact";
-			colorText(playTimeISOFormat, canvas.width/2, canvas.height/2 - 200, '#dacdc7');
-			colorText(totalDeaths, canvas.width/2, canvas.height/2 - 50, '#dacdc7');
-			colorText(bestPlayTime, canvas.width/2, canvas.height/2 + 100, '#dacdc7');
-			colorText(lowestDeaths, canvas.width/2, canvas.height/2 + 250, '#dacdc7');
-			canvasContext.restore();
-			
-			endGameTorches[0].range += 2;
 			this.drawEndLights();
+			if (endGameSequenceTime == 300) {
+				endGamePlayer = new PlayerClass();
+				endGamePlayer.initialisePosition(canvas.width / 2, canvas.height);
+				endGamePlayer.phase = PHASE_END_GAME;
+				endGamePlayer.cameraShouldFollow = false;
+				endGamePlayer.collisionsOn = false;
+			}
 		}
+	}
+	
+	this.drawStats = function() {
+		canvasContext.save();
+		canvasContext.font = "30px Impact";
+		canvasContext.textAlign = "center";
+		colorText("Play Time: ", canvas.width/2, canvas.height/2 - 275, '#dacdc7');
+		colorText("Deaths: ", canvas.width/2, canvas.height/2 - 125, '#dacdc7');
+		strokeColorText("Play Time: ", canvas.width/2, canvas.height/2 - 275, '#black', 1.5);
+		strokeColorText("Deaths: ", canvas.width/2, canvas.height/2 - 125, '#black', 1.5);
+		
+		colorText("Best Time: ", canvas.width/2, canvas.height/2 + 25, '#dacdc7');
+		colorText("Lowest Deaths: ", canvas.width/2, canvas.height/2 + 175, '#dacdc7');
+		strokeColorText("Best Time: ", canvas.width/2, canvas.height/2 + 25, '#black', 1.5);
+		strokeColorText("Lowest Deaths: ", canvas.width/2, canvas.height/2 + 175, '#black', 1.5);
+		
+		updateSavedStats();
+		let bestPlayTime = playTimeSecondsToHHMMSS(getSavedPlayTime());
+		let lowestDeaths = getSavedTotalDeaths();
+		
+		setPlayTimeDisplayText();
+		canvasContext.save();
+		canvasContext.font = "40px Impact";
+		colorText(playTimeISOFormat, canvas.width/2, canvas.height/2 - 200, '#dacdc7');
+		colorText(totalDeaths, canvas.width/2, canvas.height/2 - 50, '#dacdc7');
+		colorText(bestPlayTime, canvas.width/2, canvas.height/2 + 100, '#dacdc7');
+		colorText(lowestDeaths, canvas.width/2, canvas.height/2 + 250, '#dacdc7');
+		canvasContext.restore();
 		canvasContext.restore();
 	}
 	

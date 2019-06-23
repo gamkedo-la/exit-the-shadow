@@ -42,6 +42,8 @@ function EntityClass() {
 	this.weight = 0; // 0-10 (10 means can't be pushed by anything)
 	this.forceX = 0;
 	this.forceY = 0;
+	
+	this.collisionsOn = true;
 }
 
 // add new functions in here
@@ -99,8 +101,10 @@ EntityClass.prototype = {
 		this.forceX = 0;
 		this.forceY = 0;
 
-		handleEntityCollisions(this);
-		handleWorldCollisions(this);
+		if (this.collisionsOn) {
+			handleEntityCollisions(this);
+			handleWorldCollisions(this);
+		}
 		
 		// currently only used to calculate camera position for player
 		// but left in here as it may be useful for any entity

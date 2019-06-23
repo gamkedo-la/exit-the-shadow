@@ -13,13 +13,12 @@ const HIDE_PLAYER_WHEN_DASHING = false;
 // inherit from EntityClass
 PlayerClass.prototype = new EntityClass();
 PlayerClass.prototype.constructor = PlayerClass;
+const PHASE_PLAYABLE = 0;
+const PHASE_END_GAME = 1;
 
 function PlayerClass() {
 
-	const PHASE_PLAYABLE = 0;
-	const PHASE_END_GAME = 1;
-
-	let phase = PHASE_PLAYABLE;
+	this.phase = PHASE_PLAYABLE;
 
 	// public
 	this.name = "Player";
@@ -93,6 +92,8 @@ function PlayerClass() {
 
 	this.regainHealthMeter = 0;
 	this.regainHealthThreshold = 10;
+	
+	this.cameraShouldFollow = true;
 
 	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, interactKey, attackKey, shieldKey) {
 		this.controlKeyUp = upKey;
@@ -111,7 +112,7 @@ function PlayerClass() {
 		this.isDead = false;
 		isDashing = false;
 		dashCooldown = 0;
-		phase = PHASE_PLAYABLE;
+		this.phase = PHASE_PLAYABLE;
 		this.directionFacing = UP;
 		this.forceX = 0;
 		this.forceY = 0;
@@ -123,7 +124,7 @@ function PlayerClass() {
 		this.isDead = false;
 		isDashing = false;
 		dashCooldown = 0;
-		phase = PHASE_PLAYABLE;
+		this.phase = PHASE_PLAYABLE;
 		this.bossesKilled = [];
 		this.maxHP = 3;
 		this.damage = 1;
@@ -136,10 +137,10 @@ function PlayerClass() {
 
 	this.move = function () {
 		if (this.y < 200) {
-			phase = PHASE_END_GAME;
+			this.phase = PHASE_END_GAME;
 		}
 		this.movementDirection = [false, false, false, false]; // up, left, down, right
-		if (phase == PHASE_PLAYABLE) {
+		if (this.phase == PHASE_PLAYABLE) {
 			// MOVEMENT
 			if (!isDashing && !isShielding) {
 				if (this.keyHeld_Up) {
@@ -416,7 +417,7 @@ function PlayerClass() {
 
 			this.checkForRegainHealth();
 		}
-		else if (phase == PHASE_END_GAME) {
+		else if (this.phase == PHASE_END_GAME) {
 			if (endGameSequenceTime == 0) {
 				endGamePending = true;
 			}
@@ -424,14 +425,20 @@ function PlayerClass() {
 				this.moveSpeed = 2;
 				this.movementDirection[UP] = true;
 			}
+			if (endGameSequenceTime > 300 && this.centerY() < canvas.height/2 - 5) {
+				this.movementDirection[UP] = false;
+				this.directionFacing = DOWN;
+			}
 		}
 		this.updateState(); // update animation state
+	
 		EntityClass.prototype.move.call(this); // call superclass function
-
-		//clamp player position to on the map
-		this.clampPositionToScreen();
-
-		cameraFollow();
+		
+		if (this.cameraShouldFollow) {
+			//clamp player position to on the map
+			this.clampPositionToScreen();
+			cameraFollow();
+		}
 	}
 
 	this.clampPositionToScreen = function() {
@@ -494,7 +501,7 @@ function PlayerClass() {
 		}
 		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
 			this.AnimatedSprite.changeState("walk");
-			console.log("hello?");
+			//console.log("hello?");
 			Player.isWalking === true;
 			//playMultiSound(arrayOfFootstepSounds);
 		}

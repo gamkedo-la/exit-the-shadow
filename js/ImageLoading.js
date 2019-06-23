@@ -43,7 +43,7 @@ var debris8 = document.createElement("img");
 var debris9 = document.createElement("img");
 var tutorialArrow = document.createElement("img");
 var mothLamp = document.createElement("img");
-var typeWriterPlatform = document.createElement("img");
+var typewriterPlatform = document.createElement("img");
 var skeleton1 = document.createElement("img");
 var skeleton2 = document.createElement("img");
 var skeleton3 = document.createElement("img");
@@ -104,7 +104,7 @@ function loadImages() {
 		{varName: ruins, fileName: "ruins_1.png"},
 		{varName: tutorialArrow, fileName: "tutorial_arrow.png"},
 		{varName: mothLamp, fileName: "moth_lamp.png"},
-		{varName: typeWriterPlatform, fileName: "typewriter_platform.png"},
+		{varName: typewriterPlatform, fileName: "typewriter_platform.png"},
 		{varName: skeleton1, fileName: "skeleton_1.png"},
 		{varName: skeleton2, fileName: "skeleton_2.png"},
 		{varName: skeleton3, fileName: "skeleton_3.png"},
