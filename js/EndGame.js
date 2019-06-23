@@ -12,6 +12,8 @@ const EndGame = new (function() {
 	let currentStatsTorchX = 1;
 	let topStatsTorchX = 1;
 	let mainTorchX = 1;
+	let playerAbsorbTorchX = 1;
+	let playerAbsorbTorchRange = 1;
 	
 	this.resizingCanvas = function() {
 		this.initialiseLights();
@@ -22,7 +24,7 @@ const EndGame = new (function() {
 		endGameTorches.push({x:mainTorchX, y:canvas.height/2, imgName: 'torchPic', range:200, r:1/255, g:1/255, b:1/255});
 		endGameTorches.push({x:currentStatsTorchX, y:canvas.height/2, imgName: 'torchPic', range:250, r:1, g:25/255, b:20/255});
 		endGameTorches.push({x:topStatsTorchX, y:canvas.height/2, imgName: 'torchPic', range:250, r:70/255, g:1/255, b:130/255});
-		// range:250, r:1, g:252/255, b:206/255 // for player absorbing evil player light?
+		endGameTorches.push({x:playerAbsorbTorchX, y:canvas.height/2, imgName: 'torchPic', range:playerAbsorbTorchRange, r:1, g:252/255, b:206/255});
 	}
 	
 	this.resetVariables = function() {
@@ -41,6 +43,8 @@ const EndGame = new (function() {
 				mainTorchX = canvas.width/2;
 				currentStatsTorchX = -10000;
 				topStatsTorchX = -10000;
+				playerAbsorbTorchX = -10000;
+				playerAbsorbTorchRange = 1;
 				this.initialiseLights();
 			}
 		}
@@ -66,6 +70,9 @@ const EndGame = new (function() {
 					endGameEvilPlayer.AnimatedSprite.opacity = 0;
 					endGameEvilPlayer = null;
 				}
+				playerAbsorbTorchRange += 1.2;
+				playerAbsorbTorchX = canvas.width/2;
+				this.initialiseLights();
 			}
 		}
 		else if (endGameSequenceTime < 1100){
@@ -77,6 +84,7 @@ const EndGame = new (function() {
 			}
 			if (endGameSequenceTime > 1040) {
 				mainTorchX = -10000;
+				playerAbsorbTorchX = -10000;
 			}
 			this.initialiseLights();
 		}
