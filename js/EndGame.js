@@ -99,15 +99,15 @@ const EndGame = new (function() {
 		
 		if (endGameSequenceTime == 300) {
 			endGamePlayer = new PlayerClass();
-			endGamePlayer.initialisePosition(canvas.width / 2, canvas.height);
+			endGamePlayer.initialisePosition(canvas.width / 2, canvas.height / 2 + 300);
 			endGamePlayer.phase = PHASE_END_GAME;
 			endGamePlayer.cameraShouldFollow = false;
 			endGamePlayer.collisionsOn = false;
 		}
 		
-		if (endGameSequenceTime == 650) {
+		if (endGameSequenceTime == 657) { // time this so player and evil player idle animations sync up
 			endGameEvilPlayer = new EvilPlayerBoss();
-			endGameEvilPlayer.initialisePosition(canvas.width / 2, canvas.height);
+			endGameEvilPlayer.initialisePosition(canvas.width / 2, canvas.height / 2 + 300);
 			endGameEvilPlayer.phase = PHASE_END_GAME;
 			endGameEvilPlayer.collisionsOn = false;
 		}
