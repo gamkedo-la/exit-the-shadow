@@ -59,17 +59,17 @@ function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _
 	canvasContext.textAlign = "center";
 	for (var i = 0; i < controlsText.length; i++) {
 		var text = controlsText[i];
-		
+
 		if (text == "H - Help") {
 			text = "H - Show / Hide Help Box";
 			textVPosShift += _textHeight;
 		}
-		
+
 		colorText(text, padLeft, _padTop + _topBorder + textVPosShift, textColor);
 		strokeColorText(text, padLeft, _padTop + _topBorder + textVPosShift, "rgba(0, 0, 0, " + _textAlpha + ")", 1.5);
 		textVPosShift += _textHeight;
 	}
-	
+
 	restoreFont();
 	canvasContext.restore();
 }

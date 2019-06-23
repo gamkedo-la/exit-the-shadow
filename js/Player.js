@@ -15,32 +15,33 @@ PlayerClass.prototype = new EntityClass();
 PlayerClass.prototype.constructor = PlayerClass;
 
 function PlayerClass() {
-	
+
 	const PHASE_PLAYABLE = 0;
 	const PHASE_END_GAME = 1;
-	
+
 	let phase = PHASE_PLAYABLE;
 
 	// public
+	this.name = "Player";
 	this.width = 25;
 	this.height = 50;
 	this.HP = 3;
 	this.maxHP = this.HP;
 	this.HP = 1;
 	this.damage = 1;
-	
+
 	this.collisionBoxHeight = this.width;
-	
+
 	this.moveSpeed = 5;
-	
+
 	this.heartsAcquired = {beastHeartAcquired: false, shadowHeartAcquired: false};
-	
+
 	// string array with names of bosses killed. used by save game system
 	this.bossesKilled = new Array();
 
 	// motion blur trail effect
 	this.trail = new TrailFX(trailImage);
-	
+
 	this.states = {
 		idle: {startFrame: 0, endFrame: 3, animationSpeed: 0.1},
 		walk: {startFrame: 4, endFrame: 7, animationSpeed: 0.5},
@@ -48,11 +49,11 @@ function PlayerClass() {
 		attack: {startFrame: 10, endFrame: 10, animationSpeed: 1},
 		shield: {startFrame: 11, endFrame: 11, animationSpeed: 1}
 	}
-	
+
 	let spritePadding = 50;
-	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, spritePadding, this.states);
+	this.AnimatedSprite = new AnimatedSpriteClass(playerSheet, this.width, this.height, spritePadding, this.states, "Player");
 	//this.shadow = playerShadowSprite;
-	
+
 	this.keyHeld_Up = false;
 	this.keyHeld_Down = false;
 	this.keyHeld_Left = false;
@@ -61,7 +62,7 @@ function PlayerClass() {
 	this.keyHeld_Interact = false;
 	this.keyHeld_Attack = false;
 	this.keyHeld_Shield = false;
-	
+
 	this.controlKeyUp;
 	this.controlKeyLeft;
 	this.controlKeyRight;
@@ -70,26 +71,29 @@ function PlayerClass() {
 	this.controlKeyInteract;
 	this.controlKeyAttack;
 	this.controlKeyShield;
-	
+
 	// private
 	let isDashing = false;
+
+	this.isWalking = false;
+
 	let dashRemaining = DASH_LENGTH/DASH_SPEED;
 	let dashCooldown = 0;
 	let dashDirection = NO_DIRECTION;
 	let diagonalDashSpeed = Math.sqrt((DASH_SPEED*DASH_SPEED) / 2);
-	
+
 	let Attack;
 	let attackCooldown = 0;
 	let attackWidth = 40;
 	let attackHeight = 40;
-	
+
 	let isShielding = false;
 	let shieldRemaining = SHIELD_MAX_TIME;
 	let shieldCooldown = SHIELD_COOLDOWN;
-	
+
 	this.regainHealthMeter = 0;
 	this.regainHealthThreshold = 10;
-	
+
 	this.setupInput = function(upKey, leftKey, downKey, rightKey, dashKey, interactKey, attackKey, shieldKey) {
 		this.controlKeyUp = upKey;
 		this.controlKeyLeft = leftKey;
@@ -100,7 +104,7 @@ function PlayerClass() {
 		this.controlKeyAttack = attackKey;
 		this.controlKeyShield = shieldKey;
 	}
-	
+
 	this.partialResetStats = function () {
 		this.HP = this.maxHP;
 		this.regainHealthMeter = 0;
@@ -129,7 +133,7 @@ function PlayerClass() {
 		this.forceX = 0;
 		this.forceY = 0;
 	}
-	
+
 	this.move = function () {
 		if (this.y < 200) {
 			phase = PHASE_END_GAME;
@@ -141,11 +145,11 @@ function PlayerClass() {
 				if (this.keyHeld_Up) {
 					this.movementDirection[UP] = true;
 				}
-		
+
 				if (this.keyHeld_Down) {
 					this.movementDirection[DOWN] = true;
 				}
-		
+
 				if (this.keyHeld_Right) {
 					this.movementDirection[RIGHT] = true;
 				}
@@ -154,7 +158,7 @@ function PlayerClass() {
 					this.movementDirection[LEFT] = true;
 				}
 			}
-		
+
 			// DASH
 			if (this.keyHeld_Dash && !isDashing && dashCooldown <= 0 &&
 			   (this.movementDirection[UP] || this.movementDirection[DOWN] || this.movementDirection[RIGHT] || this.movementDirection[LEFT])) {
@@ -207,13 +211,13 @@ function PlayerClass() {
 					dashCooldown = 1; // prevent repeatedly dashing if keyheld
 				}
 			}
-		
+
 			// ATTACK
 			if (this.keyHeld_Attack && attackCooldown <= 0 && !isShielding && !isDashing) { // not attacking right now & is able to
 				if (Attack == null) {
 					let centerX = this.x + this.width / 2, centerY = this.y + this.height / 2;
 					let velocityX = 0, velocityY = 0;
-				
+
 					switch(this.directionFacing) {
 					case UP:
 						centerY -= ((this.collisionBoxHeight / 2) + (attackHeight / 2) - (this.collisionBoxHeight / 2));
@@ -232,7 +236,7 @@ function PlayerClass() {
 						velocityX = 1;
 						break;
 					}
-				
+
 					let attackOptions = {
 						centerX: centerX,
 						centerY: centerY,
@@ -245,7 +249,7 @@ function PlayerClass() {
 						immuneEntities: [Player],
 						isPlayerAttack: true
 					}
-				
+
 					Attack = new ProjectileClass(attackOptions);
 					sfx[ATTACK_SFX].play();
 				}
@@ -261,13 +265,13 @@ function PlayerClass() {
 			}
 			if (attackCooldown > 0) {
 				attackCooldown--;
-			
+
 				// prevent being able to just hold down the key
 				if (attackCooldown <= 0 && this.keyHeld_Attack) {
 					attackCooldown = 1;
 				}
 			}
-		
+
 			// SHIELD
 			if (this.keyHeld_Shield && !isShielding && shieldCooldown <= 0 && !isDashing && Attack == null) { // not currently shielding & is able to
 				isShielding = true;
@@ -275,7 +279,7 @@ function PlayerClass() {
 			}
 			if (isShielding){ // currently shielding
 				shieldRemaining--;
-			
+
 				if (shieldRemaining <= 0 || !this.keyHeld_Shield) {
 					isShielding = false;
 					this.isInvulnerable = false;
@@ -284,7 +288,7 @@ function PlayerClass() {
 			}
 			if (shieldCooldown > 0) {
 				shieldCooldown--;
-			
+
 				if (shieldCooldown <= 0 && !this.keyHeld_Shield) {
 					shieldRemaining = SHIELD_MAX_TIME;
 				}
@@ -292,7 +296,7 @@ function PlayerClass() {
 					shieldCooldown = 1; // prevent repeatedly shielding if keyheld
 				}
 			}
-		
+
 			if ((!playerHasHealed || !playerHasSaved) && tutorialIsActive) {
 				for (var i = 0; i < SortedArt.length; i++) {
 					if (SortedArt[i].imgName == "healingStatue") {
@@ -349,7 +353,7 @@ function PlayerClass() {
 					}
 				}
 			}
-		
+
 			if (this.keyHeld_Interact) {
 				// interact with nearby things here
 				for (var i = 0; i < SortedArt.length; i++) {
@@ -409,7 +413,7 @@ function PlayerClass() {
 					}
 				}
 			}
-		
+
 			this.checkForRegainHealth();
 		}
 		else if (phase == PHASE_END_GAME) {
@@ -426,7 +430,7 @@ function PlayerClass() {
 
 		//clamp player position to on the map
 		this.clampPositionToScreen();
-	
+
 		cameraFollow();
 	}
 
@@ -443,7 +447,7 @@ function PlayerClass() {
 			this.y = camPanY + canvas.height - this.height;
 		}
 	}
-	
+
 	this.calculateDashDirection = function(movementDirection) {
 		if (movementDirection[UP] && movementDirection[LEFT]) {
 			return UP_LEFT;
@@ -474,31 +478,38 @@ function PlayerClass() {
 	this.cancelDash = function() {
 		isDashing = false;
 	}
-	
+
 	this.updateState = function() {
 		if (isDashing) {
 			this.AnimatedSprite.changeState("dash");
+			Player.isWalking === false;
 		}
 		else if (Attack != null) {
 			this.AnimatedSprite.changeState("attack");
+			Player.isWalking === false;
 		}
 		else if (isShielding) {
 			this.AnimatedSprite.changeState("shield");
+			Player.isWalking === false;
 		}
 		else if (this.movementDirection[UP] || this.movementDirection[LEFT] || this.movementDirection[DOWN] || this.movementDirection[RIGHT]) {
 			this.AnimatedSprite.changeState("walk");
+			console.log("hello?");
+			Player.isWalking === true;
+			//playMultiSound(arrayOfFootstepSounds);
 		}
 		else {
 			this.AnimatedSprite.changeState("idle");
+			Player.isWalking === false;
 		}
 	}
-	
+
 	this.draw = function() {
 		// motion blur effect
 		this.trail.update(this.x+10,this.y+24);
 		if (isDashing || dashCooldown > 1)
-			this.trail.draw(); 
-		
+			this.trail.draw();
+
 		if (HIDE_PLAYER_WHEN_DASHING) {
 			if (!isDashing) {
 				EntityClass.prototype.draw.call(this);
@@ -536,14 +547,14 @@ function PlayerClass() {
 			colorRect(camPanX, gradientY + 1280, canvas.width, bottomHeight, 'black'); // canvas
 		}
 	}
-	
+
 	this.isAttacking = function() {
 		if (Attack != null) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	this.checkForRegainHealth = function() {
 		if (this.HP < this.maxHP) {
 			if (this.regainHealthMeter >= this.regainHealthThreshold) {
@@ -554,7 +565,7 @@ function PlayerClass() {
 		else {
 			this.regainHealthMeter = 0;
 		}
-		
+
 		if (this.regainHealthMeter > 0) {
 			this.regainHealthMeter -= 0.005;
 		}
@@ -562,44 +573,44 @@ function PlayerClass() {
 			this.regainHealthMeter = 0;
 		}
 	}
-	
+
 	this.regainHealthFromAttack = function() {
 		this.regainHealthMeter++;
 	}
-	
+
 	this.increaseMaxHP = function() {
 		this.updateMaxHP();
 		this.HP = this.maxHP;
 	}
-	
+
 	this.updateMaxHP = function() {
 		this.maxHP = 3;
-		
+
 		if (this.heartsAcquired.beastHeartAcquired) {
 			this.maxHP++;
 		}
-		
+
 		if (this.heartsAcquired.shadowHeartAcquired) {
 			this.maxHP++;
 		}
 	}
-	
+
 	this.increaseDamage = function() {
 		this.updateDamage();
 	}
-	
+
 	this.updateDamage = function() {
 		this.damage = 1;
-		
+
 		if (this.heartsAcquired.beastHeartAcquired) {
 			this.damage++;
 		}
-		
+
 		if (this.heartsAcquired.shadowHeartAcquired) {
 			this.damage++;
 		}
 	}
-	
+
 	this.increaseAttributes = function() {
 		this.increaseMaxHP();
 		this.increaseDamage();
