@@ -45,7 +45,7 @@ const Menu = new (function() {
 "• Vince McKeown: Help screen improvements, game pauses if not in focus",
 "• Ryan Malm: Collision velocity resolution code",
 "• Stebs: Footstep sounds and integration",
-"• Chris DeLeon: Beast Boss procedrual hair",
+"• Chris DeLeon: Beast Boss procedural hair",
 "• Ryan Gaillard: Play timer functionality",
 "• Matt Piwowarczyk: Pause functionality",
 "Special thanks: Randy Tan Shaoxian, Brian Nielsen, and Anthony Free. Game made in Gamkedo Club! Join us at gamkedo.com"
