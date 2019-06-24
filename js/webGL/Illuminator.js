@@ -2,6 +2,7 @@
 const ILLUM_OFFSET_X = 10;
 const ILLUM_OFFSET_Y = 10;
 
+const creditsLightRange = 700;
 const menuLightRange = 500;
 const playerLightRange = 400;
 var mainLightRange = menuLightRange; //based on visual appeal

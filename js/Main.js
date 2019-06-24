@@ -221,7 +221,6 @@ function updateAll() {
 	}
 	else {
 		Menu.update();
-		mainLightRange = menuLightRange;
 		return;
 	}
 	if (gamePaused == false) { //Updates only if the game is not paused

@@ -86,6 +86,13 @@ const Menu = new (function() {
 				switchMusic(MENU_MUSIC, AMBIENT_MUSIC_FADE_OUT_RATE, AMBIENT_MUSIC_FADE_IN_RATE);
 			}, 200);
 		}
+		
+		if (currentPage == CREDITS_PAGE){
+			mainLightRange = creditsLightRange;
+		}
+		else {
+			mainLightRange = menuLightRange;
+		}
 
 	    this.draw();
 	}
@@ -145,6 +152,7 @@ const Menu = new (function() {
 		case "Credits":
 		    Menu.cursor1 = 0;
 		    currentPage  = CREDITS_PAGE;
+			mainLightRange = creditsLightRange;
 		    break;
 			
 		// SETTINGS
@@ -157,6 +165,7 @@ const Menu = new (function() {
 		    Menu.cursor1 = 0;
 		    currentPage  = MENU_PAGE;
 			displayControls = false;
+			mainLightRange = menuLightRange;
 		    break;
 		}
 	}
