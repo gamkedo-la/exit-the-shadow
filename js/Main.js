@@ -317,7 +317,7 @@ function sortByFloorPosition(a, b) {
 }
 
 function drawGame() {
-	colorRect(0, 0, canvas.width, canvas.height, 'white'); // canvas
+	//colorRect(0, 0, canvas.width, canvas.height, 'white'); // canvas
 
 	drawFloorTiles();
 	visibleTileEntities = getVisibleTileEntities();

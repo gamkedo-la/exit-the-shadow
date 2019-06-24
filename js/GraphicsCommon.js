@@ -7,8 +7,12 @@ function drawBitmapCenteredWithRotation(useBitmap, atX, atY, withAng) {
 }
 
 function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
-	canvasContext.fillStyle = fillColor;
-	canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+	if (fillColor=="black") { // optimization
+		canvasContext.drawImage(blackPic,topLeftX,topLeftY,boxWidth,boxHeight);
+	} else {
+		canvasContext.fillStyle = fillColor;
+		canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+	}
 }
 
 function colorTriangle(x1,y1, x2,y2, x3,y3, fillColor) {

@@ -49,6 +49,7 @@ var skeleton2 = document.createElement("img");
 var skeleton3 = document.createElement("img");
 var skeleton4 = document.createElement("img");
 var tree = document.createElement("img");
+var blackPic = document.createElement("img");
 
 picsToLoad = 0;
 
@@ -110,6 +111,8 @@ function loadImages() {
 		{varName: skeleton3, fileName: "skeleton_3.png"},
 		{varName: skeleton4, fileName: "skeleton_4.png"},
 		{varName: tree, fileName: "tree_1.png"},
+		{varName: blackPic, fileName: "blackPixel.png"},
+
 	];
 	
 	picsToLoad = imageList.length;
