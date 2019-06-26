@@ -25,7 +25,14 @@ function BeastBoss(name) {
 	this.moveSpeed = 0.5;
 	this.followSpeed = this.moveSpeed;
 	this.dashSpeed = 8;
-	this.HP = 50;
+	
+	const HP = 50;
+	if (assistedModeOn) { // half health if assisted mode on
+		this.HP = HP / 2;
+	}
+	else {
+		this.HP = HP;
+	}
 	this.oldHP = this.HP;
 	this.maxHP = this.HP;
 	this.weight = 10; // 0-10 (10 means can't be pushed by anything)

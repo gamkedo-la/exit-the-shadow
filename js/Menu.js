@@ -20,7 +20,7 @@ const Menu = new (function() {
 	let textColour = "#dacdc7"; // same as logo
 	
 	let classListMenu = ["New Game", "Continue", "Settings" , "Controls", "Credits"];
-	let classListSettings = ["Screen Shake", "Back"];
+	let classListSettings = ["Screen Shake", "Assisted Mode",  "Back"];
 	let classListHelp = ["Back"];
 	let classListCredits = ["Back"];
 	
@@ -159,6 +159,9 @@ const Menu = new (function() {
 		case "Screen Shake":
 			camShakeOn = !camShakeOn;
 			break;
+		case "Assisted Mode":
+			assistedModeOn = !assistedModeOn;
+			break;
 			
 		// UNIVERSAL
 		case "Back":
@@ -221,6 +224,15 @@ const Menu = new (function() {
 			// update text to show current setting
 			if (text == "Screen Shake") {
 				if (camShakeOn) {
+					text += ": On";
+				}
+				else {
+					text += ": Off";
+				}
+			}
+			// update text to show current setting
+			if (text == "Assisted Mode") {
+				if (assistedModeOn) {
 					text += ": On";
 				}
 				else {

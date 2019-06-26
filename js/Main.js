@@ -3,6 +3,7 @@ var Player = new PlayerClass();
 var mainGameState = true;
 var helpScreen = false;
 var camShakeOn = false;
+var assistedModeOn = false;
 var deathScreenTime = 0;
 var gameRestartPending = false;
 var gameIsRunning = false;

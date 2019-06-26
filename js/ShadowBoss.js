@@ -25,7 +25,14 @@ function ShadowBoss(name, id) {
 	this.height = 128;
 	
 	this.collisionBoxHeight = this.width;
-	this.HP = 50;
+	
+	const HP = 50;
+	if (assistedModeOn) { // half health if assisted mode on
+		this.HP = HP / 2;
+	}
+	else {
+		this.HP = HP;
+	}
 	this.maxHP = this.HP;
 	this.weight = 7; // 0-10 (10 means can't be pushed by anything)
 	

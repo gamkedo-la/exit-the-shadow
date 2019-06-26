@@ -26,7 +26,14 @@ function EvilPlayerBoss() {
 	this.collisionBoxHeight = this.width;
 	
 	this.moveSpeed = 2;
-	this.HP = 120;
+	
+	const HP = 120;
+	if (assistedModeOn) { // half health if assisted mode on
+		this.HP = HP / 2;
+	}
+	else {
+		this.HP = HP;
+	}
 	this.maxHP = this.HP;
 	this.weight = 2; // 0-10 (10 means can't be pushed by anything)
 	
