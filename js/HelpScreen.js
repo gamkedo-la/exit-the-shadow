@@ -54,7 +54,7 @@ function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _
 	var padLeft = canvas.width / 2;
 
 	saveFont();
-	setFont("bold", 40, "Impact");
+	setFont("bold", 35, "Impact");
 	canvasContext.save();
 	canvasContext.textAlign = "center";
 	for (var i = 0; i < controlsText.length; i++) {
@@ -76,19 +76,19 @@ function helpTextDisplay(_textAlpha, _leftBorder, _topBorder, _padPercentSize, _
 
 function helpBlock()
 {
-	var textHeight = 40;
+	var textHeight = 35;
 	var padPercentSize = 0.05;
 	var maxBackgroundRectAlpha = 0.25;
 	var maxTextAlpha = 0.8;
 
-	var percentSize = 0.12;
+	var percentSize = 0.08;
 	var leftBorder = canvas.width * percentSize;
 	var rightBorder = canvas.width - leftBorder;
 	var boxWidth = canvas.width - (leftBorder * 2);
 	var topBorder = canvas.height * percentSize;
 	var bottomBorder = canvas.height - topBorder;
 	//var boxHeight = canvas.height - (topBorder * 2);
-	var padTop = (canvas.height * padPercentSize) + textHeight;
+	var padTop = (canvas.height * padPercentSize) + textHeight + 20;
 	var boxHeight = (textHeight * 11) + (padTop * 1.25);
 
 	var d = new Date();
