@@ -390,8 +390,8 @@ function PlayerClass() {
 						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-								if (!this.heartsAcquired.shadowHeartAcquired) {
-									this.heartsAcquired.shadowHeartAcquired = true;
+								if (!this.heartsAcquired.beastHeartAcquired) {
+									this.heartsAcquired.beastHeartAcquired = true;
 									restartGame(false);
 									this.increaseAttributes();
 								}
@@ -405,8 +405,8 @@ function PlayerClass() {
 						let distanceY = distanceBetweenEntityObjectY(this, object.y, objectHeight);
 						if (distanceX <= (objectWidth/2 + this.width/2)+1 &&
 							distanceY <= (objectHeight/2 + this.collisionBoxHeight/2)+1) {
-								if (!this.heartsAcquired.beastHeartAcquired) {
-									this.heartsAcquired.beastHeartAcquired = true;
+								if (!this.heartsAcquired.shadowHeartAcquired) {
+									this.heartsAcquired.shadowHeartAcquired = true;
 									restartGame(false);
 									this.increaseAttributes();
 								}

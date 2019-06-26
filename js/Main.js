@@ -332,40 +332,9 @@ function drawGame() {
 		canvasContext.drawImage(window[GroundArt[i].imgName], GroundArt[i].x, GroundArt[i].y);
 	}
 
-	canvasContext.restore()
-
-	// show tutorial arrow
-	canvasContext.save();
-	canvasContext.translate(Player.centerX() - camPanX - 1, Player.centerY() - camPanY + 5);
-	if (tutorialIsActive) {
-		if (!playerHasHealed) {
-			if (showHealArrow) {
-				canvasContext.rotate(angleToHealLocation);
-				showArrow = true;
-			}
-			else {
-				showArrow = false;
-			}
-		}
-		else if (!playerHasSaved) {
-			if (showSaveArrow) {
-				canvasContext.rotate(angleToSaveLocation);
-				showArrow = true;
-			}
-			else {
-				showArrow = false;
-			}
-		}
-
-		if (showArrow) {
-			var scale = 0.3;
-			var arrowWidth = tutorialArrow.width * scale;
-			var arrowHeight = tutorialArrow.height * scale;
-			canvasContext.globalAlpha = 0.5;
-			canvasContext.drawImage(tutorialArrow, -arrowWidth / 2 - 25, -arrowHeight / 2, arrowWidth, arrowHeight);
-		}
-	}
 	canvasContext.restore();
+	
+	displayArrow();
 
 	canvasContext.save();
 	canvasContext.translate(-camPanX, -camPanY);
@@ -487,6 +456,123 @@ function drawGame() {
 	if (endGamePending) {
 		EndGame.draw();
 	}
+}
+
+function displayArrow() {
+	// show tutorial arrow
+	canvasContext.save();
+	canvasContext.translate(Player.centerX() - camPanX - 1, Player.centerY() - camPanY + 5);
+	if (tutorialIsActive) {
+		showArrow = false;
+		if (!playerHasHealed) {
+			if (showHealArrow) {
+				canvasContext.rotate(angleToHealLocation);
+				showArrow = true;
+			}
+			else {
+				showArrow = false;
+			}
+		}
+		else if (!playerHasSaved) {
+			if (showSaveArrow) {
+				canvasContext.rotate(angleToSaveLocation);
+				showArrow = true;
+			}
+			else {
+				showArrow = false;
+			}
+		}
+
+		if (showArrow) {
+			var scale = 0.3;
+			var arrowWidth = tutorialArrow.width * scale;
+			var arrowHeight = tutorialArrow.height * scale;
+			canvasContext.globalAlpha = 0.5;
+			canvasContext.drawImage(tutorialArrow, -arrowWidth / 2 - 25, -arrowHeight / 2, arrowWidth, arrowHeight);
+		}
+	}
+	else if (assistedModeOn) {
+		showArrow = false;
+		var showBeastArrow = true;
+		var showShadowArrow = true;
+		var showFinalArrow = true;
+		
+        Player.bossesKilled.forEach(boss => {
+            if(boss == beastBossName) {
+                showBeastArrow = false;
+            }
+            if(boss == shadowBossName) {
+                showShadowArrow = false;
+				showBeastArrow = false;
+            }
+            if(boss == finalBossName) { // if final boss is killed, show no arrows
+                showFinalArrow = false;
+				showBeastArrow = false;
+				showShadowArrow = false;
+            }
+        });
+		
+		if (showBeastArrow) {
+			for (var i = 0; i < Entities.length; i++) {
+				if (Entities[i] == Player) {
+					continue;
+				}
+				if (Entities[i].isActive) { // don't show if in a boss battle
+					showArrow = false;
+					break;
+				}
+				if (Entities[i].name == beastBossName) {
+					var angleToBoss = Math.atan2(Player.centerY() - Entities[i].centerY(), Player.centerX() - Entities[i].centerX());
+					canvasContext.rotate(angleToBoss);
+					showArrow = true;
+				}
+			}
+		}
+		else if (showShadowArrow && Player.heartsAcquired.beastHeartAcquired) {
+			for (var i = 0; i < Entities.length; i++) {
+				if (Entities[i] == Player) {
+					continue;
+				}
+				if (Entities[i].isActive) {
+					showArrow = false;
+					break;
+				}
+				if (Entities[i].name == shadowBossName) {
+					if (Entities[i].id == 1) { // middle shadow boss
+						var angleToBoss = Math.atan2(Player.centerY() - Entities[i].centerY(), Player.centerX() - Entities[i].centerX());
+						canvasContext.rotate(angleToBoss);
+						showArrow = true;
+					}
+				}
+			}
+		}
+		else if (showFinalArrow && Player.heartsAcquired.shadowHeartAcquired) {
+			for (var i = 0; i < Entities.length; i++) {
+				if (Entities[i] == Player) {
+					continue;
+				}
+				if (Entities[i].isActive) {
+					showArrow = false;
+					break;
+				}
+				if (Entities[i].name == finalBossName) {
+					var angleToBoss = Math.atan2(Player.centerY() - (Entities[i].finalPositionY + (Entities[i].height - Entities[i].collisionBoxHeight / 2)),
+												 Player.centerX() - (Entities[i].finalPositionX + Entities[i].width / 2));
+					canvasContext.rotate(angleToBoss);
+					showArrow = true;
+				}
+			}
+		}
+		
+		if (showArrow) {
+			var scale = 0.3;
+			var arrowWidth = tutorialArrow.width * scale;
+			var arrowHeight = tutorialArrow.height * scale;
+			canvasContext.globalAlpha = 0.5;
+			canvasContext.drawImage(tutorialArrow, -arrowWidth / 2 - 25, -arrowHeight / 2, arrowWidth, arrowHeight);
+		}
+	}
+	canvasContext.restore();
 }
 
 function drawHelpBox() {

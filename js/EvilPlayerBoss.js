@@ -107,6 +107,9 @@ function EvilPlayerBoss() {
 	const brightRed = {r:1, g:1, b:1};
 	const minTorchDist = 50;
 	const maxTorchDist = 500;
+	
+	this.finalPositionX = 3443.5;
+	this.finalPositionY = 1063;
 		
 	this.move = function () {
 		this.movementDirection = [false, false, false, false]; // up, left, down, right (SET TRUE TO MOVE)
@@ -120,8 +123,8 @@ function EvilPlayerBoss() {
 				else if (teleportTime < 30) {
 					fadeInPlatformTorches();
 					isTeleportingOut = false;
-					this.startX = this.x = this.nextX = 3443.5;
-					this.startY = this.y = this.nextY = 1063;
+					this.startX = this.x = this.nextX = this.finalPositionX;
+					this.startY = this.y = this.nextY = this.finalPositionY;
 				}
 				else {
 					teleportTime = 0;
